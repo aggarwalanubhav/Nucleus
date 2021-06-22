@@ -27,6 +27,8 @@
 #include "bearerContextsInCreateBearerResponse.h"
 #include "failedBearerContextsInDeleteBearerRequest.h"
 #include "bearerContextsInDeleteBearerResponse.h"
+#include "bearerContextsInForwardRelocationRequest.h"
+#include "bearerContextsInContextResponse.h"
 
 BearerContextIe::BearerContextIe()
 {
@@ -56,6 +58,10 @@ BearerContextIe::BearerContextIe()
     insertGroupedIeObject(DeleteBearerRequestMsgType, 0, failedBearerContextsInDeleteBearerRequest_p);
     BearerContextsInDeleteBearerResponse* bearerContextsInDeleteBearerResponse_p = new (BearerContextsInDeleteBearerResponse);
     insertGroupedIeObject(DeleteBearerResponseMsgType, 0, bearerContextsInDeleteBearerResponse_p);
+    BearerContextsInForwardRelocationRequest* bearerContextsInForwardRelocationRequest_p = new (BearerContextsInForwardRelocationRequest);
+    insertGroupedIeObject(ForwardRelocationRequestMsgType, 0, bearerContextsInForwardRelocationRequest_p);
+    BearerContextsInContextResponse* bearerContextsInContextResponse_p = new (BearerContextsInContextResponse);
+    insertGroupedIeObject(ContextResponseMsgType, 0, bearerContextsInContextResponse_p);
 }
 
 BearerContextIe::~BearerContextIe() {

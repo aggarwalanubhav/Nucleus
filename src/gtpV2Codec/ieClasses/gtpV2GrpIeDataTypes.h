@@ -609,12 +609,243 @@ typedef struct
     EpcTimerIeData periodOfValidity;    
 }SgwsOverloadControlInformationInDownlinkDataNotificationData;
 
+typedef struct
+{
+    bool apnRestrictionIePresent;    
+    bool selectionModeIePresent;    
+
+    ApnIeData apn;    
+    EbiIeData defaultEpsBearerId;    
+    ApnRestrictionIeData apnRestriction;    
+    SelectionModeIeData selectionMode;    
+    AmbrIeData aggregateMaximumBitRate;    
+}MmeSgsnUeScefPdnConnectionsInForwardRelocationRequestData;
+
+typedef struct
+{
+    bool epsBearerIdIePresent;    
+    bool sgsnFTeidForDlDataForwardingIePresent;    
+
+    EbiIeData epsBearerId;    
+    FTeidIeData sgsnFTeidForDlDataForwarding;    
+}ListOfSetUpBearersInForwardRelocationResponseData;
+
+typedef struct
+{
+    bool epsBearerIdIePresent;    
+    bool sgsnFTeidForDlDataForwardingIePresent;    
+
+    EbiIeData epsBearerId;    
+    FTeidIeData sgsnFTeidForDlDataForwarding;    
+}ListOfSetUpRabsInForwardRelocationResponseData;
+
+typedef struct
+{
+    bool epsBearerIdIePresent;    
+    bool sgsnFTeidForDlDataForwardingIePresent;    
+
+    EbiIeData epsBearerId;    
+    FTeidIeData sgsnFTeidForDlDataForwarding;    
+}ListOfSetUpPfcsInForwardRelocationResponseData;
+
+typedef struct
+{
+    bool apnRestrictionIePresent;    
+    bool selectionModeIePresent;    
+    bool ipv4AddressIePresent;    
+    bool ipv6AddressIePresent;    
+    bool pgwNodeNameIePresent;    
+    bool bearerContextsIePresent;    
+    bool chargingCharacteristicsIePresent;    
+    bool changeReportingActionIePresent;    
+    bool csgInformationReportingActionIePresent;    
+    bool hNbInformationReportingIePresent;    
+    bool indicationFlagsIePresent;    
+    bool signallingPriorityIndicationIePresent;    
+    bool changeToReportFlagsIePresent;    
+    bool localHomeNetworkIdIePresent;    
+    bool presenceReportingAreaActionIePresent;    
+    bool wlanOffloadabilityIndicationIePresent;    
+    bool remoteUeContextConnectedIePresent;    
+    bool pdnTypeIePresent;    
+    bool headerCompressionConfigurationIePresent;    
+
+    ApnIeData apn;    
+    ApnRestrictionIeData apnRestriction;    
+    SelectionModeIeData selectionMode;    
+    IpAddressIeData ipv4Address;    
+    IpAddressIeData ipv6Address;    
+    EbiIeData linkedEpsBearerId;    
+    FTeidIeData pgwS5S8IpAddressForControlPlaneOrPmip;    
+    FqdnIeData pgwNodeName;    
+    BearerContextsInForwardRelocationRequestData bearerContexts;
+    AmbrIeData aggregateMaximumBitRate;    
+    ChargingCharacteristicsIeData chargingCharacteristics;    
+    ChangeReportingActionIeData changeReportingAction;    
+    CsgInformationReportingActionIeData csgInformationReportingAction;    
+    HenbInformationReportingIeData hNbInformationReporting;    
+    IndicationIeData indicationFlags;    
+    SignallingPriorityIndicationIeData signallingPriorityIndication;    
+    ChangeToReportFlagsIeData changeToReportFlags;    
+    FqdnIeData localHomeNetworkId;    
+    PresenceReportingAreaActionIeData presenceReportingAreaAction;    
+    WlanOffloadabilityIndicationIeData wlanOffloadabilityIndication;    
+    RemoteUeContextConnectedInForwardRelocationRequestData remoteUeContextConnected;
+    PdnTypeIeData pdnType;    
+    HeaderCompressionConfigurationIeData headerCompressionConfiguration;    
+}MmeSgsnAmfUeEpsPdnConnectionsInForwardRelocationRequestData;
+
+typedef struct
+{
+
+    RemoteUserIdIeData remoteUserId;    
+    RemoteUeIpInformationIeData remoteUeIpInformation;    
+}RemoteUeContextConnectedInForwardRelocationRequestData;
+
+typedef struct
+{
+    bool tftIePresent;    
+    bool pgwS5S8IpAddressAndTeidForUserPlaneIePresent;    
+    bool bssContainerIePresent;    
+    bool transactionIdentifierIePresent;    
+    bool bearerFlagsIePresent;    
+    bool sgwS11IpAddressAndTeidForUserPlaneIePresent;    
+
+    EbiIeData epsBearerId;    
+    BearerTftIeData tft;    
+    FTeidIeData sgwS1S4S12IpAddressAndTeidForUserPlane;    
+    FTeidIeData pgwS5S8IpAddressAndTeidForUserPlane;    
+    BearerQosIeData bearerLevelQos;    
+    FContainerIeData bssContainer;    
+    TiIeData transactionIdentifier;    
+    BearerFlagsIeData bearerFlags;    
+    FTeidIeData sgwS11IpAddressAndTeidForUserPlane;    
+}BearerContextsInForwardRelocationRequestData;
+
+typedef struct
+{
+    bool apnRestrictionIePresent;    
+    bool selectionModeIePresent;    
+    bool ipv4AddressIePresent;    
+    bool ipv6AddressIePresent;    
+    bool pgwNodeNameIePresent;    
+    bool bearerContextsIePresent;    
+    bool chargingCharacteristicsIePresent;    
+    bool changeReportingActionIePresent;    
+    bool csgInformationReportingActionIePresent;    
+    bool hNbInformationReportingIePresent;    
+    bool indicationFlagsIePresent;    
+    bool signallingPriorityIndicationIePresent;    
+    bool changeToReportFlagsIePresent;    
+    bool localHomeNetworkIdIePresent;    
+    bool presenceReportingAreaActionIePresent;    
+    bool wlanOffloadabilityIndicationIePresent;    
+    bool remoteUeContextConnectedIePresent;    
+    bool pdnTypeIePresent;    
+    bool headerCompressionConfigurationIePresent;    
+
+    ApnIeData apn;    
+    ApnRestrictionIeData apnRestriction;    
+    SelectionModeIeData selectionMode;    
+    IpAddressIeData ipv4Address;    
+    IpAddressIeData ipv6Address;    
+    EbiIeData linkedEpsBearerId;    
+    FTeidIeData pgwS5S8IpAddressForControlPlaneOrPmip;    
+    FqdnIeData pgwNodeName;    
+    BearerContextsInContextResponseData bearerContexts;
+    AmbrIeData aggregateMaximumBitRate;    
+    ChargingCharacteristicsIeData chargingCharacteristics;    
+    ChangeReportingActionIeData changeReportingAction;    
+    CsgInformationReportingActionIeData csgInformationReportingAction;    
+    HenbInformationReportingIeData hNbInformationReporting;    
+    IndicationIeData indicationFlags;    
+    SignallingPriorityIndicationIeData signallingPriorityIndication;    
+    ChangeToReportFlagsIeData changeToReportFlags;    
+    FqdnIeData localHomeNetworkId;    
+    PresenceReportingAreaActionIeData presenceReportingAreaAction;    
+    WlanOffloadabilityIndicationIeData wlanOffloadabilityIndication;    
+    RemoteUeContextConnectedInContextResponseData remoteUeContextConnected;
+    PdnTypeIeData pdnType;    
+    HeaderCompressionConfigurationIeData headerCompressionConfiguration;    
+}MmeSgsnAmfUeEpsPdnConnectionsInContextResponseData;
+
+typedef struct
+{
+
+    RemoteUserIdIeData remoteUserId;    
+    RemoteUeIpInformationIeData remoteUeIpInformation;    
+}RemoteUeContextConnectedInContextResponseData;
+
+typedef struct
+{
+    bool tftIePresent;    
+    bool pgwS5S8IpAddressAndTeidForUserPlaneIePresent;    
+    bool bssContainerIePresent;    
+    bool transactionIdentifierIePresent;    
+    bool bearerFlagsIePresent;    
+    bool sgwS11IpAddressAndTeidForUserPlaneIePresent;    
+
+    EbiIeData epsBearerId;    
+    BearerTftIeData tft;    
+    FTeidIeData sgwS1S4S12IpAddressAndTeidForUserPlane;    
+    FTeidIeData pgwS5S8IpAddressAndTeidForUserPlane;    
+    BearerQosIeData bearerLevelQos;    
+    FContainerIeData bssContainer;    
+    TiIeData transactionIdentifier;    
+    BearerFlagsIeData bearerFlags;    
+    FTeidIeData sgwS11IpAddressAndTeidForUserPlane;    
+}BearerContextsInContextResponseData;
+
+typedef struct
+{
+    bool epsBearerIdIePresent;    
+    bool packetFlowIdIePresent;    
+    bool enodebFTeidForDlDataForwardingIePresent;    
+    bool enodebFTeidForUlDataForwardingIePresent;    
+    bool sgwUpfFTeidForDlDataForwardingIePresent;    
+    bool rncFTeidForDlDataForwardingIePresent;    
+    bool sgsnFTeidForDlDataForwardingIePresent;    
+    bool sgwFTeidForUlDataForwardingIePresent;    
+
+    EbiIeData epsBearerId;    
+    PacketFlowIdIeData packetFlowId;    
+    FTeidIeData enodebFTeidForDlDataForwarding;    
+    FTeidIeData enodebFTeidForUlDataForwarding;    
+    FTeidIeData sgwUpfFTeidForDlDataForwarding;    
+    FTeidIeData rncFTeidForDlDataForwarding;    
+    FTeidIeData sgsnFTeidForDlDataForwarding;    
+    FTeidIeData sgwFTeidForUlDataForwarding;    
+}ListOfSetUpBearersInForwardRelocationResponseData;
+
+typedef struct
+{
+    bool epsBearerIdIePresent;    
+    bool packetFlowIdIePresent;    
+    bool enodebFTeidForDlDataForwardingIePresent;    
+    bool enodebFTeidForUlDataForwardingIePresent;    
+    bool sgwUpfFTeidForDlDataForwardingIePresent;    
+    bool rncFTeidForDlDataForwardingIePresent;    
+    bool sgsnFTeidForDlDataForwardingIePresent;    
+    bool sgwFTeidForUlDataForwardingIePresent;    
+
+    EbiIeData epsBearerId;    
+    PacketFlowIdIeData packetFlowId;    
+    FTeidIeData enodebFTeidForDlDataForwarding;    
+    FTeidIeData enodebFTeidForUlDataForwarding;    
+    FTeidIeData sgwUpfFTeidForDlDataForwarding;    
+    FTeidIeData rncFTeidForDlDataForwarding;    
+    FTeidIeData sgsnFTeidForDlDataForwarding;    
+    FTeidIeData sgwFTeidForUlDataForwarding;    
+}ListOfRabsInForwardRelocationResponseData;
+
 
 //Ie Type Constants
 static const  Uint8  BearerContextIeType = 93;    
 static const  Uint8  OverloadControlInformationIeType = 180;    
 static const  Uint8  RemoteUeContextIeType = 191;    
 static const  Uint8  LoadControlInformationIeType = 181;    
+static const  Uint8  ScefPdnConnectionIeType = 195;    
+static const  Uint8  PdnConnectionIeType = 109;    
 
 
 #endif 

@@ -85,6 +85,36 @@
 #include "throttlingIe.h"
 #include "pagingAndServiceInformationIe.h"
 #include "nodeFeaturesIe.h"
+#include "targetIdentificationIe.h"
+#include "plmnIdIe.h"
+#include "mmContextIe.h"
+#include "gutiIe.h"
+#include "completeRequestMessageIe.h"
+#include "srvccCauseIe.h"
+#include "fCauseIe.h"
+#include "pTmsiIe.h"
+#include "pTmsiSignatureIe.h"
+#include "hopCounterIe.h"
+#include "monitoringEventInformationIe.h"
+#include "teidCIe.h"
+#include "sourceToTargetTransparentContainerIe.h"
+#include "targetRncIdIe.h"
+#include "stnSrIe.h"
+#include "mmContextForEutranSrvccIe.h"
+#include "svFlagsIe.h"
+#include "targetToSourceTransparentContainerIe.h"
+#include "nodeNumberIe.h"
+#include "sourceIdentificationIe.h"
+#include "additionalFlagsForSrvccIe.h"
+#include "additionalMmContextForSrvccIe.h"
+#include "csgIdIe.h"
+#include "cmiIe.h"
+#include "changeToReportFlagsIe.h"
+#include "wlanOffloadabilityIndicationIe.h"
+#include "headerCompressionConfigurationIe.h"
+#include "tiIe.h"
+#include "detachTypeIe.h"
+#include "packetFlowIdIe.h"
 #include "bearerContextIe.h"
 #include "overloadControlInformationIe.h"
 #include "loadControlInformationIe.h"
@@ -299,6 +329,96 @@ GtpV2IeFactory::GtpV2IeFactory()
 
     NodeFeaturesIe* nodeFeaturesIe_p = new (NodeFeaturesIe);
     ieObjectContainer.insert(std::pair<Uint8, GtpV2Ie*>(NodeFeaturesIeType, nodeFeaturesIe_p));
+
+    TargetIdentificationIe* targetIdentificationIe_p = new (TargetIdentificationIe);
+    ieObjectContainer.insert(std::pair<Uint8, GtpV2Ie*>(TargetIdentificationIeType, targetIdentificationIe_p));
+
+    PlmnIdIe* plmnIdIe_p = new (PlmnIdIe);
+    ieObjectContainer.insert(std::pair<Uint8, GtpV2Ie*>(PlmnIdIeType, plmnIdIe_p));
+
+    MmContextIe* mmContextIe_p = new (MmContextIe);
+    ieObjectContainer.insert(std::pair<Uint8, GtpV2Ie*>(MmContextIeType, mmContextIe_p));
+
+    GutiIe* gutiIe_p = new (GutiIe);
+    ieObjectContainer.insert(std::pair<Uint8, GtpV2Ie*>(GutiIeType, gutiIe_p));
+
+    CompleteRequestMessageIe* completeRequestMessageIe_p = new (CompleteRequestMessageIe);
+    ieObjectContainer.insert(std::pair<Uint8, GtpV2Ie*>(CompleteRequestMessageIeType, completeRequestMessageIe_p));
+
+    SrvccCauseIe* srvccCauseIe_p = new (SrvccCauseIe);
+    ieObjectContainer.insert(std::pair<Uint8, GtpV2Ie*>(SrvccCauseIeType, srvccCauseIe_p));
+
+    FCauseIe* fCauseIe_p = new (FCauseIe);
+    ieObjectContainer.insert(std::pair<Uint8, GtpV2Ie*>(FCauseIeType, fCauseIe_p));
+
+    PTmsiIe* pTmsiIe_p = new (PTmsiIe);
+    ieObjectContainer.insert(std::pair<Uint8, GtpV2Ie*>(PTmsiIeType, pTmsiIe_p));
+
+    PTmsiSignatureIe* pTmsiSignatureIe_p = new (PTmsiSignatureIe);
+    ieObjectContainer.insert(std::pair<Uint8, GtpV2Ie*>(PTmsiSignatureIeType, pTmsiSignatureIe_p));
+
+    HopCounterIe* hopCounterIe_p = new (HopCounterIe);
+    ieObjectContainer.insert(std::pair<Uint8, GtpV2Ie*>(HopCounterIeType, hopCounterIe_p));
+
+    MonitoringEventInformationIe* monitoringEventInformationIe_p = new (MonitoringEventInformationIe);
+    ieObjectContainer.insert(std::pair<Uint8, GtpV2Ie*>(MonitoringEventInformationIeType, monitoringEventInformationIe_p));
+
+    TeidCIe* teidCIe_p = new (TeidCIe);
+    ieObjectContainer.insert(std::pair<Uint8, GtpV2Ie*>(TeidCIeType, teidCIe_p));
+
+    SourceToTargetTransparentContainerIe* sourceToTargetTransparentContainerIe_p = new (SourceToTargetTransparentContainerIe);
+    ieObjectContainer.insert(std::pair<Uint8, GtpV2Ie*>(SourceToTargetTransparentContainerIeType, sourceToTargetTransparentContainerIe_p));
+
+    TargetRncIdIe* targetRncIdIe_p = new (TargetRncIdIe);
+    ieObjectContainer.insert(std::pair<Uint8, GtpV2Ie*>(TargetRncIdIeType, targetRncIdIe_p));
+
+    StnSrIe* stnSrIe_p = new (StnSrIe);
+    ieObjectContainer.insert(std::pair<Uint8, GtpV2Ie*>(StnSrIeType, stnSrIe_p));
+
+    MmContextForEutranSrvccIe* mmContextForEutranSrvccIe_p = new (MmContextForEutranSrvccIe);
+    ieObjectContainer.insert(std::pair<Uint8, GtpV2Ie*>(MmContextForEutranSrvccIeType, mmContextForEutranSrvccIe_p));
+
+    SvFlagsIe* svFlagsIe_p = new (SvFlagsIe);
+    ieObjectContainer.insert(std::pair<Uint8, GtpV2Ie*>(SvFlagsIeType, svFlagsIe_p));
+
+    TargetToSourceTransparentContainerIe* targetToSourceTransparentContainerIe_p = new (TargetToSourceTransparentContainerIe);
+    ieObjectContainer.insert(std::pair<Uint8, GtpV2Ie*>(TargetToSourceTransparentContainerIeType, targetToSourceTransparentContainerIe_p));
+
+    NodeNumberIe* nodeNumberIe_p = new (NodeNumberIe);
+    ieObjectContainer.insert(std::pair<Uint8, GtpV2Ie*>(NodeNumberIeType, nodeNumberIe_p));
+
+    SourceIdentificationIe* sourceIdentificationIe_p = new (SourceIdentificationIe);
+    ieObjectContainer.insert(std::pair<Uint8, GtpV2Ie*>(SourceIdentificationIeType, sourceIdentificationIe_p));
+
+    AdditionalFlagsForSrvccIe* additionalFlagsForSrvccIe_p = new (AdditionalFlagsForSrvccIe);
+    ieObjectContainer.insert(std::pair<Uint8, GtpV2Ie*>(AdditionalFlagsForSrvccIeType, additionalFlagsForSrvccIe_p));
+
+    AdditionalMmContextForSrvccIe* additionalMmContextForSrvccIe_p = new (AdditionalMmContextForSrvccIe);
+    ieObjectContainer.insert(std::pair<Uint8, GtpV2Ie*>(AdditionalMmContextForSrvccIeType, additionalMmContextForSrvccIe_p));
+
+    CsgIdIe* csgIdIe_p = new (CsgIdIe);
+    ieObjectContainer.insert(std::pair<Uint8, GtpV2Ie*>(CsgIdIeType, csgIdIe_p));
+
+    CmiIe* cmiIe_p = new (CmiIe);
+    ieObjectContainer.insert(std::pair<Uint8, GtpV2Ie*>(CmiIeType, cmiIe_p));
+
+    ChangeToReportFlagsIe* changeToReportFlagsIe_p = new (ChangeToReportFlagsIe);
+    ieObjectContainer.insert(std::pair<Uint8, GtpV2Ie*>(ChangeToReportFlagsIeType, changeToReportFlagsIe_p));
+
+    WlanOffloadabilityIndicationIe* wlanOffloadabilityIndicationIe_p = new (WlanOffloadabilityIndicationIe);
+    ieObjectContainer.insert(std::pair<Uint8, GtpV2Ie*>(WlanOffloadabilityIndicationIeType, wlanOffloadabilityIndicationIe_p));
+
+    HeaderCompressionConfigurationIe* headerCompressionConfigurationIe_p = new (HeaderCompressionConfigurationIe);
+    ieObjectContainer.insert(std::pair<Uint8, GtpV2Ie*>(HeaderCompressionConfigurationIeType, headerCompressionConfigurationIe_p));
+
+    TiIe* tiIe_p = new (TiIe);
+    ieObjectContainer.insert(std::pair<Uint8, GtpV2Ie*>(TiIeType, tiIe_p));
+
+    DetachTypeIe* detachTypeIe_p = new (DetachTypeIe);
+    ieObjectContainer.insert(std::pair<Uint8, GtpV2Ie*>(DetachTypeIeType, detachTypeIe_p));
+
+    PacketFlowIdIe* packetFlowIdIe_p = new (PacketFlowIdIe);
+    ieObjectContainer.insert(std::pair<Uint8, GtpV2Ie*>(PacketFlowIdIeType, packetFlowIdIe_p));
 
     BearerContextIe* bearerContextIe_p = new (BearerContextIe);
     ieObjectContainer.insert(std::pair<Uint8, GtpV2Ie*>(BearerContextIeType, bearerContextIe_p));

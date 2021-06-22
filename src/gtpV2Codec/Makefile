@@ -94,6 +94,36 @@ gtpV2CodecOBJS := $(addprefix $(gtpV2CodecOBJDIR), \
 	ieClasses/throttlingIe.o \
 	ieClasses/pagingAndServiceInformationIe.o \
 	ieClasses/nodeFeaturesIe.o \
+	ieClasses/targetIdentificationIe.o \
+	ieClasses/plmnIdIe.o \
+	ieClasses/mmContextIe.o \
+	ieClasses/gutiIe.o \
+	ieClasses/completeRequestMessageIe.o \
+	ieClasses/srvccCauseIe.o \
+	ieClasses/fCauseIe.o \
+	ieClasses/pTmsiIe.o \
+	ieClasses/pTmsiSignatureIe.o \
+	ieClasses/hopCounterIe.o \
+	ieClasses/monitoringEventInformationIe.o \
+	ieClasses/teidCIe.o \
+	ieClasses/sourceToTargetTransparentContainerIe.o \
+	ieClasses/targetRncIdIe.o \
+	ieClasses/stnSrIe.o \
+	ieClasses/mmContextForEutranSrvccIe.o \
+	ieClasses/svFlagsIe.o \
+	ieClasses/targetToSourceTransparentContainerIe.o \
+	ieClasses/nodeNumberIe.o \
+	ieClasses/sourceIdentificationIe.o \
+	ieClasses/additionalFlagsForSrvccIe.o \
+	ieClasses/additionalMmContextForSrvccIe.o \
+	ieClasses/csgIdIe.o \
+	ieClasses/cmiIe.o \
+	ieClasses/changeToReportFlagsIe.o \
+	ieClasses/wlanOffloadabilityIndicationIe.o \
+	ieClasses/headerCompressionConfigurationIe.o \
+	ieClasses/tiIe.o \
+	ieClasses/detachTypeIe.o \
+	ieClasses/packetFlowIdIe.o \
 	msgClasses/createSessionRequestMsg.o \
 	msgClasses/gtpV2MsgFactory.o \
 	gtpV2Stack.o \
@@ -114,6 +144,26 @@ gtpV2CodecOBJS := $(addprefix $(gtpV2CodecOBJDIR), \
 	msgClasses/downlinkDataNotificationFailureIndicationMsg.o \
 	msgClasses/echoRequestMsg.o \
 	msgClasses/echoResponseMsg.o \
+	msgClasses/forwardRelocationCompleteNotificationMsg.o \
+	msgClasses/forwardRelocationCompleteAcknowledgeMsg.o \
+	msgClasses/forwardAccessContextNotificationMsg.o \
+	msgClasses/forwardAccessContextAcknowledgeMsg.o \
+	msgClasses/relocationCancelRequestMsg.o \
+	msgClasses/relocationCancelResponseMsg.o \
+	msgClasses/configurationTransferTunnelMsg.o \
+	msgClasses/identificationRequestMsg.o \
+	msgClasses/identificationResponseMsg.o \
+	msgClasses/srvccPsToCsCompleteNotificationMsg.o \
+	msgClasses/pstoCsCompleteAcknowledgeMsg.o \
+	msgClasses/srvccPsToCsRequestMsg.o \
+	msgClasses/srvccPsToCsResponseMsg.o \
+	msgClasses/pstoCsCancelNotificationMsg.o \
+	msgClasses/detachNotificationMsg.o \
+	msgClasses/contextRequestMsg.o \
+	msgClasses/contextResponseMsg.o \
+	msgClasses/forwardRelocationResponseMsg.o \
+	msgClasses/forwardRelocationRequestMsg.o \
+	msgClasses/srvccPsToCsCancelAcknowledgeMsg.o \
 	ieClasses/bearerContextsToBeModifiedInModifyBearerRequest.o \
 	ieClasses/bearerContextIe.o \
 	ieClasses/manual/gtpV2GroupedIe.o \
@@ -176,6 +226,19 @@ gtpV2CodecOBJS := $(addprefix $(gtpV2CodecOBJDIR), \
 	ieClasses/twanEpdgsOverloadControlInformationInDeleteBearerResponse.o \
 	ieClasses/sgwsNodeLevelLoadControlInformationInDownlinkDataNotification.o \
 	ieClasses/sgwsOverloadControlInformationInDownlinkDataNotification.o \
+	ieClasses/mmeSgsnUeScefPdnConnectionsInForwardRelocationRequest.o \
+	ieClasses/scefPdnConnectionIe.o \
+	ieClasses/listOfSetUpBearersInForwardRelocationResponse.o \
+	ieClasses/listOfSetUpRabsInForwardRelocationResponse.o \
+	ieClasses/listOfSetUpPfcsInForwardRelocationResponse.o \
+	ieClasses/mmeSgsnAmfUeEpsPdnConnectionsInForwardRelocationRequest.o \
+	ieClasses/pdnConnectionIe.o \
+	ieClasses/remoteUeContextConnectedInForwardRelocationRequest.o \
+	ieClasses/bearerContextsInForwardRelocationRequest.o \
+	ieClasses/mmeSgsnAmfUeEpsPdnConnectionsInContextResponse.o \
+	ieClasses/remoteUeContextConnectedInContextResponse.o \
+	ieClasses/bearerContextsInContextResponse.o \
+	ieClasses/listOfRabsInForwardRelocationResponse.o \
 	ieClasses/manual/dataTypeCodecUtils_manual.o \
 	gtpV2StackWrappers.o )
 all :  $(gtpV2CodecLIB)

@@ -16,6 +16,8 @@
 #include "manual/gtpV2GroupedIe.h"
 
 #include "remoteUeContextConnectedInCreateSessionRequest.h"
+#include "remoteUeContextConnectedInForwardRelocationRequest.h"
+#include "remoteUeContextConnectedInContextResponse.h"
 
 RemoteUeContextIe::RemoteUeContextIe()
 {
@@ -23,6 +25,10 @@ RemoteUeContextIe::RemoteUeContextIe()
    
     RemoteUeContextConnectedInCreateSessionRequest* remoteUeContextConnectedInCreateSessionRequest_p = new (RemoteUeContextConnectedInCreateSessionRequest);
     insertGroupedIeObject(CreateSessionRequestMsgType, 0, remoteUeContextConnectedInCreateSessionRequest_p);
+    RemoteUeContextConnectedInForwardRelocationRequest* remoteUeContextConnectedInForwardRelocationRequest_p = new (RemoteUeContextConnectedInForwardRelocationRequest);
+    insertGroupedIeObject(ForwardRelocationRequestMsgType, 0, remoteUeContextConnectedInForwardRelocationRequest_p);
+    RemoteUeContextConnectedInContextResponse* remoteUeContextConnectedInContextResponse_p = new (RemoteUeContextConnectedInContextResponse);
+    insertGroupedIeObject(ContextResponseMsgType, 0, remoteUeContextConnectedInContextResponse_p);
 }
 
 RemoteUeContextIe::~RemoteUeContextIe() {

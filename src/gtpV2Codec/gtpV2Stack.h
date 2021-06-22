@@ -50,6 +50,26 @@ public:
     DownlinkDataNotificationFailureIndicationMsgData downlinkDataNotificationFailureIndicationStackData;
     EchoRequestMsgData echoRequestStackData;
     EchoResponseMsgData echoResponseStackData;
+    ForwardRelocationCompleteNotificationMsgData forwardRelocationCompleteNotificationStackData;
+    ForwardRelocationCompleteAcknowledgeMsgData forwardRelocationCompleteAcknowledgeStackData;
+    ForwardAccessContextNotificationMsgData forwardAccessContextNotificationStackData;
+    ForwardAccessContextAcknowledgeMsgData forwardAccessContextAcknowledgeStackData;
+    RelocationCancelRequestMsgData relocationCancelRequestStackData;
+    RelocationCancelResponseMsgData relocationCancelResponseStackData;
+    ConfigurationTransferTunnelMsgData configurationTransferTunnelStackData;
+    IdentificationRequestMsgData identificationRequestStackData;
+    IdentificationResponseMsgData identificationResponseStackData;
+    SrvccPsToCsCompleteNotificationMsgData srvccPsToCsCompleteNotificationStackData;
+    PstoCsCompleteAcknowledgeMsgData pstoCsCompleteAcknowledgeStackData;
+    SrvccPsToCsRequestMsgData srvccPsToCsRequestStackData;
+    SrvccPsToCsResponseMsgData srvccPsToCsResponseStackData;
+    PstoCsCancelNotificationMsgData pstoCsCancelNotificationStackData;
+    DetachNotificationMsgData detachNotificationStackData;
+    ContextRequestMsgData contextRequestStackData;
+    ContextResponseMsgData contextResponseStackData;
+    ForwardRelocationResponseMsgData forwardRelocationResponseStackData;
+    ForwardRelocationRequestMsgData forwardRelocationRequestStackData;
+    SrvccPsToCsCancelAcknowledgeMsgData srvccPsToCsCancelAcknowledgeStackData;
 
     bool encodeMessage(GtpV2MessageHeader& msgHeader, MsgBuffer& buffer,
                  void* data_p = NULL);
