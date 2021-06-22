@@ -19,6 +19,9 @@ extern "C"{
 #include "s1ap_ie.h"
 #include "../../src/gtpV2Codec/msgClasses/gtpV2MsgDataTypes.h"
 
+#include "../../src/gtpV2Codec/msgClasses/gtpV2MsgDataTypes.h"
+
+
 #define REQ_ARGS 0x0000
 
 typedef enum msg_type_t {
@@ -694,6 +697,49 @@ struct DB_RESP_Q_msg {
     struct fteid s11_sgw_c_fteid;
  };
 #define S11_DBRESP_BUF_SIZE sizeof(struct DB_RESP_Q_msg)
+
+struct PS_to_CS_REQ_msg{
+    msg_type_t msg_type;
+    int ue_idx;
+    bool imsiIePresent;   
+    bool cMsisdnIePresent;   
+    bool targetRncIdIePresent;   
+    bool svFlagsIePresent;   
+    bool stnSrIePresent;   
+    bool mmContextForEutranSrvccIePresent;   
+
+
+    ImsiIeData imsi;
+    IpAddressIeData mmeSgsnSvaddressForControlplane;
+    TeidCIeData mmeSgsnSvTeidForControlPlane;
+    MsisdnIeData cMsisdn;
+    TargetRncIdIeData targetRncId;
+    SvFlagsIeData svFlags;
+    StnSrIeData stnSr;
+    MmContextForEutranSrvccIeData mmContextForEutranSrvcc;
+    SourceToTargetTransparentContainerIeData sourceToTargetTransparentContainer;
+};
+#define SV_PSTOCSREQ_BUF_SIZE sizeof(struct PS_to_CS_REQ_msg)
+
+struct PS_to_CS_CAN_NOT_msg{
+    msg_type_t msg_type;
+    int ue_idx;
+    bool imsiIePresent;   
+    bool meIdentityIePresent;   
+
+
+    ImsiIeData imsi;
+    SrvccCauseIeData cancelCause;
+    MeiIeData meIdentity;
+};
+#define SV_PSTOCSCANNOT_BUF_SIZE sizeof(struct PS_to_CS_CAN_NOT_msg)
+
+struct PS_to_CS_COMP_ACK_msg{
+    msg_type_t msg_type;
+    int ue_idx;
+    CauseIeData cause;
+};
+#define SV_PSTOCSCOMPACK_BUF_SIZE sizeof(struct PS_to_CS_COMP_ACK_msg)
  
 /*************************
  * Incoming GTP Messages
