@@ -894,6 +894,28 @@ struct CONTEXT_RES_msg
 };
 #define S3_CONTEXT_RES_BUF_SIZE sizeof(struct CONTEXT_RES_msg)
 
+struct DELETE_BEARER_COMMAND_msg{
+    msg_type_t msg_type;
+    int ue_idx;
+    bool userLocationInformationIePresent;   
+    bool uliTimestampIePresent;   
+    bool ueTimeZoneIePresent;   
+    bool mmeS4SgsnsOverloadControlInformationIePresent;   
+    bool sgwsOverloadControlInformationIePresent;   
+    bool senderFTeidForControlPlaneIePresent;   
+    bool secondaryRatUsageDataReportIePresent;   
+
+
+    BearerContextsInDeleteBearerCommandData bearerContexts;
+    UliIeData userLocationInformation;
+    UliTimestampIeData uliTimestamp;
+    UeTimeZoneIeData ueTimeZone;
+    MmeS4SgsnsOverloadControlInformationInDeleteBearerCommandData mmeS4SgsnsOverloadControlInformation;
+    SgwsOverloadControlInformationInDeleteBearerCommandData sgwsOverloadControlInformation;
+    FTeidIeData senderFTeidForControlPlane;
+    SecondaryRatUsageDataReportIeData secondaryRatUsageDataReport;
+};
+#define S11_DELETE_BEARER_CMD_BUF_SIZE sizeof(struct DELETE_BEARER_COMMAND_msg)
 
 /*************************
  * Incoming GTP Messages
