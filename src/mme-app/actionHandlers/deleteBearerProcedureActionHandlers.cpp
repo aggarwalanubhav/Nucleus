@@ -388,3 +388,35 @@ ActStatus ActionHandlers::delete_bearer_proc_complete(ControlBlock &cb)
     return ActStatus::PROCEED;
 }
 
+/***************************************
+* Action handler : srvcc_init_ded_bearer_deactivation
+***************************************/
+ActStatus ActionHandlers::srvcc_init_ded_bearer_deactivation(ControlBlock& cb)
+{
+    return ActStatus::PROCEED;
+}
+
+/***************************************
+* Action handler : srvcc_handle_ded_deact_cmp_ind
+***************************************/
+ActStatus ActionHandlers::srvcc_handle_ded_deact_cmp_ind(ControlBlock& cb)
+{
+    return ActStatus::PROCEED;
+}
+
+/***************************************
+* Action handler : srvcc_send_delete_bearer_response
+***************************************/
+ActStatus ActionHandlers::srvcc_send_delete_bearer_response(ControlBlock& cb)
+{
+    return ActStatus::PROCEED;
+}
+
+/***************************************
+* Action handler : srvcc_delete_bearer_proc_complete
+***************************************/
+ActStatus ActionHandlers::srvcc_delete_bearer_proc_complete(ControlBlock& cb)
+{
+    return ActStatus::PROCEED;
+}
+

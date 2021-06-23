@@ -252,3 +252,134 @@ const char* DeleteBearerWfDeactComplete::getStateName()const
 {
 	return "delete_bearer_wf_deact_complete";
 }
+
+/******************************************************************************
+* Constructor
+******************************************************************************/
+SrvccDeleteBearerStart::SrvccDeleteBearerStart():State()
+{
+        stateEntryAction = &MmeStatesUtils::on_state_entry;
+        stateExitAction = &MmeStatesUtils::on_state_exit;
+        eventValidator = &MmeStatesUtils::validate_event;
+		
+}
+
+/******************************************************************************
+* Destructor
+******************************************************************************/
+SrvccDeleteBearerStart::~SrvccDeleteBearerStart()
+{
+}
+
+/******************************************************************************
+* creates and returns static instance
+******************************************************************************/
+SrvccDeleteBearerStart* SrvccDeleteBearerStart::Instance()
+{
+        static SrvccDeleteBearerStart state;
+        return &state;
+}
+
+/******************************************************************************
+* initializes eventToActionsMap
+******************************************************************************/
+void SrvccDeleteBearerStart::initialize()
+{
+        {
+                ActionTable actionTable;
+                actionTable.addAction(&ActionHandlers::srvcc_init_ded_bearer_deactivation);
+                actionTable.setNextState(SrvccDeleteBearerWfDeactComplete::Instance());
+                eventToActionsMap[START_DED_DEACTIVATION] = actionTable;
+        }
+        {
+                ActionTable actionTable;
+                actionTable.addAction(&ActionHandlers::send_delete_bearer_response);
+                actionTable.addAction(&ActionHandlers::abort_delete_bearer_procedure);
+                eventToActionsMap[ABORT_EVENT] = actionTable;
+        }
+}
+
+/******************************************************************************
+* returns stateId
+******************************************************************************/
+uint16_t SrvccDeleteBearerStart::getStateId()const
+{
+	return srvcc_delete_bearer_start;
+}
+
+/******************************************************************************
+* returns stateName
+******************************************************************************/
+const char* SrvccDeleteBearerStart::getStateName()const
+{
+	return "srvcc_delete_bearer_start";
+}
+
+/******************************************************************************
+* Constructor
+******************************************************************************/
+SrvccDeleteBearerWfDeactComplete::SrvccDeleteBearerWfDeactComplete():State()
+{
+        stateGuardTimeoutDuration_m = 12000;
+        stateEntryAction = &MmeStatesUtils::on_state_entry;
+        stateExitAction = &MmeStatesUtils::on_state_exit;
+        eventValidator = &MmeStatesUtils::validate_event;
+		
+}
+
+/******************************************************************************
+* Destructor
+******************************************************************************/
+SrvccDeleteBearerWfDeactComplete::~SrvccDeleteBearerWfDeactComplete()
+{
+}
+
+/******************************************************************************
+* creates and returns static instance
+******************************************************************************/
+SrvccDeleteBearerWfDeactComplete* SrvccDeleteBearerWfDeactComplete::Instance()
+{
+        static SrvccDeleteBearerWfDeactComplete state;
+        return &state;
+}
+
+/******************************************************************************
+* initializes eventToActionsMap
+******************************************************************************/
+void SrvccDeleteBearerWfDeactComplete::initialize()
+{
+        {
+                ActionTable actionTable;
+                actionTable.addAction(&ActionHandlers::srvcc_handle_ded_deact_cmp_ind);
+                actionTable.addAction(&ActionHandlers::srvcc_send_delete_bearer_response);
+                actionTable.addAction(&ActionHandlers::srvcc_delete_bearer_proc_complete);
+                eventToActionsMap[DED_DEACT_COMPLETE] = actionTable;
+        }
+        {
+                ActionTable actionTable;
+                actionTable.addAction(&ActionHandlers::handle_state_guard_timeouts);
+                eventToActionsMap[STATE_GUARD_TIMEOUT] = actionTable;
+        }
+        {
+                ActionTable actionTable;
+                actionTable.addAction(&ActionHandlers::send_delete_bearer_response);
+                actionTable.addAction(&ActionHandlers::abort_delete_bearer_procedure);
+                eventToActionsMap[ABORT_EVENT] = actionTable;
+        }
+}
+
+/******************************************************************************
+* returns stateId
+******************************************************************************/
+uint16_t SrvccDeleteBearerWfDeactComplete::getStateId()const
+{
+	return srvcc_delete_bearer_wf_deact_complete;
+}
+
+/******************************************************************************
+* returns stateName
+******************************************************************************/
+const char* SrvccDeleteBearerWfDeactComplete::getStateName()const
+{
+	return "srvcc_delete_bearer_wf_deact_complete";
+}
