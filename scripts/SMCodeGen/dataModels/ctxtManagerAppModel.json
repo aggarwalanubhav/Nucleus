@@ -83,6 +83,10 @@
 								"Type": "Tai"
 							},
 							{
+								"Name": "lai",
+								"Type": "Lai"
+							},
+							{
 								"Name": "utranCgi",
 								"Type": "Cgi"
 							},
@@ -93,6 +97,14 @@
 							{
 								"Name": "ueNetCapab",
 								"Type": "Ue_net_capab"
+							},
+							{
+								"Name": "msClassmark2",
+								"Type": "Mobile_Station_Classmark_2"
+							},
+							{
+								"Name": "voiceDomainPref",
+								"Type": "Voice_Domain_Preference"
 							},
 							{
 								"Name": "ueSecInfo",
