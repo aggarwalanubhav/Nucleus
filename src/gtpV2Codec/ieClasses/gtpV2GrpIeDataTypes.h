@@ -838,6 +838,32 @@ typedef struct
     FTeidIeData sgwFTeidForUlDataForwarding;    
 }ListOfRabsInForwardRelocationResponseData;
 
+typedef struct
+{
+    bool bearerFlagsIePresent;    
+    bool ranNasReleaseCauseIePresent;    
+
+    EbiIeData epsBearerId;    
+    BearerFlagsIeData bearerFlags;    
+    RanNasCauseIeData ranNasReleaseCause;    
+}BearerContextsInDeleteBearerCommandData;
+
+typedef struct
+{
+
+    SequenceNumberIeData overloadControlSequenceNumber;    
+    MetricIeData overloadReductionMetric;    
+    EpcTimerIeData periodOfValidity;    
+}MmeS4SgsnsOverloadControlInformationInDeleteBearerCommandData;
+
+typedef struct
+{
+
+    SequenceNumberIeData overloadControlSequenceNumber;    
+    MetricIeData overloadReductionMetric;    
+    EpcTimerIeData periodOfValidity;    
+}SgwsOverloadControlInformationInDeleteBearerCommandData;
+
 
 //Ie Type Constants
 static const  Uint8  BearerContextIeType = 93;    

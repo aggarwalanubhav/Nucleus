@@ -17,6 +17,7 @@ extern "C"{
 #include "s11_structs.h"
 #include "s1ap_structs.h"
 #include "s1ap_ie.h"
+#include "../../src/gtpV2Codec/msgClasses/gtpV2MsgDataTypes.h"
 
 #include "../../src/gtpV2Codec/msgClasses/gtpV2MsgDataTypes.h"
 
@@ -1048,6 +1049,31 @@ struct CONTEXT_REQ_msg{
     NodeIdentifierIeData sgsnIdentifier;
     NodeIdentifierIeData mmeIdentifier;
 };
+struct ps_to_cs_res_Q_msg {
+    gtp_incoming_msg_data_t header;
+    int sv_mme_cp_teid;
+    SrvccCauseIeData srvcc_cause;
+    uint32_t msc_ip;
+    TeidCIeData teid_c;
+    TargetToSourceTransparentContainerIeData target_to_source_transparent_container;
+}
+
+struct ps_to_cs_comp_noti_Q_msg {
+    gtp_incoming_msg_data_t header;
+    int sv_mme_cp_teid;
+    unsigned char IMSI[BINARY_IMSI_LEN];
+    SrvccCauseIeData srvcc_cause; 
+}
+
+struct ps_to_cs_cancel_ack_Q_msg {
+    gtp_incoming_msg_data_t header;
+    int sv_mme_cp_teid;
+    uint8_t cause;
+    
+    bool svFlagsIePresent;
+    SvFlagsIeData sv_flags;
+}
+
 #define GTP_READ_MSG_BUF_SIZE sizeof(gtp_incoming_msg_data_t)
 
 /*************************

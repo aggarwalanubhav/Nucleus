@@ -70,6 +70,7 @@ public:
     ForwardRelocationResponseMsgData forwardRelocationResponseStackData;
     ForwardRelocationRequestMsgData forwardRelocationRequestStackData;
     SrvccPsToCsCancelAcknowledgeMsgData srvccPsToCsCancelAcknowledgeStackData;
+    DeleteBearerCommandMsgData deleteBearerCommandStackData;
 
     bool encodeMessage(GtpV2MessageHeader& msgHeader, MsgBuffer& buffer,
                  void* data_p = NULL);

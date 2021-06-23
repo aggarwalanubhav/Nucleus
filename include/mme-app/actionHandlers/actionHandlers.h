@@ -234,6 +234,11 @@ namespace mme
         static SM::ActStatus handle_detach_failure(SM::ControlBlock& cb);                
 
         /**********************************************
+        * Action handler : handle_fwd_rel_res_from_sgsn
+        ***********************************************/
+        static SM::ActStatus handle_fwd_rel_res_from_sgsn(SM::ControlBlock& cb);                
+
+        /**********************************************
         * Action handler : handle_nas_pdu_parse_failure
         ***********************************************/
         static SM::ActStatus handle_nas_pdu_parse_failure(SM::ControlBlock& cb);                
@@ -242,6 +247,11 @@ namespace mme
         * Action handler : handle_paging_failure
         ***********************************************/
         static SM::ActStatus handle_paging_failure(SM::ControlBlock& cb);                
+
+        /**********************************************
+        * Action handler : handle_ps_to_cs_res
+        ***********************************************/
+        static SM::ActStatus handle_ps_to_cs_res(SM::ControlBlock& cb);                
 
         /**********************************************
         * Action handler : handle_s1_rel_req_during_attach
@@ -334,6 +344,11 @@ namespace mme
         static SM::ActStatus process_del_session_resp(SM::ControlBlock& cb);                
 
         /**********************************************
+        * Action handler : process_delete_bearer_request
+        ***********************************************/
+        static SM::ActStatus process_delete_bearer_request(SM::ControlBlock& cb);                
+
+        /**********************************************
         * Action handler : process_detach_accept_from_ue
         ***********************************************/
         static SM::ActStatus process_detach_accept_from_ue(SM::ControlBlock& cb);                
@@ -352,6 +367,11 @@ namespace mme
         * Action handler : process_esm_info_resp
         ***********************************************/
         static SM::ActStatus process_esm_info_resp(SM::ControlBlock& cb);                
+
+        /**********************************************
+        * Action handler : process_fwd_rel_comp
+        ***********************************************/
+        static SM::ActStatus process_fwd_rel_comp(SM::ControlBlock& cb);                
 
         /**********************************************
         * Action handler : process_ho_cancel_req
@@ -402,6 +422,11 @@ namespace mme
         * Action handler : process_mb_resp_svc_req
         ***********************************************/
         static SM::ActStatus process_mb_resp_svc_req(SM::ControlBlock& cb);                
+
+        /**********************************************
+        * Action handler : process_ps_to_cs_comp
+        ***********************************************/
+        static SM::ActStatus process_ps_to_cs_comp(SM::ControlBlock& cb);                
 
         /**********************************************
         * Action handler : process_pur_resp
@@ -489,6 +514,11 @@ namespace mme
         static SM::ActStatus send_ddn_failure_ind(SM::ControlBlock& cb);                
 
         /**********************************************
+        * Action handler : send_del_bearer_command
+        ***********************************************/
+        static SM::ActStatus send_del_bearer_command(SM::ControlBlock& cb);                
+
+        /**********************************************
         * Action handler : send_delete_bearer_response
         ***********************************************/
         static SM::ActStatus send_delete_bearer_response(SM::ControlBlock& cb);                
@@ -509,9 +539,19 @@ namespace mme
         static SM::ActStatus send_esm_info_req_to_ue(SM::ControlBlock& cb);                
 
         /**********************************************
+        * Action handler : send_fwd_rel_req_to_sgsn
+        ***********************************************/
+        static SM::ActStatus send_fwd_rel_req_to_sgsn(SM::ControlBlock& cb);                
+
+        /**********************************************
         * Action handler : send_ho_cancel_ack_to_src_enb
         ***********************************************/
         static SM::ActStatus send_ho_cancel_ack_to_src_enb(SM::ControlBlock& cb);                
+
+        /**********************************************
+        * Action handler : send_ho_command
+        ***********************************************/
+        static SM::ActStatus send_ho_command(SM::ControlBlock& cb);                
 
         /**********************************************
         * Action handler : send_ho_command_to_src_enb
@@ -569,6 +609,11 @@ namespace mme
         static SM::ActStatus send_paging_req_to_ue(SM::ControlBlock& cb);                
 
         /**********************************************
+        * Action handler : send_ps_to_cs_req_to_msc
+        ***********************************************/
+        static SM::ActStatus send_ps_to_cs_req_to_msc(SM::ControlBlock& cb);                
+
+        /**********************************************
         * Action handler : send_rel_ab_req_to_sgw
         ***********************************************/
         static SM::ActStatus send_rel_ab_req_to_sgw(SM::ControlBlock& cb);                
@@ -612,6 +657,31 @@ namespace mme
         * Action handler : service_request_complete
         ***********************************************/
         static SM::ActStatus service_request_complete(SM::ControlBlock& cb);                
+
+        /**********************************************
+        * Action handler : split_bearer
+        ***********************************************/
+        static SM::ActStatus split_bearer(SM::ControlBlock& cb);                
+
+        /**********************************************
+        * Action handler : srvcc_delete_bearer_proc_complete
+        ***********************************************/
+        static SM::ActStatus srvcc_delete_bearer_proc_complete(SM::ControlBlock& cb);                
+
+        /**********************************************
+        * Action handler : srvcc_handle_ded_deact_cmp_ind
+        ***********************************************/
+        static SM::ActStatus srvcc_handle_ded_deact_cmp_ind(SM::ControlBlock& cb);                
+
+        /**********************************************
+        * Action handler : srvcc_init_ded_bearer_deactivation
+        ***********************************************/
+        static SM::ActStatus srvcc_init_ded_bearer_deactivation(SM::ControlBlock& cb);                
+
+        /**********************************************
+        * Action handler : srvcc_send_delete_bearer_response
+        ***********************************************/
+        static SM::ActStatus srvcc_send_delete_bearer_response(SM::ControlBlock& cb);                
 
         /**********************************************
         * Action handler : svc_req_state_guard_timeout

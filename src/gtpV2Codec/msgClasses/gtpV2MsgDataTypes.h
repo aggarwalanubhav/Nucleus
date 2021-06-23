@@ -1079,6 +1079,27 @@ typedef struct
     SvFlagsIeData svFlags;
 }SrvccPsToCsCancelAcknowledgeMsgData;
 
+typedef struct
+{
+    bool userLocationInformationIePresent;   
+    bool uliTimestampIePresent;   
+    bool ueTimeZoneIePresent;   
+    bool mmeS4SgsnsOverloadControlInformationIePresent;   
+    bool sgwsOverloadControlInformationIePresent;   
+    bool senderFTeidForControlPlaneIePresent;   
+    bool secondaryRatUsageDataReportIePresent;   
+
+
+    BearerContextsInDeleteBearerCommandData bearerContexts;
+    UliIeData userLocationInformation;
+    UliTimestampIeData uliTimestamp;
+    UeTimeZoneIeData ueTimeZone;
+    MmeS4SgsnsOverloadControlInformationInDeleteBearerCommandData mmeS4SgsnsOverloadControlInformation;
+    SgwsOverloadControlInformationInDeleteBearerCommandData sgwsOverloadControlInformation;
+    FTeidIeData senderFTeidForControlPlane;
+    SecondaryRatUsageDataReportIeData secondaryRatUsageDataReport;
+}DeleteBearerCommandMsgData;
+
 
 //Ie Type Constants
 static const  Uint8  CreateSessionRequestMsgType = 32;    
@@ -1118,6 +1139,7 @@ static const  Uint8  ContextResponseMsgType = 131;
 static const  Uint8  ForwardRelocationResponseMsgType = 134;    
 static const  Uint8  ForwardRelocationRequestMsgType = 133;    
 static const  Uint8  SrvccPsToCsCancelAcknowledgeMsgType = 30;    
+static const  Uint8  DeleteBearerCommandMsgType = 66;    
 
 
 #endif 

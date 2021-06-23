@@ -164,6 +164,7 @@ gtpV2CodecOBJS := $(addprefix $(gtpV2CodecOBJDIR), \
 	msgClasses/forwardRelocationResponseMsg.o \
 	msgClasses/forwardRelocationRequestMsg.o \
 	msgClasses/srvccPsToCsCancelAcknowledgeMsg.o \
+	msgClasses/deleteBearerCommandMsg.o \
 	ieClasses/bearerContextsToBeModifiedInModifyBearerRequest.o \
 	ieClasses/bearerContextIe.o \
 	ieClasses/manual/gtpV2GroupedIe.o \
@@ -239,6 +240,9 @@ gtpV2CodecOBJS := $(addprefix $(gtpV2CodecOBJDIR), \
 	ieClasses/remoteUeContextConnectedInContextResponse.o \
 	ieClasses/bearerContextsInContextResponse.o \
 	ieClasses/listOfRabsInForwardRelocationResponse.o \
+	ieClasses/bearerContextsInDeleteBearerCommand.o \
+	ieClasses/mmeS4SgsnsOverloadControlInformationInDeleteBearerCommand.o \
+	ieClasses/sgwsOverloadControlInformationInDeleteBearerCommand.o \
 	ieClasses/manual/dataTypeCodecUtils_manual.o \
 	gtpV2StackWrappers.o )
 all :  $(gtpV2CodecLIB)

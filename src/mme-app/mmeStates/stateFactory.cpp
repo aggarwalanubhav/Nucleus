@@ -25,6 +25,7 @@
 #include "mmeStates/serviceRequestStates.h"
 #include "mmeStates/tauStates.h"
 #include "mmeStates/s1HandoverStates.h"
+#include "mmeStates/srvccHoProcedureStates.h"
 #include "mmeStates/erabModIndicationStates.h"
 #include "mmeStates/createBearerProcedureStates.h"
 #include "mmeStates/dedBearerActProcedureStates.h"
@@ -112,6 +113,7 @@ void StateFactory::initialize()
 	S1HoWfTauRequest::Instance()->initialize();
 	S1ReleaseStart::Instance()->initialize();
 	S1ReleaseWfReleaseAccessBearerResp::Instance()->initialize();
+	S1ReleaseWfSrvccResourceRelease ::Instance()->initialize();
 	S1ReleaseWfUeCtxtReleaseComp::Instance()->initialize();
 	ServiceRequestStart::Instance()->initialize();
 	ServiceRequestState::Instance()->initialize();
@@ -121,6 +123,14 @@ void StateFactory::initialize()
 	ServiceRequestWfInitCtxtResp::Instance()->initialize();
 	ServiceRequestWfMbResp::Instance()->initialize();
 	ServiceRequestWfSecCmp::Instance()->initialize();
+	SrvccDelDedBearer::Instance()->initialize();
+	SrvccDeleteBearerStart::Instance()->initialize();
+	SrvccDeleteBearerWfDeactComplete::Instance()->initialize();
+	SrvccHoStart::Instance()->initialize();
+	SrvccHoWfDwdRelComp::Instance()->initialize();
+	SrvccHoWfFwdRelResp::Instance()->initialize();
+	SrvccHoWfPsToCsComp::Instance()->initialize();
+	SrvccHoWfPsToCsResp::Instance()->initialize();
 	TauStart::Instance()->initialize();
 
         populateEventStringMap();

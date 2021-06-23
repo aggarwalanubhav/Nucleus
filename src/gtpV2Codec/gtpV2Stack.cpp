@@ -53,6 +53,7 @@
 #include "msgClasses/forwardRelocationResponseMsg.h"
 #include "msgClasses/forwardRelocationRequestMsg.h"
 #include "msgClasses/srvccPsToCsCancelAcknowledgeMsg.h"
+#include "msgClasses/deleteBearerCommandMsg.h"
 
 thread_local cmn::utils::Debug errorStream;
 
@@ -897,6 +898,28 @@ GtpV2Stack::encodeMessage (GtpV2MessageHeader & msgHeader,
                 SrvccPsToCsCancelAcknowledgeMsg & >(msg).
                 encodeSrvccPsToCsCancelAcknowledgeMsg (buffer,
                             srvccPsToCsCancelAcknowledgeStackData);
+            }
+            break;
+        }
+        case DeleteBearerCommandMsgType:
+        {
+            if (data_p != NULL)
+            {
+                rc =
+               dynamic_cast<
+               DeleteBearerCommandMsg & >(msg).
+               encodeDeleteBearerCommandMsg(buffer,
+    			     *((DeleteBearerCommandMsgData *)
+        			     data_p));
+            }
+            else
+            { 
+                // Application has filled the data structure provided by the stack
+                rc = 
+                dynamic_cast<
+                DeleteBearerCommandMsg & >(msg).
+                encodeDeleteBearerCommandMsg (buffer,
+                            deleteBearerCommandStackData);
             }
             break;
         }
@@ -1923,6 +1946,32 @@ GtpV2Stack::decodeMessage (GtpV2MessageHeader& msgHeader,
             }
             break;
         }
+        case DeleteBearerCommandMsgType:
+        {
+            if (data_p != NULL)
+            {
+                rc =
+                dynamic_cast<
+                DeleteBearerCommandMsg & >(msg).
+                decodeDeleteBearerCommandMsg(buffer,
+                            *(DeleteBearerCommandMsgData*)
+                             data_p, msgDataLength);
+            }
+            else
+            { 
+                // Application wants to use the data structure provided by the stack
+                // let us first clear any data present in the internal data structure
+                memset (&deleteBearerCommandStackData, 0,
+                sizeof (DeleteBearerCommandMsgData));
+                rc =
+                dynamic_cast<
+                DeleteBearerCommandMsg & >(msg).
+                decodeDeleteBearerCommandMsg(buffer,
+                            deleteBearerCommandStackData,
+                            msgDataLength);
+            }
+            break;
+        }
     }
     return rc;
 }
@@ -2712,6 +2761,27 @@ GtpV2Stack::display_v(Uint8 msgType, Debug& stream, void* data_p)
             SrvccPsToCsCancelAcknowledgeMsg & >(msg).
             displaySrvccPsToCsCancelAcknowledgeMsgData_v
                         (srvccPsToCsCancelAcknowledgeStackData, stream);
+            }
+           break;
+        }
+        case DeleteBearerCommandMsgType:
+        {
+            stream.add ((char *)"Message: DeleteBearerCommandMsg");
+            stream.endOfLine ();
+            if (data_p != NULL)
+            {
+            dynamic_cast<
+            DeleteBearerCommandMsg & >(msg).
+            displayDeleteBearerCommandMsgData_v (*
+                        ((DeleteBearerCommandMsgData*) data_p), stream);
+            }
+            else
+            {
+            // Application wants to use the data structure provided by the stack
+            dynamic_cast<
+            DeleteBearerCommandMsg & >(msg).
+            displayDeleteBearerCommandMsgData_v
+                        (deleteBearerCommandStackData, stream);
             }
            break;
         }

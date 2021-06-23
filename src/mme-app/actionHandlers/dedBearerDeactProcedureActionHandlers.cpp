@@ -328,3 +328,11 @@ ActStatus ActionHandlers::send_erab_rel_cmd_and_deact_eps_br_ctxt_req(ControlBlo
     return actStatus;
 }
 
+/***************************************
+* Action handler : process_delete_bearer_request
+***************************************/
+ActStatus ActionHandlers::process_delete_bearer_request(ControlBlock& cb)
+{
+    return ActStatus::PROCEED;
+}
+

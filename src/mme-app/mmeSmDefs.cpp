@@ -44,6 +44,7 @@ void populateEventStringMap()
     smUtil->addEventToStrEntry(DEFAULT_EVENT,"DEFAULT_EVENT");      
     smUtil->addEventToStrEntry(DEL_SESSION_RESP_FROM_SGW,"DEL_SESSION_RESP_FROM_SGW");      
     smUtil->addEventToStrEntry(DELETE_BEARER_REQ_FROM_GW,"DELETE_BEARER_REQ_FROM_GW");      
+    smUtil->addEventToStrEntry(DELETE_BEARER_REQUEST_FROM_GW,"DELETE_BEARER_REQUEST_FROM_GW");      
     smUtil->addEventToStrEntry(DETACH_ACCEPT_FROM_UE,"DETACH_ACCEPT_FROM_UE");      
     smUtil->addEventToStrEntry(DETACH_COMPLETE,"DETACH_COMPLETE");      
     smUtil->addEventToStrEntry(DETACH_FAILURE,"DETACH_FAILURE");      
@@ -56,6 +57,8 @@ void populateEventStringMap()
     smUtil->addEventToStrEntry(ESM_INFO_NOT_REQUIRED,"ESM_INFO_NOT_REQUIRED");      
     smUtil->addEventToStrEntry(ESM_INFO_REQUIRED,"ESM_INFO_REQUIRED");      
     smUtil->addEventToStrEntry(ESM_INFO_RESP_FROM_UE,"ESM_INFO_RESP_FROM_UE");      
+    smUtil->addEventToStrEntry(FWD_REL_COMP_RECVD,"FWD_REL_COMP_RECVD");      
+    smUtil->addEventToStrEntry(FWD_REL_RES,"FWD_REL_RES");      
     smUtil->addEventToStrEntry(GW_CP_REQ_INIT_PAGING,"GW_CP_REQ_INIT_PAGING");      
     smUtil->addEventToStrEntry(GW_INIT_DED_BEARER_AND_SESSION_SETUP,"GW_INIT_DED_BEARER_AND_SESSION_SETUP");      
     smUtil->addEventToStrEntry(HO_CANCEL_REQ_FROM_SRC_ENB,"HO_CANCEL_REQ_FROM_SRC_ENB");      
@@ -74,11 +77,15 @@ void populateEventStringMap()
     smUtil->addEventToStrEntry(PAGING_COMPLETE,"PAGING_COMPLETE");      
     smUtil->addEventToStrEntry(PAGING_FAILURE,"PAGING_FAILURE");      
     smUtil->addEventToStrEntry(PGW_INIT_DETACH,"PGW_INIT_DETACH");      
+    smUtil->addEventToStrEntry(PS_TO_CS_COMP_RCVD,"PS_TO_CS_COMP_RCVD");      
+    smUtil->addEventToStrEntry(PS_TO_CS_RES,"PS_TO_CS_RES");      
     smUtil->addEventToStrEntry(PURGE_RESP_FROM_HSS,"PURGE_RESP_FROM_HSS");      
     smUtil->addEventToStrEntry(REL_AB_RESP_FROM_SGW,"REL_AB_RESP_FROM_SGW");      
+    smUtil->addEventToStrEntry(release_start,"release_start");      
     smUtil->addEventToStrEntry(S1_REL_REQ_FROM_UE,"S1_REL_REQ_FROM_UE");      
     smUtil->addEventToStrEntry(SEC_MODE_RESP_FROM_UE,"SEC_MODE_RESP_FROM_UE");      
     smUtil->addEventToStrEntry(SERVICE_REQUEST_FROM_UE,"SERVICE_REQUEST_FROM_UE");      
+    smUtil->addEventToStrEntry(SRVCC_HO_START,"SRVCC_HO_START");      
     smUtil->addEventToStrEntry(START_DED_DEACTIVATION,"START_DED_DEACTIVATION");      
     smUtil->addEventToStrEntry(START_UE_DETACH,"START_UE_DETACH");      
     smUtil->addEventToStrEntry(STATE_GUARD_TIMEOUT,"STATE_GUARD_TIMEOUT");      

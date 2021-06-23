@@ -139,5 +139,45 @@
 			S1ReleaseWfUeCtxtReleaseComp();  
 	};
 	
+	class S1ReleaseWfSrvccResourceRelease  : public SM::State
+	{
+		public:
+			/******************************************
+			* Instance 
+			*    Creates static instance for the state
+			*******************************************/
+			static S1ReleaseWfSrvccResourceRelease * Instance();
+
+			/****************************************
+			* S1ReleaseWfSrvccResourceRelease 
+			*    Destructor
+			****************************************/
+			~S1ReleaseWfSrvccResourceRelease ();			
+			
+			/******************************************
+			* initialize
+			*  Initializes action handlers for the state
+			* and next state
+			******************************************/
+			void initialize();
+
+			/*****************************************
+			* returns stateId
+			*****************************************/
+			uint16_t getStateId() const;
+
+			/*****************************************
+			* returns stateName
+			*****************************************/
+			const char* getStateName() const;
+
+		protected:
+			/****************************************
+			* S1ReleaseWfSrvccResourceRelease 
+			*    Protected constructor
+			****************************************/
+			S1ReleaseWfSrvccResourceRelease ();  
+	};
+	
 };
 #endif // __S1_RELEASE__
