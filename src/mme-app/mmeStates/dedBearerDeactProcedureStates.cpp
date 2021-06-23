@@ -294,3 +294,70 @@ const char* DedDeactWfBearerTearup::getStateName()const
 {
 	return "ded_deact_wf_bearer_tearup";
 }
+
+/******************************************************************************
+* Constructor
+******************************************************************************/
+SrvccDelDedBearer::SrvccDelDedBearer():State()
+{
+        stateGuardTimeoutDuration_m = defaultStateGuardTimerDuration_c;
+        stateEntryAction = &MmeStatesUtils::on_state_entry;
+        stateExitAction = &MmeStatesUtils::on_state_exit;
+        eventValidator = &MmeStatesUtils::validate_event;
+		
+}
+
+/******************************************************************************
+* Destructor
+******************************************************************************/
+SrvccDelDedBearer::~SrvccDelDedBearer()
+{
+}
+
+/******************************************************************************
+* creates and returns static instance
+******************************************************************************/
+SrvccDelDedBearer* SrvccDelDedBearer::Instance()
+{
+        static SrvccDelDedBearer state;
+        return &state;
+}
+
+/******************************************************************************
+* initializes eventToActionsMap
+******************************************************************************/
+void SrvccDelDedBearer::initialize()
+{
+        {
+                ActionTable actionTable;
+                actionTable.addAction(&ActionHandlers::process_delete_bearer_request);
+                eventToActionsMap[DELETE_BEARER_REQUEST_FROM_GW] = actionTable;
+        }
+        {
+                ActionTable actionTable;
+                actionTable.addAction(&ActionHandlers::handle_state_guard_timeouts);
+                eventToActionsMap[STATE_GUARD_TIMEOUT] = actionTable;
+        }
+        {
+                ActionTable actionTable;
+                actionTable.addAction(&ActionHandlers::del_session_req);
+                actionTable.addAction(&ActionHandlers::abort_s1_release);
+                eventToActionsMap[ABORT_EVENT] = actionTable;
+        }
+}
+
+/******************************************************************************
+* returns stateId
+******************************************************************************/
+uint16_t SrvccDelDedBearer::getStateId()const
+{
+	return srvcc_del_ded_bearer;
+}
+
+/******************************************************************************
+* returns stateName
+******************************************************************************/
+const char* SrvccDelDedBearer::getStateName()const
+{
+	return "srvcc_del_ded_bearer";
+}

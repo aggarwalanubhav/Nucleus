@@ -179,5 +179,45 @@
 			DedDeactWfBearerTearup();  
 	};
 	
+	class SrvccDelDedBearer : public SM::State
+	{
+		public:
+			/******************************************
+			* Instance 
+			*    Creates static instance for the state
+			*******************************************/
+			static SrvccDelDedBearer* Instance();
+
+			/****************************************
+			* SrvccDelDedBearer
+			*    Destructor
+			****************************************/
+			~SrvccDelDedBearer();			
+			
+			/******************************************
+			* initialize
+			*  Initializes action handlers for the state
+			* and next state
+			******************************************/
+			void initialize();
+
+			/*****************************************
+			* returns stateId
+			*****************************************/
+			uint16_t getStateId() const;
+
+			/*****************************************
+			* returns stateName
+			*****************************************/
+			const char* getStateName() const;
+
+		protected:
+			/****************************************
+			* SrvccDelDedBearer
+			*    Protected constructor
+			****************************************/
+			SrvccDelDedBearer();  
+	};
+	
 };
 #endif // __DED_BEARER_DEACT_PROCEDURE__
