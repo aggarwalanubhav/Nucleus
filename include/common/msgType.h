@@ -100,6 +100,22 @@ typedef enum msg_type_t {
     deactivate_eps_bearer_context_request,
     deactivate_eps_bearer_context_accept,
     enb_status_msg,
+    forward_access_context_acknowledge,
+    forward_access_context_notification,
+    detach_notification,
+    relocation_cancel_request,
+    relocation_cancel_response,
+    identification_request,
+    identification_response,
+    context_request,
+    context_response,
+    ps_to_cs_request,
+    ps_to_cs_response,
+    ps_to_cs_cancel_acknowledge,
+    ps_to_cs_complete_notification,
+    ps_to_cs_cancel_notification,
+    ps_to_cs_complete_acknowledge,
+    
     max_msg_type
 } msg_type_t;
 
@@ -999,6 +1015,7 @@ struct db_req_Q_msg {
 struct FWD_ACCESS_CONTEXT_ACK_msg
 {
     gtp_incoming_msg_data_t header;
+    int s11_mme_cp_teid;
     bool causeIePresent;   
 
     CauseIeData cause;
@@ -1007,6 +1024,7 @@ struct FWD_ACCESS_CONTEXT_ACK_msg
 struct REL_CAN_RES_msg
 {
     gtp_incoming_msg_data_t header;
+    int s11_mme_cp_teid;
     bool causeIePresent;   
 
     CauseIeData cause;
@@ -1014,6 +1032,7 @@ struct REL_CAN_RES_msg
 
 struct IDENTIFICATION_REQ_msg{
     gtp_incoming_msg_data_t header;
+    int s11_mme_cp_teid;
     bool gutiIePresent;   
     bool completeAttachRequestMessageIePresent;   
     bool pTmsiIePresent;   
@@ -1036,6 +1055,7 @@ struct IDENTIFICATION_REQ_msg{
 
 struct CONTEXT_REQ_msg{
     gtp_incoming_msg_data_t header;
+    int s11_mme_cp_teid;
     bool imsiIePresent;   
     bool gutiIePresent;   
     bool routeingAreaIdentityIePresent;   
@@ -1073,6 +1093,7 @@ struct CONTEXT_REQ_msg{
 };
 struct ps_to_cs_res_Q_msg {
     gtp_incoming_msg_data_t header;
+    int s11_mme_cp_teid;
     int sv_mme_cp_teid;
     SrvccCauseIeData srvcc_cause;
     uint32_t msc_ip;
@@ -1082,6 +1103,7 @@ struct ps_to_cs_res_Q_msg {
 
 struct ps_to_cs_comp_noti_Q_msg {
     gtp_incoming_msg_data_t header;
+    int s11_mme_cp_teid;
     int sv_mme_cp_teid;
     unsigned char IMSI[BINARY_IMSI_LEN];
     SrvccCauseIeData srvcc_cause; 
@@ -1089,12 +1111,53 @@ struct ps_to_cs_comp_noti_Q_msg {
 
 struct ps_to_cs_cancel_ack_Q_msg {
     gtp_incoming_msg_data_t header;
+    int s11_mme_cp_teid;
     int sv_mme_cp_teid;
     uint8_t cause;
     
     bool svFlagsIePresent;
     SvFlagsIeData sv_flags;
 }
+struct forward_rel_response_msg
+{
+    gtp_incoming_msg_data_t header;
+    int s11_mme_cp_teid;
+    bool senderFTeidForControlPlaneIePresent;   
+    bool indicationFlagsIePresent;   
+    bool s1ApCauseIePresent;   
+    bool ranapCauseIePresent;   
+    bool sgwNodeNameIePresent;   
+    bool eUtranTranparentContainerIePresent;   
+    bool utranTranparentContainerIePresent;   
+    bool mmeS4SgsnLdnIePresent;   
+    bool sgsnNodeNameIePresent;   
+    bool mmeNodeNameIePresent;   
+    bool sgsnNumberIePresent;   
+    bool sgsnIdentifierIePresent;   
+    bool mmeIdentifierIePresent;   
+
+
+    CauseIeData cause;
+    FTeidIeData senderFTeidForControlPlane;
+    IndicationIeData indicationFlags;
+
+    Uint16 listOfSetUpBearersCount;
+    ListOfSetUpBearersInForwardRelocationResponseData listOfSetUpBearers[11];
+
+    Uint16 listOfRabsCount;
+    ListOfRabsInForwardRelocationResponseData listOfRabs[11];
+    FCauseIeData s1ApCause;
+    FCauseIeData ranapCause;
+    FqdnIeData sgwNodeName;
+    FContainerIeData eUtranTranparentContainer;
+    FContainerIeData utranTranparentContainer;
+    LocalDistinguishedNameIeData mmeS4SgsnLdn;
+    FqdnIeData sgsnNodeName;
+    FqdnIeData mmeNodeName;
+    NodeNumberIeData sgsnNumber;
+    NodeIdentifierIeData sgsnIdentifier;
+    NodeIdentifierIeData mmeIdentifier;
+};
 
 #define GTP_READ_MSG_BUF_SIZE sizeof(gtp_incoming_msg_data_t)
 
