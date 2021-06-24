@@ -18,10 +18,8 @@ typedef enum TipcServiceInstance
 	s1apAppInstanceNum_c,
 	s6AppInstanceNum_c,
 	s11AppInstanceNum_c,
-	s3AppInstanceNum_c,
 	svAppInstanceNum_c,
-	
-
+	s3AppInstanceNum_c,
 	maxInstanceNum_c
 
 } TipcInstanceTypes;

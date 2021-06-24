@@ -55,6 +55,18 @@ class Tai
 		TAI tai_m;
 };
 
+class Lai
+{
+	public:
+		Lai();
+		Lai( const S_LAI& lai_i );
+		~Lai();
+		void operator = ( const Lai& lai_i );
+		bool operator== (const Lai& lai_i) const;
+	public:
+		S_LAI lai_m;
+};
+
 class Cgi
 {
 	public:

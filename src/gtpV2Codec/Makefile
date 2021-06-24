@@ -229,20 +229,20 @@ gtpV2CodecOBJS := $(addprefix $(gtpV2CodecOBJDIR), \
 	ieClasses/sgwsOverloadControlInformationInDownlinkDataNotification.o \
 	ieClasses/mmeSgsnUeScefPdnConnectionsInForwardRelocationRequest.o \
 	ieClasses/scefPdnConnectionIe.o \
-	ieClasses/listOfSetUpBearersInForwardRelocationResponse.o \
 	ieClasses/listOfSetUpRabsInForwardRelocationResponse.o \
 	ieClasses/listOfSetUpPfcsInForwardRelocationResponse.o \
-	ieClasses/mmeSgsnAmfUeEpsPdnConnectionsInForwardRelocationRequest.o \
-	ieClasses/pdnConnectionIe.o \
 	ieClasses/remoteUeContextConnectedInForwardRelocationRequest.o \
 	ieClasses/bearerContextsInForwardRelocationRequest.o \
-	ieClasses/mmeSgsnAmfUeEpsPdnConnectionsInContextResponse.o \
 	ieClasses/remoteUeContextConnectedInContextResponse.o \
 	ieClasses/bearerContextsInContextResponse.o \
+	ieClasses/listOfSetUpBearersInForwardRelocationResponse.o \
 	ieClasses/listOfRabsInForwardRelocationResponse.o \
 	ieClasses/bearerContextsInDeleteBearerCommand.o \
 	ieClasses/mmeS4SgsnsOverloadControlInformationInDeleteBearerCommand.o \
 	ieClasses/sgwsOverloadControlInformationInDeleteBearerCommand.o \
+	ieClasses/mmeSgsnAmfUeEpsPdnConnectionsInForwardRelocationRequest.o \
+	ieClasses/pdnConnectionIe.o \
+	ieClasses/mmeSgsnAmfUeEpsPdnConnectionsInContextResponse.o \
 	ieClasses/manual/dataTypeCodecUtils_manual.o \
 	gtpV2StackWrappers.o )
 all :  $(gtpV2CodecLIB)

@@ -1101,7 +1101,7 @@ struct ps_to_cs_res_Q_msg {
     uint32_t msc_ip;
     TeidCIeData teid_c;
     TargetToSourceTransparentContainerIeData target_to_source_transparent_container;
-}
+};
 
 struct ps_to_cs_comp_noti_Q_msg {
     gtp_incoming_msg_data_t header;
@@ -1109,7 +1109,7 @@ struct ps_to_cs_comp_noti_Q_msg {
     int sv_mme_cp_teid;
     unsigned char IMSI[BINARY_IMSI_LEN];
     SrvccCauseIeData srvcc_cause; 
-}
+};
 
 struct ps_to_cs_cancel_ack_Q_msg {
     gtp_incoming_msg_data_t header;
@@ -1119,7 +1119,7 @@ struct ps_to_cs_cancel_ack_Q_msg {
     
     bool svFlagsIePresent;
     SvFlagsIeData sv_flags;
-}
+};
 struct forward_rel_response_msg
 {
     gtp_incoming_msg_data_t header;
