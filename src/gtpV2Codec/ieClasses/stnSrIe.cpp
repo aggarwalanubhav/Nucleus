@@ -32,14 +32,14 @@ bool StnSrIe::encodeStnSrIe(MsgBuffer &buffer, StnSrIeData const &data)
         errorStream.add((char *)"Encoding of NANPI failed\n");
         return false;
     }
-    if(!(buffer.writeBits(data.Digit, 4)))
+    if(!(buffer.writeBits(data.Digit2, 4)))
     {
-        errorStream.add((char *)"Encoding of Digit failed\n");
+        errorStream.add((char *)"Encoding of Digit2 failed\n");
         return false;
     }
-    if(!(buffer.writeBits(data.Digit, 4)))
+    if(!(buffer.writeBits(data.Digit1, 4)))
     {
-        errorStream.add((char *)"Encoding of Digit failed\n");
+        errorStream.add((char *)"Encoding of Digit1 failed\n");
         return false;
     }
 
@@ -58,18 +58,18 @@ bool StnSrIe::decodeStnSrIe(MsgBuffer &buffer, StnSrIeData &data, Uint16 length)
         errorStream.add((char *)"Attempt to read beyond IE boundary: NANPI\n");
         return false;
     }
-    data.Digit = buffer.readBits(4);
+    data.Digit2 = buffer.readBits(4);
     // confirm that we are not reading beyond the IE boundary
     if (buffer.getCurrentIndex() > ieBoundary)
     {
-        errorStream.add((char *)"Attempt to read beyond IE boundary: Digit\n");
+        errorStream.add((char *)"Attempt to read beyond IE boundary: Digit2\n");
         return false;
     }
-    data.Digit = buffer.readBits(4);
+    data.Digit1 = buffer.readBits(4);
     // confirm that we are not reading beyond the IE boundary
     if (buffer.getCurrentIndex() > ieBoundary)
     {
-        errorStream.add((char *)"Attempt to read beyond IE boundary: Digit\n");
+        errorStream.add((char *)"Attempt to read beyond IE boundary: Digit1\n");
         return false;
     }
 
@@ -97,12 +97,12 @@ void StnSrIe::displayStnSrIe_v(StnSrIeData const &data, Debug &stream)
     stream.add(data.NANPI);
     stream.endOfLine();
   
-    stream.add( (char *)"Digit: "); 
-    stream.add((Uint8)data.Digit);
+    stream.add( (char *)"Digit2: "); 
+    stream.add((Uint8)data.Digit2);
     stream.endOfLine();
   
-    stream.add( (char *)"Digit: "); 
-    stream.add((Uint8)data.Digit);
+    stream.add( (char *)"Digit1: "); 
+    stream.add((Uint8)data.Digit1);
     stream.endOfLine();
     stream.decrIndent();
     stream.decrIndent();

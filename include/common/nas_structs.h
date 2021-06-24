@@ -203,6 +203,11 @@ struct TAI {
 	short tac; /*2 bytes. 36.413: 9.2.3.7*/
 };
 
+struct LAI {
+	struct PLMN plmn_id;
+	short lac; /*2 bytes. 36.413: 9.2.3.7*/
+};
+
 /*36.413 - 9.2.1.38*/
 struct CGI {
 	struct PLMN plmn_id;
@@ -365,6 +370,45 @@ typedef struct eps_network_feature_support {
     uint8_t iwkn26:1;
     uint8_t bearers15:1;
 }eps_network_feature_support;
+
+/*Mobile Station Classmark 2*/
+/*Refer spec 24.008 v 15.6.0 sec:10.5.1.6*/
+typedef struct Mobile_Station_Classmark_2 {
+    //Octet 3
+    uint8_t spare1:1;
+    uint8_t rev_lvl:2;
+    uint8_t es_ind:1;
+    uint8_t a5_1_alg_sup:1;
+    uint8_t rf_pwr_cap:3;
+
+    //Octet 4
+    uint8_t spare2:1;
+    uint8_t ps_cap:1;
+    uint8_t ss_scrn_ind:2;
+    uint8_t sm_cap:1;
+    uint8_t vbs_noti:1;
+    uint8_t vgcs_noti:1;
+    uint8_t fc:1;
+
+    //Octet 5
+    uint8_t cm3:1;
+    uint8_t spare3:1;
+    uint8_t lcsva_cap:1;
+    uint8_t ucs2:1;
+    uint8_t solsa:1;
+    uint8_t cmsp:1;
+    uint8_t a5_3_alg_sup:1;
+    uint8_t a5_2_alg_sup:1;
+}Mobile_Station_Classmark_2;
+
+/*Voice domain preference and UE's usage setting*/
+/*Refer spec 24.008 v 15.6.0 sec:10.5.5.28*/
+typedef struct Voice_Domain_Preference {
+    //Octet 3
+    uint8_t spare:5;
+    uint8_t ue_usg_setting:1;
+    uint8_t voice_dom_pref:2;
+}Voice_Domain_Preference;
 
 /*24.008 - 10.5.6.1
 APN name can be in range of min 3 octets to max 102 octets

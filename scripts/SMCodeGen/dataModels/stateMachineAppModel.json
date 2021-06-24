@@ -1612,7 +1612,7 @@
                                 "Name":"PS_TO_CS_RES",
                                 "Actions":[
                                     "HANDLE_PS_TO_CS_RES",
-                                    "SEND_HO_COMMAND"
+                                    "SEND_SRVCC_HO_COMMAND"
                                 ],
                                 "NextState":"srvcc_ho_wf_ps_to_cs_comp"
                             }

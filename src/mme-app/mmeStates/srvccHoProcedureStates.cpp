@@ -176,7 +176,7 @@ void SrvccHoWfPsToCsResp::initialize()
         {
                 ActionTable actionTable;
                 actionTable.addAction(&ActionHandlers::handle_ps_to_cs_res);
-                actionTable.addAction(&ActionHandlers::send_ho_command);
+                actionTable.addAction(&ActionHandlers::send_srvcc_ho_command);
                 actionTable.setNextState(SrvccHoWfPsToCsComp::Instance());
                 eventToActionsMap[PS_TO_CS_RES] = actionTable;
         }
