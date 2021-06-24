@@ -73,7 +73,7 @@ Lai::Lai()
 	 memset( &lai_m, 0, sizeof( lai_m ));
 }
 
-Lai::Lai( const LAI& lai_i )
+Lai::Lai( const S_LAI& lai_i )
 {
 	memset( &lai_m, 0, sizeof( lai_m ));
 	memcpy( &lai_m, &lai_i, sizeof( lai_i ));
@@ -90,7 +90,7 @@ void Lai::operator = ( const Lai& lai_i )
 
 bool Lai::operator==(const Lai &lai_i) const
 {
-    return (memcmp(&lai_m, &lai_i.lai_m, sizeof(struct LAI)) == 0);
+    return (memcmp(&lai_m, &lai_i.lai_m, sizeof(struct S_LAI)) == 0);
 }
 
 

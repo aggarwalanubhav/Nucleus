@@ -203,7 +203,7 @@ struct TAI {
 	short tac; /*2 bytes. 36.413: 9.2.3.7*/
 };
 
-struct LAI {
+struct S_LAI {
 	struct PLMN plmn_id;
 	short lac; /*2 bytes. 36.413: 9.2.3.7*/
 };

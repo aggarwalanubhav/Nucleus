@@ -59,12 +59,12 @@ class Lai
 {
 	public:
 		Lai();
-		Lai( const LAI& lai_i );
+		Lai( const S_LAI& lai_i );
 		~Lai();
 		void operator = ( const Lai& lai_i );
 		bool operator== (const Lai& lai_i) const;
 	public:
-		LAI lai_m;
+		S_LAI lai_m;
 };
 
 class Cgi
