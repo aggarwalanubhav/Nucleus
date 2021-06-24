@@ -100,6 +100,8 @@ typedef enum msg_type_t {
     deactivate_eps_bearer_context_request,
     deactivate_eps_bearer_context_accept,
     enb_status_msg,
+    forward_relocation_request,
+    forward_relocation_response,
     forward_access_context_acknowledge,
     forward_access_context_notification,
     detach_notification,

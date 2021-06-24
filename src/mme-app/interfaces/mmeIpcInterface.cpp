@@ -15,6 +15,8 @@
 #include <msgHandlers/gtpMsgHandler.h>
 #include <msgHandlers/s1MsgHandler.h>
 #include <msgHandlers/s6MsgHandler.h>
+#include <msgHandlers/s3MsgHandler.h>
+#include <msgHandlers/svMsgHandler.h>
 
 extern "C" {
 	#include "log.h"
@@ -110,6 +112,12 @@ void MmeIpcInterface::handleIpcMsg(cmn::IpcEMsgUnqPtr eMsg)
 		break;
 	case TipcInstanceTypes::s6AppInstanceNum_c:
 		S6MsgHandler::Instance()->handleS6Message_v(std::move(eMsg));
+		break;
+	case TipcInstanceTypes::s3AppInstanceNum_c:
+		S3MsgHandler::Instance()->handleGtpMessage_v(std::move(eMsg));
+		break;
+	case TipcInstanceTypes::svAppInstanceNum_c:
+		SvMsgHandler::Instance()->handleGtpMessage_v(std::move(eMsg));
 		break;
 	default:
 		log_msg(LOG_INFO, "IPC Message from unsupported instance");
