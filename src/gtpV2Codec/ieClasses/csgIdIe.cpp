@@ -27,14 +27,12 @@ CsgIdIe::~CsgIdIe() {
 
 bool CsgIdIe::encodeCsgIdIe(MsgBuffer &buffer, CsgIdIeData const &data)
 {
-    buffer.skipBits(4);
-
-    if(!(buffer.writeBits(data.csgId, 3)))
+    if (!(data.csgId<= 0x07FFFFFF))
     {
-        errorStream.add((char *)"Encoding of csgId failed\n");
-        return false;
+        errorStream.add((char *)"Data validation failure: csgId\n");
+        return false; 
     }
-    if(!(buffer.writeBits(data.csgId, 3)))
+    if (!(buffer.writeUint32(data.csgId)))
     {
         errorStream.add((char *)"Encoding of csgId failed\n");
         return false;
@@ -48,26 +46,17 @@ bool CsgIdIe::decodeCsgIdIe(MsgBuffer &buffer, CsgIdIeData &data, Uint16 length)
     // TODO optimize the length checks
     
     Uint16 ieBoundary = buffer.getCurrentIndex() + length;
-    buffer.skipBits(4);
-    if (buffer.getCurrentIndex() > ieBoundary)
-    {
-        errorStream.add((char *)"Attempt to read beyond IE boundary: \n");
-        return false;
-    }
 
-    data.csgId = buffer.readBits(3);
-    // confirm that we are not reading beyond the IE boundary
+    buffer.readUint32(data.csgId);
     if (buffer.getCurrentIndex() > ieBoundary)
     {
         errorStream.add((char *)"Attempt to read beyond IE boundary: csgId\n");
         return false;
     }
-    data.csgId = buffer.readBits(3);
-    // confirm that we are not reading beyond the IE boundary
-    if (buffer.getCurrentIndex() > ieBoundary)
+    if (!(data.csgId<= 0x07FFFFFF))
     {
-        errorStream.add((char *)"Attempt to read beyond IE boundary: csgId\n");
-        return false;
+        errorStream.add((char *)"Data validation failure : csgId\n");
+        return false; //TODO need to add validations
     }
 
     // The IE is decoded now. The buffer index should be pointing to the 
@@ -90,12 +79,8 @@ void CsgIdIe::displayCsgIdIe_v(CsgIdIeData const &data, Debug &stream)
     stream.incrIndent();
     stream.endOfLine();
   
-    stream.add( (char *)"csgId: "); 
-    stream.add((Uint8)data.csgId);
-    stream.endOfLine();
-  
-    stream.add( (char *)"csgId: "); 
-    stream.add((Uint8)data.csgId);
+    stream.add((char *)"csgId: ");
+    stream.add(data.csgId);
     stream.endOfLine();
     stream.decrIndent();
     stream.decrIndent();

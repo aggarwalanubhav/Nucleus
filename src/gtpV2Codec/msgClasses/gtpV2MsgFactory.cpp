@@ -50,6 +50,7 @@
 #include "forwardRelocationResponseMsg.h"
 #include "forwardRelocationRequestMsg.h"
 #include "srvccPsToCsCancelAcknowledgeMsg.h"
+#include "deleteBearerCommandMsg.h"
 
 static GtpV2MsgFactory gtpV2MsgFactory;
 
@@ -167,6 +168,9 @@ GtpV2MsgFactory::GtpV2MsgFactory()
 
     SrvccPsToCsCancelAcknowledgeMsg* srvccPsToCsCancelAcknowledgeMsg_p = new (SrvccPsToCsCancelAcknowledgeMsg);
     msgObjectContainer.insert(std::pair<Uint8, GtpV2Message*>(SrvccPsToCsCancelAcknowledgeMsgType, srvccPsToCsCancelAcknowledgeMsg_p));
+
+    DeleteBearerCommandMsg* deleteBearerCommandMsg_p = new (DeleteBearerCommandMsg);
+    msgObjectContainer.insert(std::pair<Uint8, GtpV2Message*>(DeleteBearerCommandMsgType, deleteBearerCommandMsg_p));
 
 
 }

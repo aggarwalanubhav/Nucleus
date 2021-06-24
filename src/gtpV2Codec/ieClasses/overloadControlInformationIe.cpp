@@ -42,6 +42,8 @@
 #include "sgwsOverloadControlInformationInDeleteBearerResponse.h"
 #include "twanEpdgsOverloadControlInformationInDeleteBearerResponse.h"
 #include "sgwsOverloadControlInformationInDownlinkDataNotification.h"
+#include "mmeS4SgsnsOverloadControlInformationInDeleteBearerCommand.h"
+#include "sgwsOverloadControlInformationInDeleteBearerCommand.h"
 
 OverloadControlInformationIe::OverloadControlInformationIe()
 {
@@ -101,6 +103,10 @@ OverloadControlInformationIe::OverloadControlInformationIe()
     insertGroupedIeObject(DeleteBearerResponseMsgType, 2, twanEpdgsOverloadControlInformationInDeleteBearerResponse_p);
     SgwsOverloadControlInformationInDownlinkDataNotification* sgwsOverloadControlInformationInDownlinkDataNotification_p = new (SgwsOverloadControlInformationInDownlinkDataNotification);
     insertGroupedIeObject(DownlinkDataNotificationMsgType, 0, sgwsOverloadControlInformationInDownlinkDataNotification_p);
+    MmeS4SgsnsOverloadControlInformationInDeleteBearerCommand* mmeS4SgsnsOverloadControlInformationInDeleteBearerCommand_p = new (MmeS4SgsnsOverloadControlInformationInDeleteBearerCommand);
+    insertGroupedIeObject(DeleteBearerCommandMsgType, 0, mmeS4SgsnsOverloadControlInformationInDeleteBearerCommand_p);
+    SgwsOverloadControlInformationInDeleteBearerCommand* sgwsOverloadControlInformationInDeleteBearerCommand_p = new (SgwsOverloadControlInformationInDeleteBearerCommand);
+    insertGroupedIeObject(DeleteBearerCommandMsgType, 1, sgwsOverloadControlInformationInDeleteBearerCommand_p);
 }
 
 OverloadControlInformationIe::~OverloadControlInformationIe() {

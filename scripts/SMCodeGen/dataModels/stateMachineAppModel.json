@@ -877,6 +877,34 @@
                                 "NextState":"end_state"
                             }
                         ]
+                    },
+                    {
+                        "Name":"s1_release_wf_srvcc_resource_release ",
+                        "Events":[
+                            {
+                                "Name":"release_start",
+                                "Actions":[
+                                    "SEND_S1_REL_CMD_TO_UE"
+                                ],
+                                "NextState":"s1_release_wf_ue_ctxt_release_comp"
+                            },
+                            {
+                                "Name":"STATE_GUARD_TIMEOUT",
+                                "Actions":[
+                                    "HANDLE_STATE_GUARD_TIMEOUTS"
+                                ],
+                                "NextState":"end_state"
+                            },
+                            {
+                                "Name":"ABORT_EVENT",
+                                "Actions":[
+                                    "DEL_SESSION_REQ",
+                                    "SEND_S1_REL_CMD_TO_UE",
+                                    "ABORT_S1_RELEASE"
+                                ],
+                                "NextState":"end_state"
+                            }
+                        ]
                     }
                 ]
             },
@@ -1544,6 +1572,82 @@
                 ]
             },
             {
+                "Name":"SRVCC_HO_PROCEDURE",
+                "Properties": [
+                    {
+                        "stateGuardTimerFeature" : "disabled"
+                    }
+                ],
+                "States":[
+                    {
+                        "Name":"srvcc_ho_start",
+                        "Events":[
+                            {
+                                "Name":"SRVCC_HO_START",
+                                "Actions":[
+                                    "SPLIT_BEARER",
+                                    "SEND_PS_TO_CS_REQ_TO_MSC",
+                                    "SEND_FWD_REL_REQ_TO_SGSN"
+                                ],
+                                "NextState":"srvcc_ho_wf_fwd_rel_resp"
+                            }
+                        ]
+                    },
+                    {
+                        "Name":"srvcc_ho_wf_fwd_rel_resp",
+                        "Events":[
+                            {
+                                "Name":"FWD_REL_RES",
+                                "Actions":[
+                                    "HANDLE_FWD_REL_RES_FROM_SGSN"
+                                ],
+                                "NextState":"srvcc_ho_wf_ps_to_cs_resp"
+                            }
+                        ]
+                    },
+                    {
+                        "Name":"srvcc_ho_wf_ps_to_cs_resp",
+                        "Events":[
+                            {
+                                "Name":"PS_TO_CS_RES",
+                                "Actions":[
+                                    "HANDLE_PS_TO_CS_RES",
+                                    "SEND_SRVCC_HO_COMMAND"
+                                ],
+                                "NextState":"srvcc_ho_wf_ps_to_cs_comp"
+                            }
+                        ]
+                    },
+                    {
+                        "Name":"srvcc_ho_wf_ps_to_cs_comp",
+                        "Events":[
+                            {
+                                "Name":"PS_TO_CS_COMP_RCVD",
+                                "Actions":[
+                                    "PROCESS_PS_TO_CS_COMP",
+                                    "SEND_DEL_BEARER_COMMAND"
+                                ],
+                                "NextState":"end_state"
+                            }
+                        ]
+                    },
+                    {
+                        "Name":"srvcc_ho_wf_dwd_rel_comp",
+                        "Events":[
+                            
+                            {
+                                "Name":"FWD_REL_COMP_RECVD",
+                                "Actions":[
+                                    "PROCESS_FWD_REL_COMP",
+                                    "DEL_SESSION_REQ"
+                                ],
+                                "NextState":"end_state"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
 	        "Name":"ERAB_MOD_INDICATION",
                 "Properties":[
                     {
@@ -1956,6 +2060,60 @@
                                 "timeout": "12000"
                             }
                         ]
+                    },
+                    {
+                        "Name": "srvcc_delete_bearer_start",
+                        "Events": [
+                            {
+                                "Name": "START_DED_DEACTIVATION",
+                                "Actions": [
+                                    "SRVCC_INIT_DED_BEARER_DEACTIVATION"
+                                ],
+                                "NextState": "srvcc_delete_bearer_wf_deact_complete"
+                            },
+                            {
+                                "Name": "ABORT_EVENT",
+                                "Actions": [
+                                    "SEND_DELETE_BEARER_RESPONSE",
+                                    "ABORT_DELETE_BEARER_PROCEDURE"
+                                ],
+                                "NextState": "end_state"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "srvcc_delete_bearer_wf_deact_complete",
+                        "Events": [
+                            {
+                                "Name": "DED_DEACT_COMPLETE",
+                                "Actions": [
+                                    "SRVCC_HANDLE_DED_DEACT_CMP_IND",
+                                    "SRVCC_SEND_DELETE_BEARER_RESPONSE",
+                                    "SRVCC_DELETE_BEARER_PROC_COMPLETE"
+                                ],
+                                "NextState": "end_state"
+                            },
+                            {
+                                "Name": "STATE_GUARD_TIMEOUT",
+                                "Actions": [
+                                    "HANDLE_STATE_GUARD_TIMEOUTS"
+                                ],
+                                "NextState": "end_state"
+                            },
+                            {
+                                "Name": "ABORT_EVENT",
+                                "Actions": [
+                                    "SEND_DELETE_BEARER_RESPONSE",
+                                    "ABORT_DELETE_BEARER_PROCEDURE"
+                                ],
+                                "NextState": "end_state"
+                            }
+                        ],
+                        "Properties": [
+                            {
+                                "timeout": "12000"
+                            }
+                        ]
                     }
                 ]
             },
@@ -2070,6 +2228,33 @@
                                     "ABORT_DED_DEACTIVATION"
                                 ],
                                 "NextState": "end_state"
+                            }
+                        ]
+                    },
+                    {
+                        "Name":"srvcc_del_ded_bearer",
+                        "Events":[
+                            {
+                                "Name":"DELETE_BEARER_REQUEST_FROM_GW",
+                                "Actions":[
+                                    "PROCESS_DELETE_BEARER_REQUEST"
+                                ],
+                                "NextState":"end_state"
+                            },
+                            {
+                                "Name":"STATE_GUARD_TIMEOUT",
+                                "Actions":[
+                                    "HANDLE_STATE_GUARD_TIMEOUTS"
+                                ],
+                                "NextState":"end_state"
+                            },
+                            {
+                                "Name":"ABORT_EVENT",
+                                "Actions":[
+                                    "DEL_SESSION_REQ",
+                                    "ABORT_S1_RELEASE"
+                                ],
+                                "NextState":"end_state"
                             }
                         ]
                     }

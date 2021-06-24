@@ -192,6 +192,18 @@ namespace mme
 			const Tai& getTai()const;			
 			
 			/****************************************
+			* setLai
+			*    set lai to UEContext
+			****************************************/
+			void setLai(const Lai& lai_i);
+			
+			/****************************************
+			* getLai
+			*    get lai from UEContext
+			****************************************/
+			const Lai& getLai()const;			
+			
+			/****************************************
 			* setUtranCgi
 			*    set utranCgi to UEContext
 			****************************************/
@@ -226,6 +238,30 @@ namespace mme
 			*    get ueNetCapab from UEContext
 			****************************************/
 			const Ue_net_capab& getUeNetCapab()const;			
+			
+			/****************************************
+			* setMsClassmark2
+			*    set msClassmark2 to UEContext
+			****************************************/
+			void setMsClassmark2(const Mobile_Station_Classmark_2& msClassmark2_i);
+			
+			/****************************************
+			* getMsClassmark2
+			*    get msClassmark2 from UEContext
+			****************************************/
+			const Mobile_Station_Classmark_2& getMsClassmark2()const;			
+			
+			/****************************************
+			* setVoiceDomainPref
+			*    set voiceDomainPref to UEContext
+			****************************************/
+			void setVoiceDomainPref(const Voice_Domain_Preference& voiceDomainPref_i);
+			
+			/****************************************
+			* getVoiceDomainPref
+			*    get voiceDomainPref from UEContext
+			****************************************/
+			const Voice_Domain_Preference& getVoiceDomainPref()const;			
 			
 			/****************************************
 			* setUeSecInfo
@@ -438,6 +474,9 @@ namespace mme
 			Tai tai_m;
 			
 			// DataName
+			Lai lai_m;
+			
+			// DataName
 			Cgi utranCgi_m;
 			
 			// DataName
@@ -445,6 +484,12 @@ namespace mme
 			
 			// DataName
 			Ue_net_capab ueNetCapab_m;
+			
+			// DataName
+			Mobile_Station_Classmark_2 msClassmark2_m;
+			
+			// DataName
+			Voice_Domain_Preference voiceDomainPref_m;
 			
 			// DataName
 			Secinfo ueSecInfo_m;

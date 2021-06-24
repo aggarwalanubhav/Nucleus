@@ -36,9 +36,12 @@ namespace mme
             msisdn_m(),
             ueState_m(InvalidState),
             tai_m(),
+            lai_m(),
             utranCgi_m(),
             msNetCapab_m(),
             ueNetCapab_m(),
+            msClassmark2_m(),
+            voiceDomainPref_m(),
             ueSecInfo_m(),
             ambr_m(),
             aiaSecInfo_m(),
@@ -248,6 +251,23 @@ namespace mme
 
 	
 	/******************************************************************************
+	* sets lai
+	******************************************************************************/
+	void UEContext::setLai( const Lai& lai_i )
+	{
+		lai_m = lai_i;
+	}
+	
+	/******************************************************************************
+	* returns lai
+	******************************************************************************/	
+        const Lai& UEContext::getLai() const
+        {
+                return lai_m;
+        }
+
+	
+	/******************************************************************************
 	* sets utranCgi
 	******************************************************************************/
 	void UEContext::setUtranCgi( const Cgi& utranCgi_i )
@@ -295,6 +315,40 @@ namespace mme
         const Ue_net_capab& UEContext::getUeNetCapab() const
         {
                 return ueNetCapab_m;
+        }
+
+	
+	/******************************************************************************
+	* sets msClassmark2
+	******************************************************************************/
+	void UEContext::setMsClassmark2( const Mobile_Station_Classmark_2& msClassmark2_i )
+	{
+		msClassmark2_m = msClassmark2_i;
+	}
+	
+	/******************************************************************************
+	* returns msClassmark2
+	******************************************************************************/	
+        const Mobile_Station_Classmark_2& UEContext::getMsClassmark2() const
+        {
+                return msClassmark2_m;
+        }
+
+	
+	/******************************************************************************
+	* sets voiceDomainPref
+	******************************************************************************/
+	void UEContext::setVoiceDomainPref( const Voice_Domain_Preference& voiceDomainPref_i )
+	{
+		voiceDomainPref_m = voiceDomainPref_i;
+	}
+	
+	/******************************************************************************
+	* returns voiceDomainPref
+	******************************************************************************/	
+        const Voice_Domain_Preference& UEContext::getVoiceDomainPref() const
+        {
+                return voiceDomainPref_m;
         }
 
 	
