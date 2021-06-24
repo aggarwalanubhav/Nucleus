@@ -751,8 +751,8 @@ typedef struct
 typedef struct
 {
     Uint8 NANPI;    
-    Uint8 Digit;    
-    Uint8 Digit;    
+    Uint8 Digit2;    
+    Uint8 Digit1;    
 
 }StnSrIeData;
 
@@ -823,7 +823,6 @@ typedef struct
 
 typedef struct
 {
-    Uint8 csgId;    
     Uint32 csgId;    
 
 }CsgIdIeData;

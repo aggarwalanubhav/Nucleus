@@ -549,11 +549,6 @@ namespace mme
         static SM::ActStatus send_ho_cancel_ack_to_src_enb(SM::ControlBlock& cb);                
 
         /**********************************************
-        * Action handler : send_ho_command
-        ***********************************************/
-        static SM::ActStatus send_ho_command(SM::ControlBlock& cb);                
-
-        /**********************************************
         * Action handler : send_ho_command_to_src_enb
         ***********************************************/
         static SM::ActStatus send_ho_command_to_src_enb(SM::ControlBlock& cb);                
@@ -642,6 +637,11 @@ namespace mme
         * Action handler : send_service_reject
         ***********************************************/
         static SM::ActStatus send_service_reject(SM::ControlBlock& cb);                
+
+        /**********************************************
+        * Action handler : send_srvcc_ho_command
+        ***********************************************/
+        static SM::ActStatus send_srvcc_ho_command(SM::ControlBlock& cb);                
 
         /**********************************************
         * Action handler : send_tau_response_to_ue

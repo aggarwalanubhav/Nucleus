@@ -82,3 +82,11 @@ ActStatus ActionHandlers::process_fwd_rel_comp(ControlBlock& cb)
     return ActStatus::PROCEED;
 }
 
+/***************************************
+* Action handler : send_srvcc_ho_command
+***************************************/
+ActStatus ActionHandlers::send_srvcc_ho_command(ControlBlock& cb)
+{
+    return ActStatus::PROCEED;
+}
+

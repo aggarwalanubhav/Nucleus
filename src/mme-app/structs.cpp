@@ -66,6 +66,35 @@ bool Tai::operator==(const Tai &tai_i) const
 }
 
 /*******************************************************
+ *LAI
+********************************************************/
+Lai::Lai()
+{
+	 memset( &lai_m, 0, sizeof( lai_m ));
+}
+
+Lai::Lai( const LAI& lai_i )
+{
+	memset( &lai_m, 0, sizeof( lai_m ));
+	memcpy( &lai_m, &lai_i, sizeof( lai_i ));
+}
+
+Lai::~Lai()
+{
+}
+
+void Lai::operator = ( const Lai& lai_i )
+{
+	memcpy( &lai_m, &(lai_i.lai_m), sizeof( lai_i.lai_m ));
+}
+
+bool Lai::operator==(const Lai &lai_i) const
+{
+    return (memcmp(&lai_m, &lai_i.lai_m, sizeof(struct LAI)) == 0);
+}
+
+
+/*******************************************************
  *CGI
 ********************************************************/
 Cgi::Cgi()
