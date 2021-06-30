@@ -87,6 +87,10 @@ namespace mme
                 static int num_of_abort_ded_activation;
                 static int num_of_ded_act_complete;
                 static int num_of_create_bearer_proc_complete;
+                static int num_of_ps_to_cs_comp_processed;
+                static int num_of_ps_to_cs_comp_ack_sent;
+                static int num_of_fwd_rel_comp_processed;
+                static int num_of_fwd_rel_comp_ack_sent;
         };
 };
 #endif
