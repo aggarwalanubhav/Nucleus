@@ -37,6 +37,7 @@ namespace mme
 	class MmeSvcReqProcedureCtxt;
 	class MmeTauProcedureCtxt;
 	class S1HandoverProcedureContext;
+	class SrvccProcedureContext;
 	class MmeErabModIndProcedureCtxt;
 	class MmeSmCreateBearerProcCtxt;
 	class SmDedActProcCtxt;
@@ -168,6 +169,18 @@ namespace mme
 			const DigitRegister15& getMsisdn()const;			
 			
 			/****************************************
+			* setStnsr
+			*    set stnsr to UEContext
+			****************************************/
+			void setStnsr(const DigitRegister15& stnsr_i);
+			
+			/****************************************
+			* getStnsr
+			*    get stnsr from UEContext
+			****************************************/
+			const DigitRegister15& getStnsr()const;			
+			
+			/****************************************
 			* setUeState
 			*    set ueState to UEContext
 			****************************************/
@@ -250,6 +263,18 @@ namespace mme
 			*    get msClassmark2 from UEContext
 			****************************************/
 			const Mobile_Station_Classmark_2& getMsClassmark2()const;			
+			
+			/****************************************
+			* setMsClassmark3
+			*    set msClassmark3 to UEContext
+			****************************************/
+			void setMsClassmark3(const Mobile_Station_Classmark_3& msClassmark3_i);
+			
+			/****************************************
+			* getMsClassmark3
+			*    get msClassmark3 from UEContext
+			****************************************/
+			const Mobile_Station_Classmark_3& getMsClassmark3()const;			
 			
 			/****************************************
 			* setVoiceDomainPref
@@ -468,6 +493,9 @@ namespace mme
 			DigitRegister15 msisdn_m;
 			
 			// DataName
+			DigitRegister15 stnsr_m;
+			
+			// DataName
 			UE_State_e ueState_m;
 			
 			// DataName
@@ -487,6 +515,9 @@ namespace mme
 			
 			// DataName
 			Mobile_Station_Classmark_2 msClassmark2_m;
+			
+			// DataName
+			Mobile_Station_Classmark_3 msClassmark3_m;
 			
 			// DataName
 			Voice_Domain_Preference voiceDomainPref_m;
@@ -1631,6 +1662,87 @@ namespace mme
 			
 			// DataName
 			uint32_t srcS1apEnbUeId_m;
+			
+	};
+	 
+	class SrvccProcedureContext:public S1HandoverProcedureContext
+	{
+		public:
+	
+			/****************************************
+			* SrvccProcedureContext
+			*    constructor
+			****************************************/
+			SrvccProcedureContext();
+			
+			/****************************************
+			* ~SrvccProcedureContext
+			*    destructor
+			****************************************/
+			~SrvccProcedureContext();
+			
+			/****************************************
+			* setTargetLai
+			*    set targetLai to SrvccProcedureContext
+			****************************************/
+			void setTargetLai(const Lai& targetLai_i);
+			
+			/****************************************
+			* getTargetLai
+			*    get targetLai from SrvccProcedureContext
+			****************************************/
+			const Lai& getTargetLai()const;			
+			
+			/****************************************
+			* setTargetRncId
+			*    set targetRncId to SrvccProcedureContext
+			****************************************/
+			void setTargetRncId(uint32_t targetRncId_i);
+			
+			/****************************************
+			* getTargetRncId
+			*    get targetRncId from SrvccProcedureContext
+			****************************************/
+			uint32_t getTargetRncId()const;			
+			
+			/****************************************
+			* setRac
+			*    set rac to SrvccProcedureContext
+			****************************************/
+			void setRac(uint8_t rac_i);
+			
+			/****************************************
+			* getRac
+			*    get rac from SrvccProcedureContext
+			****************************************/
+			uint8_t getRac()const;			
+			
+			/****************************************
+			* setSrvccHoIndication
+			*    set srvccHoIndication to SrvccProcedureContext
+			****************************************/
+			void setSrvccHoIndication(srvcc_ho_indication srvccHoIndication_i);
+			
+			/****************************************
+			* getSrvccHoIndication
+			*    get srvccHoIndication from SrvccProcedureContext
+			****************************************/
+			srvcc_ho_indication getSrvccHoIndication()const;			
+			
+		
+		private:
+		
+			// DataName
+			Lai targetLai_m;
+			
+			// DataName
+			uint32_t targetRncId_m;
+			
+			// DataName
+			uint8_t rac_m;
+			
+			// DataName
+			srvcc_ho_indication srvccHoIndication_m;
 			
 	};
 	 

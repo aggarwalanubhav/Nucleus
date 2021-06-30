@@ -74,6 +74,10 @@
 								"Type": "DigitRegister15"
 							},
 							{
+								"Name": "stnsr",
+								"Type": "DigitRegister15"
+							},
+							{
 								"Name": "ueState",
 								"Type": "enum UE_State_e",
 								"DefaultVal": "InvalidState"
@@ -101,6 +105,10 @@
 							{
 								"Name": "msClassmark2",
 								"Type": "Mobile_Station_Classmark_2"
+							},
+							{
+								"Name": "msClassmark3",
+								"Type": "Mobile_Station_Classmark_3"
 							},
 							{
 								"Name": "voiceDomainPref",
@@ -501,6 +509,30 @@
 						]
 					},
 					{
+						"BlockName": "SrvccProcedureContext",
+						"BlockType": "Temporary",
+						"Parent": "S1HandoverProcedureContext",
+						"PoolSize": "8000",
+						"Cardinality": "1",
+						"Data": [
+							{
+								"Name": "targetLai",
+								"Type": "Lai"
+							},
+							{	"Name": "targetRncId",
+								"Type": "uint32_t"
+							},
+							{	"Name": "rac",
+								"Type": "uint8_t"
+							},
+							{
+								"Name": "srvccHoIndication",
+								"Type": "enum srvcc_ho_indication",
+								"DefaultVal": "invalid_c"
+							}
+						]
+					},
+					{
                                                 "BlockName": "MmeErabModIndProcedureCtxt",
                                                 "BlockType": "Temporary",
                                                 "Parent": "MmeProcedureCtxt",
@@ -521,7 +553,7 @@
 					},
 					{
 						"BlockName": "MmeSmCreateBearerProcCtxt",
-						"BlockType": "Temporary",
+						"BlockType": "Tempoarary",
 						"Parent": "MmeProcedureCtxt",
 						"PoolSize": "8000",
 						"Cardinality": "1",

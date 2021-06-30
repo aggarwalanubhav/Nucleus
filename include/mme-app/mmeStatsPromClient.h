@@ -60,6 +60,11 @@ enum class mmeStatsCounter {
 	MME_MSG_RX_S11_DOWNLINK_NOTIFICATION_INDICATION,
 	MME_MSG_RX_S11_CREATE_BEARER_REQUEST,
 	MME_MSG_RX_S11_DELETE_BEARER_REQUEST,
+	MME_MSG_RX_S3_FORWARD_RELOCATION_RESPONSE,
+	MME_MSG_RX_S3_FORWARD_RELOCATION_COMPLETE,
+	MME_MSG_RX_SV_PS_TO_CS_RESPONSE,
+	MME_MSG_RX_SV_PS_TO_CS_COMPLETE,
+	MME_MSG_RX_SV_PS_TO_CS_CANCEL_ACK,
 	MME_MSG_TX_NAS_IDENTITY_REQUEST,
 	MME_MSG_TX_NAS_AUTHENTICATION_REQUEST,
 	MME_MSG_TX_NAS_SECURITY_MODE_COMMAND,
@@ -92,6 +97,11 @@ enum class mmeStatsCounter {
 	MME_MSG_TX_S11_RELEASE_BEARER_REQUEST,
 	MME_MSG_TX_S11_CREATE_BEARER_RESPONSE,
 	MME_MSG_TX_S11_DELETE_BEARER_RESPONSE,
+	MME_MSG_TX_S3_FORWARD_RELOCATION_REQUEST,
+	MME_MSG_TX_S3_FORWARD_RELOCATION_COMPLETE_ACK,
+	MME_MSG_TX_SV_PS_TO_CS_REQUEST,
+	MME_MSG_TX_SV_PS_TO_CS_COMPLETE_ACK,
+	MME_MSG_TX_SV_PS_TO_CS_CANCEL,
 	MME_MSG_TX_S6A_AUTHENTICATION_INFO_REQUEST,
 	MME_MSG_TX_S6A_UPDATE_LOCATION_REQUEST,
 	MME_MSG_TX_S6A_PURGE_REQUEST,
@@ -416,6 +426,11 @@ class mme_msg_rx_counters {
 	Counter &mme_msg_rx_s11_downlink_notification_indication;
 	Counter &mme_msg_rx_s11_create_bearer_request;
 	Counter &mme_msg_rx_s11_delete_bearer_request;
+	Counter &mme_msg_rx_s3_forward_relocation_response;
+	Counter &mme_msg_rx_s3_forward_relocation_complete;
+	Counter &mme_msg_rx_sv_ps_to_cs_response;
+	Counter &mme_msg_rx_sv_ps_to_cs_complete;
+	Counter &mme_msg_rx_sv_ps_to_cs_cancel_ack;
 
 	mme_msg_rx_DynamicMetricObject1* add_dynamic1(std::string label_k0,std::string label_v0,std::string label_k1,std::string label_v1,std::string dlabel_k0, std::string dlabel_v0) {
 		return new mme_msg_rx_DynamicMetricObject1(mme_msg_rx_family,label_k0,label_v0,label_k1,label_v1,dlabel_k0, dlabel_v0);
@@ -509,6 +524,11 @@ class mme_msg_tx_counters {
 	Counter &mme_msg_tx_s11_release_bearer_request;
 	Counter &mme_msg_tx_s11_create_bearer_response;
 	Counter &mme_msg_tx_s11_delete_bearer_response;
+	Counter &mme_msg_tx_s3_forward_relocation_request;
+	Counter &mme_msg_tx_s3_forward_relocation_complete_ack;
+	Counter &mme_msg_tx_sv_ps_to_cs_request;
+	Counter &mme_msg_tx_sv_ps_to_cs_complete_ack;
+	Counter &mme_msg_tx_sv_ps_to_cs_cancel;
 	Counter &mme_msg_tx_s6a_authentication_info_request;
 	Counter &mme_msg_tx_s6a_update_location_request;
 	Counter &mme_msg_tx_s6a_purge_request;

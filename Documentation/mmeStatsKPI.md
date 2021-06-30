@@ -65,6 +65,11 @@
 |Counter|number_of_messages_received|s11_downlink_notification_indication|number of DDN Ind received by MME|[{'interface': 's11'}, {'msg_type': 'downlink_notification_indication'}]|['sgw_addr']|
 |Counter|number_of_messages_received|s11_create_bearer_request|number of create bearer request received by MME|[{'interface': 's11'}, {'msg_type': 'create_bearer_request'}]|['sgw_addr']|
 |Counter|number_of_messages_received|s11_delete_bearer_request|number of delete bearer request received by MME|[{'interface': 's11'}, {'msg_type': 'delete_bearer_request'}]|['sgw_addr']|
+|Counter|number_of_messages_received|s3_forward_relocation_response|number of forward relocation response received by MME|[{'interface': 's3'}, {'msg_type': 'forward_relocation_response'}]|['sgsn_addr']|
+|Counter|number_of_messages_received|s3_forward_relocation_complete|number of forward relocation complete received by MME|[{'interface': 's3'}, {'msg_type': 'forward_relocation_complete'}]|['sgsn_addr']|
+|Counter|number_of_messages_received|sv_ps_to_cs_response|number of ps to cs response received by MME|[{'interface': 'sv'}, {'msg_type': 'ps_to_cs_response'}]|['msc_addr']|
+|Counter|number_of_messages_received|sv_ps_to_cs_complete|number of ps to cs complete received by MME|[{'interface': 'sv'}, {'msg_type': 'ps_to_cs_complete'}]|['msc_addr']|
+|Counter|number_of_messages_received|sv_ps_to_cs_cancel_ack|number of ps to cs cancel ack received by MME|[{'interface': 'sv'}, {'msg_type': 'ps_to_cs_cancel_ack'}]|['msc_addr']|
 
 
 # mme_msg_tx
@@ -99,9 +104,15 @@
 |Counter|number_of_messages_sent|s11_modify_bearer_request|number of MBReq sent by MME|[{'interface': 's11'}, {'msg_type': 'modify_bearer_request'}]|['sgw_addr']|
 |Counter|number_of_messages_sent|s11_delete_session_request|number of DSReq sent by MME|[{'interface': 's11'}, {'msg_type': 'delete_session_request'}]|['sgw_addr']|
 |Counter|number_of_messages_sent|s11_downlink_data_notification_ack|number of DDN Ack sent by MME|[{'interface': 's11'}, {'msg_type': 'downlink_data_notification_ack'}]|['sgw_addr']|
+|Counter|number_of_messages_sent|s11_downlink_data_notification_failure_ind|number of DDN Failure Indication sent by MME|[{'interface': 's11'}, {'msg_type': 'downlink_data_notification_failure_ind'}]|['sgw_addr']|
 |Counter|number_of_messages_sent|s11_release_bearer_request|number of RAB request sent by MME|[{'interface': 's11'}, {'msg_type': 'release_bearer_request'}]|['sgw_addr']|
 |Counter|number_of_messages_sent|s11_create_bearer_response|number of create bearer response sent by MME|[{'interface': 's11'}, {'msg_type': 'create_bearer_response'}]|['sgw_addr']|
 |Counter|number_of_messages_sent|s11_delete_bearer_response|number of delete bearer response sent by MME|[{'interface': 's11'}, {'msg_type': 'delete_bearer_response'}]|['sgw_addr']|
+|Counter|number_of_messages_sent|s3_forward_relocation_request|number of forward relocation request sent by MME|[{'interface': 's3'}, {'msg_type': 'forward_relocation_request'}]|['sgsn_addr']|
+|Counter|number_of_messages_sent|s3_forward_relocation_complete_ack|number of forward relocation complete ack sent by MME|[{'interface': 's3'}, {'msg_type': 'forward_relocation_complete_ack'}]|['sgsn_addr']|
+|Counter|number_of_messages_sent|sv_ps_to_cs_request|number of ps to cs request sent by MME|[{'interface': 'sv'}, {'msg_type': 'ps_to_cs_request'}]|['msc_addr']|
+|Counter|number_of_messages_sent|sv_ps_to_cs_complete_ack|number of ps to cs complete ack sent by MME|[{'interface': 'sv'}, {'msg_type': 'ps_to_cs_complete_ack'}]|['msc_addr']|
+|Counter|number_of_messages_sent|sv_ps_to_cs_cancel|number of ps to cs cancel sent by MME|[{'interface': 'sv'}, {'msg_type': 'ps_to_cs_cancel'}]|['msc_addr']|
 |Counter|number_of_messages_sent|s6a_authentication_info_request|number of authentication information request sent by MME|[{'interface': 's6a'}, {'msg_type': 'authentication_info_request'}]|['hss_addr']|
 |Counter|number_of_messages_sent|s6a_update_location_request|number of ULR request sent by MME |[{'interface': 's6a'}, {'msg_type': 'update_location_request'}]|['hss_addr']|
 |Counter|number_of_messages_sent|s6a_purge_request|number of Purge request sent by MME|[{'interface': 's6a'}, {'msg_type': 'purge_request'}]|['hss_addr']|
