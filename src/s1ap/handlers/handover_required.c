@@ -129,6 +129,14 @@ int s1_handover_required_handler(InitiatingMessage_t *msg, int enb_fd)
                     ho_required_ies.data[i].val.srcToTargetTranspContainer.size);
         }
             break;
+        case S1AP_IE_DIRECT_FORWARDING_PATH_AVAILABILITY:
+        {
+            log_msg(LOG_INFO, "handover required S1AP_IE_DIRECT_FORWARDING_PATH_AVAILABILITY.");
+
+            ho_required.directFwdPathAvailability =
+                    ho_required_ies.data[i].val.directFwdPathAvailability;
+        }
+           break;
         default:
             log_msg(LOG_WARNING, "Unhandled IE");
         }

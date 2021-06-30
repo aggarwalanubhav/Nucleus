@@ -1062,6 +1062,26 @@ int convertUehoReqToProtoIe(InitiatingMessage_t *msg,
                         source_ToTarget_TransparentContainer_p->buf;
                 source_ToTarget_TransparentContainer_p = NULL;
             } break;
+            case ProtocolIE_ID_id_Direct_Forwarding_Path_Availability:
+            {
+                Direct_Forwarding_Path_Availability_t *directFwdPath_p = NULL;
+                if (HandoverRequiredIEs__value_PR_Direct_Forwarding_Path_Availability
+                        == ie_p->value.present)
+                {
+                    directFwdPath_p = &ie_p->value.choice.Direct_Forwarding_Path_Availability;
+                }
+
+                if (directFwdPath_p == NULL)
+                {
+                    log_msg(LOG_ERROR, "Decoding of IE Direct_Forwarding_Path_Availability failed");
+                    return -1;
+                }
+
+                proto_ies->data[i].IE_type = S1AP_IE_DIRECT_FORWARDING_PATH_AVAILABILITY;
+                memcpy(&proto_ies->data[i].val.directFwdPathAvailability, directFwdPath_p,
+                        sizeof(Direct_Forwarding_Path_Availability_t));
+                directFwdPath_p = NULL;
+            } break;
             default:
             {
                 proto_ies->data[i].IE_type = ie_p->id;

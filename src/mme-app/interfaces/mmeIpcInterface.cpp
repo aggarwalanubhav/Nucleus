@@ -114,10 +114,10 @@ void MmeIpcInterface::handleIpcMsg(cmn::IpcEMsgUnqPtr eMsg)
 		S6MsgHandler::Instance()->handleS6Message_v(std::move(eMsg));
 		break;
 	case TipcInstanceTypes::s3AppInstanceNum_c:
-		S3MsgHandler::Instance()->handleGtpMessage_v(std::move(eMsg));
+		S3MsgHandler::Instance()->handleS3Message_v(std::move(eMsg));
 		break;
 	case TipcInstanceTypes::svAppInstanceNum_c:
-		SvMsgHandler::Instance()->handleGtpMessage_v(std::move(eMsg));
+		SvMsgHandler::Instance()->handleSvMessage_v(std::move(eMsg));
 		break;
 	default:
 		log_msg(LOG_INFO, "IPC Message from unsupported instance");

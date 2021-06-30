@@ -158,6 +158,10 @@ typedef enum handoverType {
         NRtoLTE
 }handoverType;
 
+typedef enum directFwdPathAvailability {
+	directPathAvailable
+}directFwdPathAvailability;
+
 typedef struct ERAB_admitted{
         uint8_t e_RAB_ID;
         uint32_t transportLayerAddress;
@@ -170,6 +174,9 @@ typedef struct ERAB_admitted{
 typedef struct targetId{
         struct ie_global_enb_id global_enb_id;
         struct TAI selected_tai;
+        struct S_LAI selected_lai;
+        short rac;
+        short rnc_id;
 }targetId;
 
 #define TRANS_CONT_SIZE 3000
@@ -479,6 +486,7 @@ typedef struct proto_IE_data {
         uint8_t sec_key[SECURITY_KEY_SIZE];
         struct targetId target_id;
         enum handoverType handoverType;
+        enum directFwdPathAvailability directFwdPathAvailability;
         struct src_target_transparent_containerIE srcToTargetTranspContainer;
         struct src_target_transparent_containerIE targetToSrcTranspContainer;
     	struct enB_status_transfer_transparent_container_list enB_status_transfer_transparent_containerlist;

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <msgHandlers/gtpMsgHandler.h>
+#include <msgHandlers/s3MsgHandler.h>
 
 #include <contextManager/subsDataGroupManager.h>
 #include <event.h>
@@ -19,22 +19,22 @@ using namespace SM;
 using namespace mme;
 using namespace cmn;
 
-GtpMsgHandler::~GtpMsgHandler() {
+S3MsgHandler::~S3MsgHandler() {
 
 }
 
-GtpMsgHandler::GtpMsgHandler()
+S3MsgHandler::S3MsgHandler()
 {
 
 }
 
-GtpMsgHandler* GtpMsgHandler::Instance()
+S3MsgHandler* S3MsgHandler::Instance()
 {
-	static GtpMsgHandler msgHandler;
+	static S3MsgHandler msgHandler;
 	return &msgHandler;
 }
 
-void GtpMsgHandler::handleGtpMessage_v(IpcEMsgUnqPtr eMsg)
+void S3MsgHandler::handleS3Message_v(IpcEMsgUnqPtr eMsg)
 {
     if (eMsg.get() == NULL)
         return;
@@ -42,12 +42,12 @@ void GtpMsgHandler::handleGtpMessage_v(IpcEMsgUnqPtr eMsg)
     utils::MsgBuffer *msgBuf = eMsg->getMsgBuffer();
     if (msgBuf == NULL)
     {
-        log_msg(LOG_INFO, "GTP Message Buffer is empty ");
+        log_msg(LOG_INFO, "S3 Message Buffer is empty ");
         return;
     }
     if (msgBuf->getLength() < sizeof(gtp_incoming_msg_data_t))
     {
-        log_msg(LOG_INFO, "Not enough bytes in gtp message ");
+        log_msg(LOG_INFO, "Not enough bytes in s3 message ");
         return;
     }
 
@@ -103,7 +103,7 @@ void GtpMsgHandler::handleGtpMessage_v(IpcEMsgUnqPtr eMsg)
 
 }
 
-void GtpMsgHandler::handleForwardAccessContextAcknowledge_v(IpcEMsgUnqPtr eMsg, uint32_t ueIdx)
+void S3MsgHandler::handleForwardAccessContextAcknowledge_v(IpcEMsgUnqPtr eMsg, uint32_t ueIdx)
 {
 	log_msg(LOG_INFO, "handleForwardAccessContextAcknowledge_v");
 
@@ -121,7 +121,7 @@ void GtpMsgHandler::handleForwardAccessContextAcknowledge_v(IpcEMsgUnqPtr eMsg, 
 	controlBlk_p->addEventToProcQ(evt);
 }
 
-void GtpMsgHandler::handleForwardRelocationResponse_v(IpcEMsgUnqPtr eMsg, uint32_t ueIdx)
+void S3MsgHandler::handleForwardRelocationResponse_v(IpcEMsgUnqPtr eMsg, uint32_t ueIdx)
 {
 	log_msg(LOG_INFO, "handleForwardRelocationResponse_v");
 
@@ -140,7 +140,7 @@ void GtpMsgHandler::handleForwardRelocationResponse_v(IpcEMsgUnqPtr eMsg, uint32
 }
 
 
-void GtpMsgHandler::handleRelocationCancelResponse_v(IpcEMsgUnqPtr eMsg, uint32_t ueIdx)
+void S3MsgHandler::handleRelocationCancelResponse_v(IpcEMsgUnqPtr eMsg, uint32_t ueIdx)
 {
 	log_msg(LOG_INFO, "handleRelocationCancelResponse_v");
 
@@ -158,7 +158,7 @@ void GtpMsgHandler::handleRelocationCancelResponse_v(IpcEMsgUnqPtr eMsg, uint32_
 	controlBlk_p->addEventToProcQ(evt);
 }
 
-void GtpMsgHandler::handleIdentificationReq_v(IpcEMsgUnqPtr eMsg, uint32_t ueIdx)
+void S3MsgHandler::handleIdentificationReq_v(IpcEMsgUnqPtr eMsg, uint32_t ueIdx)
 {
 	log_msg(LOG_INFO, "handleIdentificationReq_v");
 	
@@ -175,7 +175,7 @@ void GtpMsgHandler::handleIdentificationReq_v(IpcEMsgUnqPtr eMsg, uint32_t ueIdx
 	controlBlk_p->addEventToProcQ(evt);
 }
 
-void GtpMsgHandler::handleContextReq_v(IpcEMsgUnqPtr eMsg, uint32_t ueIdx)
+void S3MsgHandler::handleContextReq_v(IpcEMsgUnqPtr eMsg, uint32_t ueIdx)
 {
 	log_msg(LOG_INFO, "handleContextReq_v");
 
