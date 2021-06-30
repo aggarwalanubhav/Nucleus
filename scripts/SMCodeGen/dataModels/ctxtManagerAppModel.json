@@ -528,7 +528,7 @@
 							{
 								"Name": "srvccHoIndication",
 								"Type": "enum srvcc_ho_indication",
-								"DefaultVal": "invalid_c"
+								"DefaultVal": "invalidho_c"
 							}
 						]
 					},

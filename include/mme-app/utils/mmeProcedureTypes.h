@@ -90,7 +90,15 @@ namespace mme
  enum HoType
  {
  	invalid_c,
- 	intraMmeS1Ho_c
+ 	intraMmeS1Ho_c,
+	lteToUtran
+ };
+
+ enum srvcc_ho_indication
+ {
+ 	invalidho_c,
+ 	psAndCs,
+	csOnly
  };
 
  struct BearerStatusCompareById

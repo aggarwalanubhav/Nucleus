@@ -1956,7 +1956,7 @@ namespace mme
             targetLai_m(),
             targetRncId_m(0),
             rac_m(0),
-            srvccHoIndication_m(invalid_c)
+            srvccHoIndication_m(invalidho_c)
 	{	
 	}
 	
