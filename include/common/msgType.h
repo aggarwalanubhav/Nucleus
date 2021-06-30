@@ -936,6 +936,20 @@ struct DELETE_BEARER_COMMAND_msg{
 };
 #define S11_DELETE_BEARER_CMD_BUF_SIZE sizeof(struct DELETE_BEARER_COMMAND_msg)
 
+struct fwd_rel_comp_ack
+{
+    msg_type_t msg_type;
+    int ue_idx;
+    bool recoveryIePresent;   
+    bool secondaryRatUsageDataReportIePresent;   
+
+
+    CauseIeData cause;
+    RecoveryIeData recovery;
+    SecondaryRatUsageDataReportIeData secondaryRatUsageDataReport;
+};
+#define s3_FORWARD_REL_COMP_ACK_BUF_SIZE sizeof(struct fwd_rel_comp_ack)
+
 /*************************
  * Incoming GTP Messages
  *************************/
@@ -1160,6 +1174,17 @@ struct forward_rel_response_msg
     NodeNumberIeData sgsnNumber;
     NodeIdentifierIeData sgsnIdentifier;
     NodeIdentifierIeData mmeIdentifier;
+};
+struct fwd_rel_comp_not
+{
+    gtp_incoming_msg_data_t header;
+    int s11_mme_cp_teid;
+    
+    bool indicationFlagsIePresent;   
+
+
+    FTeidIeData indicationFlags;
+
 };
 
 #define GTP_READ_MSG_BUF_SIZE sizeof(gtp_incoming_msg_data_t)
