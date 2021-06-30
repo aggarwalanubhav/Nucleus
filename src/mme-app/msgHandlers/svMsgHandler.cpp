@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <msgHandlers/gtpMsgHandler.h>
+#include <msgHandlers/svMsgHandler.h>
 
 #include <contextManager/subsDataGroupManager.h>
 #include <event.h>
@@ -19,22 +19,22 @@ using namespace SM;
 using namespace mme;
 using namespace cmn;
 
-GtpMsgHandler::~GtpMsgHandler() {
+SvMsgHandler::~SvMsgHandler() {
 
 }
 
-GtpMsgHandler::GtpMsgHandler()
+SvMsgHandler::SvMsgHandler()
 {
 
 }
 
-GtpMsgHandler* GtpMsgHandler::Instance()
+SvMsgHandler* SvMsgHandler::Instance()
 {
-	static GtpMsgHandler msgHandler;
+	static SvMsgHandler msgHandler;
 	return &msgHandler;
 }
 
-void GtpMsgHandler::handleGtpMessage_v(IpcEMsgUnqPtr eMsg)
+void SvMsgHandler::handleSvMessage_v(IpcEMsgUnqPtr eMsg)
 {
     if (eMsg.get() == NULL)
         return;
@@ -42,12 +42,12 @@ void GtpMsgHandler::handleGtpMessage_v(IpcEMsgUnqPtr eMsg)
     utils::MsgBuffer *msgBuf = eMsg->getMsgBuffer();
     if (msgBuf == NULL)
     {
-        log_msg(LOG_INFO, "GTP Message Buffer is empty ");
+        log_msg(LOG_INFO, "SV Message Buffer is empty ");
         return;
     }
     if (msgBuf->getLength() < sizeof(gtp_incoming_msg_data_t))
     {
-        log_msg(LOG_INFO, "Not enough bytes in gtp message ");
+        log_msg(LOG_INFO, "Not enough bytes in sv message ");
         return;
     }
 
@@ -86,7 +86,7 @@ void GtpMsgHandler::handleGtpMessage_v(IpcEMsgUnqPtr eMsg)
 
 }
 
-void GtpMsgHandler::handlePstoCsResponse_v(IpcEMsgUnqPtr eMsg, uint32_t ueIdx)
+void SvMsgHandler::handlePstoCsResponse_v(IpcEMsgUnqPtr eMsg, uint32_t ueIdx)
 {
 	log_msg(LOG_INFO, "handlePstoCsResponse_v");
 
@@ -104,7 +104,7 @@ void GtpMsgHandler::handlePstoCsResponse_v(IpcEMsgUnqPtr eMsg, uint32_t ueIdx)
 	controlBlk_p->addEventToProcQ(evt);
 }
 
-void GtpMsgHandler::handlePstoCsCancelAcknowlege_v(IpcEMsgUnqPtr eMsg, uint32_t ueIdx)
+void SvMsgHandler::handlePstoCsCancelAcknowlege_v(IpcEMsgUnqPtr eMsg, uint32_t ueIdx)
 {
 	log_msg(LOG_INFO, "handlePstoCsCancelAcknowlege_v");
 
@@ -122,7 +122,7 @@ void GtpMsgHandler::handlePstoCsCancelAcknowlege_v(IpcEMsgUnqPtr eMsg, uint32_t 
 	controlBlk_p->addEventToProcQ(evt);
 }
 
-void GtpMsgHandler::handlePstoCsCompleteNotification_v(IpcEMsgUnqPtr eMsg, uint32_t ueIdx)
+void SvMsgHandler::handlePstoCsCompleteNotification_v(IpcEMsgUnqPtr eMsg, uint32_t ueIdx)
 {
 	log_msg(LOG_INFO, "handlePstoCsCompleteNotification_v");
 	

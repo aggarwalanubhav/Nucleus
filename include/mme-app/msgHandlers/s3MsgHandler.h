@@ -23,8 +23,8 @@ private:
 	void handleForwardAccessContextAcknowledge_v(cmn::IpcEMsgUnqPtr eMsg, uint32_t ueIdx);
 	void handleForwardRelocationResponse_v(cmn::IpcEMsgUnqPtr eMsg, uint32_t ueIdx);
 	void handleRelocationCancelResponse_v(cmn::IpcEMsgUnqPtr eMsg, uint32_t ueIdx);
-	void handleIdentificationReq_v(cmn::IpcEMsgUnqPtr eMsg);
-	void handleContextReq_v(cmn::IpcEMsgUnqPtr eMsg);
+	void handleIdentificationReq_v(cmn::IpcEMsgUnqPtr eMsg, uint32_t ueIdx);
+	void handleContextReq_v(cmn::IpcEMsgUnqPtr eMsg, uint32_t ueIdx);
 
 };
 

@@ -213,6 +213,7 @@ struct handover_required_Q_msg {
 	int target_enb_context_id;
 	int src_enb_context_id;
 	enum handoverType handoverType;
+	enum directFwdPathAvailability directFwdPathAvailability;
 	struct s1apCause cause;
 	struct targetId target_id;
 	struct src_target_transparent_container srcToTargetTranspContainer;
