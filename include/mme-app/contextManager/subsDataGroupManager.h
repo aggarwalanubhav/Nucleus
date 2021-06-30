@@ -29,6 +29,7 @@
 #include "contextManager/mmeSvcReqProcedureCtxtManager.h"
 #include "contextManager/mmeTauProcedureCtxtManager.h"
 #include "contextManager/s1HandoverProcedureContextManager.h"
+#include "contextManager/srvccProcedureContextManager.h"
 #include "contextManager/mmeErabModIndProcedureCtxtManager.h"
 #include "contextManager/mmeSmCreateBearerProcCtxtManager.h"
 #include "contextManager/smDedActProcCtxtManager.h"
@@ -179,6 +180,17 @@ namespace mme
 			 *  Delete a S1HandoverProcedureContext data block
 			 ******************************************/
 			void deleteS1HandoverProcedureContext(S1HandoverProcedureContext* S1HandoverProcedureContextp );
+			/******************************************
+			 * getSrvccProcedureContext
+			 * Get SrvccProcedureContext data block
+			 ******************************************/
+			SrvccProcedureContext* getSrvccProcedureContext();
+			
+			/******************************************
+			 * deleteSrvccProcedureContext
+			 *  Delete a SrvccProcedureContext data block
+			 ******************************************/
+			void deleteSrvccProcedureContext(SrvccProcedureContext* SrvccProcedureContextp );
 			/******************************************
 			 * getMmeErabModIndProcedureCtxt
 			 * Get MmeErabModIndProcedureCtxt data block
@@ -345,6 +357,11 @@ namespace mme
 			* S1HandoverProcedureContext Pool Manager
 			****************************************/
 			S1HandoverProcedureContextManager* S1HandoverProcedureContextManagerm_p;
+			
+			/****************************************
+			* SrvccProcedureContext Pool Manager
+			****************************************/
+			SrvccProcedureContextManager* SrvccProcedureContextManagerm_p;
 			
 			/****************************************
 			* MmeErabModIndProcedureCtxt Pool Manager

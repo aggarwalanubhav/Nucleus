@@ -34,6 +34,7 @@ namespace mme
             accessRestrictionData_m(0),
             imsi_m(),
             msisdn_m(),
+            stnsr_m(),
             ueState_m(InvalidState),
             tai_m(),
             lai_m(),
@@ -41,6 +42,7 @@ namespace mme
             msNetCapab_m(),
             ueNetCapab_m(),
             msClassmark2_m(),
+            msClassmark3_m(),
             voiceDomainPref_m(),
             ueSecInfo_m(),
             ambr_m(),
@@ -217,6 +219,23 @@ namespace mme
 
 	
 	/******************************************************************************
+	* sets stnsr
+	******************************************************************************/
+	void UEContext::setStnsr( const DigitRegister15& stnsr_i )
+	{
+		stnsr_m = stnsr_i;
+	}
+	
+	/******************************************************************************
+	* returns stnsr
+	******************************************************************************/	
+        const DigitRegister15& UEContext::getStnsr() const
+        {
+                return stnsr_m;
+        }
+
+	
+	/******************************************************************************
 	* sets ueState
 	******************************************************************************/
 	void UEContext::setUeState( UE_State_e ueState_i )
@@ -332,6 +351,23 @@ namespace mme
         const Mobile_Station_Classmark_2& UEContext::getMsClassmark2() const
         {
                 return msClassmark2_m;
+        }
+
+	
+	/******************************************************************************
+	* sets msClassmark3
+	******************************************************************************/
+	void UEContext::setMsClassmark3( const Mobile_Station_Classmark_3& msClassmark3_i )
+	{
+		msClassmark3_m = msClassmark3_i;
+	}
+	
+	/******************************************************************************
+	* returns msClassmark3
+	******************************************************************************/	
+        const Mobile_Station_Classmark_3& UEContext::getMsClassmark3() const
+        {
+                return msClassmark3_m;
         }
 
 	
@@ -1904,6 +1940,98 @@ namespace mme
         uint32_t S1HandoverProcedureContext::getSrcS1apEnbUeId() const
         {
                 return srcS1apEnbUeId_m;
+        }
+
+	
+	/******************************************************************************
+	*******************************************************************************
+	*							SrvccProcedureContext
+	*******************************************************************************
+	******************************************************************************/
+	
+	/******************************************************************************
+	* Constructor
+	******************************************************************************/
+	SrvccProcedureContext::SrvccProcedureContext():           
+            targetLai_m(),
+            targetRncId_m(0),
+            rac_m(0),
+            srvccHoIndication_m(invalidho_c)
+	{	
+	}
+	
+	/******************************************************************************
+	* Destructor
+	******************************************************************************/
+	SrvccProcedureContext::~SrvccProcedureContext()
+	{
+	}	
+	
+	/******************************************************************************
+	* sets targetLai
+	******************************************************************************/
+	void SrvccProcedureContext::setTargetLai( const Lai& targetLai_i )
+	{
+		targetLai_m = targetLai_i;
+	}
+	
+	/******************************************************************************
+	* returns targetLai
+	******************************************************************************/	
+        const Lai& SrvccProcedureContext::getTargetLai() const
+        {
+                return targetLai_m;
+        }
+
+	
+	/******************************************************************************
+	* sets targetRncId
+	******************************************************************************/
+	void SrvccProcedureContext::setTargetRncId( uint32_t targetRncId_i )
+	{
+		targetRncId_m = targetRncId_i;
+	}
+	
+	/******************************************************************************
+	* returns targetRncId
+	******************************************************************************/	
+        uint32_t SrvccProcedureContext::getTargetRncId() const
+        {
+                return targetRncId_m;
+        }
+
+	
+	/******************************************************************************
+	* sets rac
+	******************************************************************************/
+	void SrvccProcedureContext::setRac( uint8_t rac_i )
+	{
+		rac_m = rac_i;
+	}
+	
+	/******************************************************************************
+	* returns rac
+	******************************************************************************/	
+        uint8_t SrvccProcedureContext::getRac() const
+        {
+                return rac_m;
+        }
+
+	
+	/******************************************************************************
+	* sets srvccHoIndication
+	******************************************************************************/
+	void SrvccProcedureContext::setSrvccHoIndication( srvcc_ho_indication srvccHoIndication_i )
+	{
+		srvccHoIndication_m = srvccHoIndication_i;
+	}
+	
+	/******************************************************************************
+	* returns srvccHoIndication
+	******************************************************************************/	
+        srvcc_ho_indication SrvccProcedureContext::getSrvccHoIndication() const
+        {
+                return srvccHoIndication_m;
         }
 
 	

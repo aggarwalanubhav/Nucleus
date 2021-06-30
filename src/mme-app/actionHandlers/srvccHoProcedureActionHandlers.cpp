@@ -89,4 +89,3 @@ ActStatus ActionHandlers::send_srvcc_ho_command(ControlBlock& cb)
 {
     return ActStatus::PROCEED;
 }
-

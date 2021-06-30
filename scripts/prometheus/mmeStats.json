@@ -540,6 +540,71 @@
             "dynamic_label_0": [
                 {"sgw_addr" : "sgw address of s11 connection "}
             ]
+        },
+        {
+            "name" : "s3_forward_relocation_response",
+            "help" : "number of forward relocation response received by MME",
+            "label_0": [
+                { "interface":"s3"}
+            ],
+            "label_1": [
+                {"msg_type": "forward_relocation_response"}
+            ],
+            "dynamic_label_0": [
+                {"sgsn_addr" : "sgsn address of s3 connection "}
+            ]
+        },
+        {
+            "name" : "s3_forward_relocation_complete",
+            "help" : "number of forward relocation complete received by MME",
+            "label_0": [
+                { "interface":"s3"}
+            ],
+            "label_1": [
+                {"msg_type": "forward_relocation_complete"}
+            ],
+            "dynamic_label_0": [
+                {"sgsn_addr" : "sgsn address of s3 connection "}
+            ]
+        },
+        {
+            "name" : "sv_ps_to_cs_response",
+            "help" : "number of ps to cs response received by MME",
+            "label_0": [
+                { "interface":"sv"}
+            ],
+            "label_1": [
+                {"msg_type": "ps_to_cs_response"}
+            ],
+            "dynamic_label_0": [
+                {"msc_addr" : "msc address of sv connection "}
+            ]
+        },
+        {
+            "name" : "sv_ps_to_cs_complete",
+            "help" : "number of ps to cs complete received by MME",
+            "label_0": [
+                { "interface":"sv"}
+            ],
+            "label_1": [
+                {"msg_type": "ps_to_cs_complete"}
+            ],
+            "dynamic_label_0": [
+                {"msc_addr" : "msc address of sv connection "}
+            ]
+        },
+        {
+            "name" : "sv_ps_to_cs_cancel_ack",
+            "help" : "number of ps to cs cancel ack received by MME",
+            "label_0": [
+                { "interface":"sv"}
+            ],
+            "label_1": [
+                {"msg_type": "ps_to_cs_cancel_ack"}
+            ],
+            "dynamic_label_0": [
+                {"msc_addr" : "msc address of sv connection "}
+            ]
         }
         ]
     },
@@ -983,6 +1048,71 @@
             ],
             "dynamic_label_0": [
                 {"sgw_addr" : "sgw address of s11 connection "}
+            ]
+        },
+        {
+            "name" : "s3_forward_relocation_request",
+            "help" : "number of forward relocation request sent by MME",
+            "label_0": [
+                { "interface":"s3"}
+            ],
+            "label_1": [
+                {"msg_type": "forward_relocation_request"}
+            ],
+            "dynamic_label_0": [
+                {"sgsn_addr" : "sgsn address of s3 connection "}
+            ]
+        },
+        {
+            "name" : "s3_forward_relocation_complete_ack",
+            "help" : "number of forward relocation complete ack sent by MME",
+            "label_0": [
+                { "interface":"s3"}
+            ],
+            "label_1": [
+                {"msg_type": "forward_relocation_complete_ack"}
+            ],
+            "dynamic_label_0": [
+                {"sgsn_addr" : "sgsn address of s3 connection "}
+            ]
+        },
+        {
+            "name" : "sv_ps_to_cs_request",
+            "help" : "number of ps to cs request sent by MME",
+            "label_0": [
+                { "interface":"sv"}
+            ],
+            "label_1": [
+                {"msg_type": "ps_to_cs_request"}
+            ],
+            "dynamic_label_0": [
+                {"msc_addr" : "msc address of sv connection "}
+            ]
+        },
+        {
+            "name" : "sv_ps_to_cs_complete_ack",
+            "help" : "number of ps to cs complete ack sent by MME",
+            "label_0": [
+                { "interface":"sv"}
+            ],
+            "label_1": [
+                {"msg_type": "ps_to_cs_complete_ack"}
+            ],
+            "dynamic_label_0": [
+                {"msc_addr" : "msc address of sv connection "}
+            ]
+        },
+        {
+            "name" : "sv_ps_to_cs_cancel",
+            "help" : "number of ps to cs cancel sent by MME",
+            "label_0": [
+                { "interface":"sv"}
+            ],
+            "label_1": [
+                {"msg_type": "ps_to_cs_cancel"}
+            ],
+            "dynamic_label_0": [
+                {"msc_addr" : "msc address of sv connection "}
             ]
         },
         { 

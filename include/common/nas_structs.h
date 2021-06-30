@@ -401,6 +401,12 @@ typedef struct Mobile_Station_Classmark_2 {
     uint8_t a5_2_alg_sup:1;
 }Mobile_Station_Classmark_2;
 
+/*Mobile Station Classmark 3*/
+/*Refer spec 24.008 v 10.6.1 sec:10.5.1.7*/
+typedef struct Mobile_Station_Classmark_3 {
+    
+}Mobile_Station_Classmark_3;
+
 /*Voice domain preference and UE's usage setting*/
 /*Refer spec 24.008 v 15.6.0 sec:10.5.5.28*/
 typedef struct Voice_Domain_Preference {
