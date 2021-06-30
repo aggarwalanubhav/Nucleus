@@ -100,6 +100,24 @@ typedef enum msg_type_t {
     deactivate_eps_bearer_context_request,
     deactivate_eps_bearer_context_accept,
     enb_status_msg,
+    forward_relocation_request,
+    forward_relocation_response,
+    forward_access_context_acknowledge,
+    forward_access_context_notification,
+    detach_notification,
+    relocation_cancel_request,
+    relocation_cancel_response,
+    identification_request,
+    identification_response,
+    context_request,
+    context_response,
+    ps_to_cs_request,
+    ps_to_cs_response,
+    ps_to_cs_cancel_acknowledge,
+    ps_to_cs_complete_notification,
+    ps_to_cs_cancel_notification,
+    ps_to_cs_complete_acknowledge,
+    
     max_msg_type
 } msg_type_t;
 
@@ -195,6 +213,7 @@ struct handover_required_Q_msg {
 	int target_enb_context_id;
 	int src_enb_context_id;
 	enum handoverType handoverType;
+	enum directFwdPathAvailability directFwdPathAvailability;
 	struct s1apCause cause;
 	struct targetId target_id;
 	struct src_target_transparent_container srcToTargetTranspContainer;
@@ -740,7 +759,183 @@ struct PS_to_CS_COMP_ACK_msg{
     CauseIeData cause;
 };
 #define SV_PSTOCSCOMPACK_BUF_SIZE sizeof(struct PS_to_CS_COMP_ACK_msg)
- 
+
+struct FORWARD_REL_REQ_msg{
+    msg_type_t msg_type;
+    int ue_idx;
+    bool imsiIePresent;   
+    bool sgwS11S4IpAddressAndTeidForControlPlaneIePresent;   
+    bool sgwNodeNameIePresent;   
+    bool sgsnNodeNameIePresent;   
+    bool mmeNodeNameIePresent;   
+    bool indicationFlagsIePresent;   
+    bool targetIdentificationIePresent;   
+    bool sourceIdentificationIePresent;   
+    bool selectedPlmnIdIePresent;   
+    bool eUtranTransparentContainerIePresent;   
+    bool utranTransparentContainerIePresent;   
+    bool s1ApCauseIePresent;   
+    bool ranapCauseIePresent;   
+    bool servingNetworkIePresent;   
+    bool additionalMmContextForSrvccIePresent;   
+    bool additionalFlagsForSrvccIePresent;   
+    bool msisdnIePresent;   
+    bool cMsisdnIePresent;   
+    bool sourceUdpPortNumberIePresent;   
+    bool traceInformationIePresent;   
+    bool csgIdIePresent;   
+    bool csgMembershipIndicationIePresent;   
+    bool ueUsageTypeIePresent;   
+    bool mmeSgsnUeScefPdnConnectionsIePresent;   
+    bool mmeSgsnAmfUeEpsPdnConnectionsIePresent;   
+
+
+    ImsiIeData imsi;
+    FTeidIeData senderFTeidForControlPlane;
+    FTeidIeData sgwS11S4IpAddressAndTeidForControlPlane;
+    FqdnIeData sgwNodeName;
+    FqdnIeData sgsnNodeName;
+    FqdnIeData mmeNodeName;
+    MmContextIeData mmeSgsnAmfUeMmContext;
+    IndicationIeData indicationFlags;
+    TargetIdentificationIeData targetIdentification;
+    SourceIdentificationIeData sourceIdentification;
+    PlmnIdIeData selectedPlmnId;
+    FContainerIeData eUtranTransparentContainer;
+    FContainerIeData utranTransparentContainer;
+    FCauseIeData s1ApCause;
+    FCauseIeData ranapCause;
+    ServingNetworkIeData servingNetwork;
+    AdditionalMmContextForSrvccIeData additionalMmContextForSrvcc;
+    AdditionalFlagsForSrvccIeData additionalFlagsForSrvcc;
+    MsisdnIeData msisdn;
+    MsisdnIeData cMsisdn;
+    PortNumberIeData sourceUdpPortNumber;
+    TraceInformationIeData traceInformation;
+    CsgIdIeData csgId;
+    CmiIeData csgMembershipIndication;
+    IntegerNumberIeData ueUsageType;
+    MmeSgsnUeScefPdnConnectionsInForwardRelocationRequestData mmeSgsnUeScefPdnConnections;
+    MmeSgsnAmfUeEpsPdnConnectionsInForwardRelocationRequestData mmeSgsnAmfUeEpsPdnConnections;
+};
+#define S3_FWDRELREQ_BUF_SIZE sizeof(struct FORWARD_REL_REQ_msg)
+
+struct FORWARD_ACCESS_CONTEXT_NOT_msg{
+    msg_type_t msg_type;
+    int ue_idx;
+    bool eUtranTransparentContainerIePresent;
+
+    FContainerIeData eUtranTransparentContainer;
+};
+#define S3_FWDACCESSCONTEXTNOT_BUF_SIZE sizeof(struct FORWARD_ACCESS_CONTEXT_NOT_msg)
+
+struct DETACH_NOT_msg{
+    msg_type_t msg_type;
+    int ue_idx;
+    bool detachTypeIePresent;   
+
+    CauseIeData cause;
+    DetachTypeIeData detachType;
+};
+#define S3_DETACHNOT_BUF_SIZE sizeof(struct DETACH_NOT_msg)
+
+struct RELOCATION_CAN_REQ_msg
+{
+    msg_type_t msg_type;
+    int ue_idx;
+    bool imsiIePresent;   
+    bool meIdentityIePresent;   
+    bool indicationFlagsIePresent;   
+    bool ranapCauseIePresent;   
+
+
+    ImsiIeData imsi;
+    MeiIeData meIdentity;
+    IndicationIeData indicationFlags;
+    FCauseIeData ranapCause;
+};
+#define S3_RELOCATIONCANCELREQ_BUF_SIZE sizeof(struct RELOCATION_CAN_REQ_msg)
+
+struct IDENTIFICATION_RES_msg{
+    msg_type_t msg_type;
+    int ue_idx;
+    bool imsiIePresent;   
+    bool mmeSgsnUeMmContextIePresent;   
+    bool traceInformationIePresent;   
+    bool ueUsageTypeIePresent;   
+    bool monitoringEventInformationIePresent;   
+
+
+    CauseIeData cause;
+    ImsiIeData imsi;
+    MmContextIeData mmeSgsnUeMmContext;
+    TraceInformationIeData traceInformation;
+    IntegerNumberIeData ueUsageType;
+    MonitoringEventInformationIeData monitoringEventInformation;
+};
+#define S3_IDENTIFICATION_RES_BUF_SIZE sizeof(struct IDENTIFICATION_RES_msg)
+
+struct CONTEXT_RES_msg
+{
+    msg_type_t msg_type;
+    int ue_idx;
+    bool imsiIePresent;   
+    bool mmeSgsnAmfUeMmContextIePresent;   
+    bool mmeSgsnAmfUeEpsPdnConnectionsIePresent;   
+    bool senderFTeidForControlPlaneIePresent;   
+    bool sgwNodeNameIePresent;   
+    bool indicationFlagsIePresent;   
+    bool traceInformationIePresent;   
+    bool ipAddressIePresent;   
+    bool mmeS4SgsnLdnIePresent;   
+    bool sgsnNodeNameIePresent;   
+    bool mmeNodeNameIePresent;   
+    bool uciIePresent;   
+    bool ueUsageTypeIePresent;   
+    bool ratTypeIePresent;   
+
+
+    CauseIeData cause;
+    ImsiIeData imsi;
+    MmContextIeData mmeSgsnAmfUeMmContext;
+    MmeSgsnAmfUeEpsPdnConnectionsInContextResponseData mmeSgsnAmfUeEpsPdnConnections;
+    FTeidIeData senderFTeidForControlPlane;
+    FqdnIeData sgwNodeName;
+    IndicationIeData indicationFlags;
+    TraceInformationIeData traceInformation;
+    IpAddressIeData ipAddress;
+    LocalDistinguishedNameIeData mmeS4SgsnLdn;
+    FqdnIeData sgsnNodeName;
+    FqdnIeData mmeNodeName;
+    UciIeData uci;
+    IntegerNumberIeData ueUsageType;
+    RatTypeIeData ratType;
+};
+#define S3_CONTEXT_RES_BUF_SIZE sizeof(struct CONTEXT_RES_msg)
+
+struct DELETE_BEARER_COMMAND_msg{
+    msg_type_t msg_type;
+    int ue_idx;
+    bool userLocationInformationIePresent;   
+    bool uliTimestampIePresent;   
+    bool ueTimeZoneIePresent;   
+    bool mmeS4SgsnsOverloadControlInformationIePresent;   
+    bool sgwsOverloadControlInformationIePresent;   
+    bool senderFTeidForControlPlaneIePresent;   
+    bool secondaryRatUsageDataReportIePresent;   
+
+
+    BearerContextsInDeleteBearerCommandData bearerContexts;
+    UliIeData userLocationInformation;
+    UliTimestampIeData uliTimestamp;
+    UeTimeZoneIeData ueTimeZone;
+    MmeS4SgsnsOverloadControlInformationInDeleteBearerCommandData mmeS4SgsnsOverloadControlInformation;
+    SgwsOverloadControlInformationInDeleteBearerCommandData sgwsOverloadControlInformation;
+    FTeidIeData senderFTeidForControlPlane;
+    SecondaryRatUsageDataReportIeData secondaryRatUsageDataReport;
+};
+#define S11_DELETE_BEARER_CMD_BUF_SIZE sizeof(struct DELETE_BEARER_COMMAND_msg)
+
 /*************************
  * Incoming GTP Messages
  *************************/
@@ -820,8 +1015,88 @@ struct db_req_Q_msg {
     struct pco pco;
 };
 
+struct FWD_ACCESS_CONTEXT_ACK_msg
+{
+    gtp_incoming_msg_data_t header;
+    int s11_mme_cp_teid;
+    bool causeIePresent;   
+
+    CauseIeData cause;
+};
+
+struct REL_CAN_RES_msg
+{
+    gtp_incoming_msg_data_t header;
+    int s11_mme_cp_teid;
+    bool causeIePresent;   
+
+    CauseIeData cause;
+};
+
+struct IDENTIFICATION_REQ_msg{
+    gtp_incoming_msg_data_t header;
+    int s11_mme_cp_teid;
+    bool gutiIePresent;   
+    bool completeAttachRequestMessageIePresent;   
+    bool pTmsiIePresent;   
+    bool pTmsiSignatureIePresent;   
+    bool addressForControlPlaneIePresent;   
+    bool udpSourcePortNumberIePresent;   
+    bool hopCounterIePresent;   
+    bool targetPlmnIdIePresent;   
+
+
+    GutiIeData guti;
+    CompleteRequestMessageIeData completeAttachRequestMessage;
+    PTmsiIeData pTmsi;
+    PTmsiSignatureIeData pTmsiSignature;
+    IpAddressIeData addressForControlPlane;
+    PortNumberIeData udpSourcePortNumber;
+    HopCounterIeData hopCounter;
+    ServingNetworkIeData targetPlmnId;
+};
+
+struct CONTEXT_REQ_msg{
+    gtp_incoming_msg_data_t header;
+    int s11_mme_cp_teid;
+    bool imsiIePresent;   
+    bool gutiIePresent;   
+    bool routeingAreaIdentityIePresent;   
+    bool packetTmsiIePresent;   
+    bool pTmsiSignatureIePresent;   
+    bool completeTauRequestMessageIePresent;   
+    bool teidForControlPlaneIePresent;   
+    bool udpSourcePortNumberIePresent;   
+    bool ratTypeIePresent;   
+    bool indicationFlagsIePresent;   
+    bool targetPlmnIdIePresent;   
+    bool sgsnNodeNameIePresent;   
+    bool mmeNodeNameIePresent;   
+    bool sgsnNumberIePresent;   
+    bool sgsnIdentifierIePresent;   
+    bool mmeIdentifierIePresent;   
+
+
+    ImsiIeData imsi;
+    GutiIeData guti;
+    UliIeData routeingAreaIdentity;
+    PTmsiIeData packetTmsi;
+    PTmsiSignatureIeData pTmsiSignature;
+    CompleteRequestMessageIeData completeTauRequestMessage;
+    FTeidIeData teidForControlPlane;
+    PortNumberIeData udpSourcePortNumber;
+    RatTypeIeData ratType;
+    IndicationIeData indicationFlags;
+    ServingNetworkIeData targetPlmnId;
+    FqdnIeData sgsnNodeName;
+    FqdnIeData mmeNodeName;
+    NodeNumberIeData sgsnNumber;
+    NodeIdentifierIeData sgsnIdentifier;
+    NodeIdentifierIeData mmeIdentifier;
+};
 struct ps_to_cs_res_Q_msg {
     gtp_incoming_msg_data_t header;
+    int s11_mme_cp_teid;
     int sv_mme_cp_teid;
     SrvccCauseIeData srvcc_cause;
     uint32_t msc_ip;
@@ -831,6 +1106,7 @@ struct ps_to_cs_res_Q_msg {
 
 struct ps_to_cs_comp_noti_Q_msg {
     gtp_incoming_msg_data_t header;
+    int s11_mme_cp_teid;
     int sv_mme_cp_teid;
     unsigned char IMSI[BINARY_IMSI_LEN];
     SrvccCauseIeData srvcc_cause; 
@@ -838,11 +1114,52 @@ struct ps_to_cs_comp_noti_Q_msg {
 
 struct ps_to_cs_cancel_ack_Q_msg {
     gtp_incoming_msg_data_t header;
+    int s11_mme_cp_teid;
     int sv_mme_cp_teid;
     uint8_t cause;
     
     bool svFlagsIePresent;
     SvFlagsIeData sv_flags;
+};
+struct forward_rel_response_msg
+{
+    gtp_incoming_msg_data_t header;
+    int s11_mme_cp_teid;
+    bool senderFTeidForControlPlaneIePresent;   
+    bool indicationFlagsIePresent;   
+    bool s1ApCauseIePresent;   
+    bool ranapCauseIePresent;   
+    bool sgwNodeNameIePresent;   
+    bool eUtranTranparentContainerIePresent;   
+    bool utranTranparentContainerIePresent;   
+    bool mmeS4SgsnLdnIePresent;   
+    bool sgsnNodeNameIePresent;   
+    bool mmeNodeNameIePresent;   
+    bool sgsnNumberIePresent;   
+    bool sgsnIdentifierIePresent;   
+    bool mmeIdentifierIePresent;   
+
+
+    CauseIeData cause;
+    FTeidIeData senderFTeidForControlPlane;
+    IndicationIeData indicationFlags;
+
+    Uint16 listOfSetUpBearersCount;
+    ListOfSetUpBearersInForwardRelocationResponseData listOfSetUpBearers[11];
+
+    Uint16 listOfRabsCount;
+    ListOfRabsInForwardRelocationResponseData listOfRabs[11];
+    FCauseIeData s1ApCause;
+    FCauseIeData ranapCause;
+    FqdnIeData sgwNodeName;
+    FContainerIeData eUtranTranparentContainer;
+    FContainerIeData utranTranparentContainer;
+    LocalDistinguishedNameIeData mmeS4SgsnLdn;
+    FqdnIeData sgsnNodeName;
+    FqdnIeData mmeNodeName;
+    NodeNumberIeData sgsnNumber;
+    NodeIdentifierIeData sgsnIdentifier;
+    NodeIdentifierIeData mmeIdentifier;
 };
 
 #define GTP_READ_MSG_BUF_SIZE sizeof(gtp_incoming_msg_data_t)
