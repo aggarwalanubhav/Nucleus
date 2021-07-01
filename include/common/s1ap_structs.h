@@ -100,6 +100,7 @@ typedef struct ue_sec_capabilities {
 #define BINARY_IMSI_LEN 8 /*same as packet capture. TODO: Write macros*/
 #define BCD_IMSI_STR_LEN 15
 #define MME_NAME_STR_LEN 30
+#define BINARY_STNSR_LEN 11
 
 /*36.413: 9.1.8.4*/
 #define ENB_NAME_SIZE 150
@@ -157,6 +158,11 @@ typedef enum handoverType {
         LTEtoNR,
         NRtoLTE
 }handoverType;
+
+typedef enum srvccHoIndication {
+    PSandCS,
+	CSonly
+}srvccHoIndication;
 
 typedef enum directFwdPathAvailability {
 	directPathAvailable

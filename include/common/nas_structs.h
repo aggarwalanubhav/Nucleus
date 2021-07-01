@@ -404,6 +404,78 @@ typedef struct Mobile_Station_Classmark_2 {
 /*Mobile Station Classmark 3*/
 /*Refer spec 24.008 v 10.6.1 sec:10.5.1.7*/
 typedef struct Mobile_Station_Classmark_3 {
+    //Octet 3
+    uint8_t sb1:1;
+    //uint8_t mb_sup:3;
+    uint8_t gsm_1800:1;
+    uint8_t e_r_gsm:1;
+    uint8_t p_gsm:1;
+    //A5 bits
+    uint8_t a5_7_alg_sup:1;
+    uint8_t a5_6_alg_sup:1;
+    uint8_t a5_5_alg_sup:1;
+    uint8_t a5_4_alg_sup:1;
+
+    //Octet 4
+    uint8_t r_sup:1;
+    //uint8_t mb_sup:3;
+    uint8_t hscsd_ms_cap:1;
+    uint8_t ucs2_t:1;
+    uint8_t em_cap:1;
+    //A5 bits
+    uint8_t ms_m_cap:1;
+    uint8_t sms_val:4;
+
+    //Octet 5
+    uint8_t sm_val:4;
+    uint8_t ms_pos_cap:1;
+    uint8_t ecsd_ms_cab:1;
+    uint8_t strct_8_psk:1;
+
+    //Octet 6
+    // 8-PSK struct
+    uint8_t mod_cap:1;
+    uint8_t rf_pow_cap_1:1;
+    uint8_t rf_pow_cap_2:1;
+    uint8_t gsm_400_info:1;
+    uint8_t gsm_850_rad_cap:1;
+    uint8_t gsm_1900_rad_cap:1;
+    uint8_t umts_fdd_rat_cap:1;
+    uint8_t umts_3_84_mcps_tdd:1;
+
+    //Octet 7
+    uint8_t cdma_2000_rat:1;
+    uint8_t dtm_e_gprs:1;
+    uint8_t s_band_sup:1;
+    uint8_t gsm_750_cap:1;
+    uint8_t umts_1_28_mcps_tdd:1;
+    uint8_t geran_feat_pack_1:1;
+    uint8_t ex_dtm_e_gprs:1;
+    uint8_t high_ms_cap_p:1;
+
+    //Octet 8
+    //High MultiSlot cap
+    uint8_t high_ms_cap:2;
+    uint8_t geran_iu_m:1;
+    uint8_t geran_feat_pack_2:1;
+    uint8_t gmsk_ms_pow_p:2;
+    uint8_t ms_pow_p_8_psk:2;
+
+    //Octet 9
+    uint8_t t_gsm_400_p:1;
+    uint8_t t_gsm_900_cap_p:1;
+    uint8_t dl_adv_rec_perf:2;
+    uint8_t dtm_enh_cap:1;
+    uint8_t dtm_e_gprs_hsm_p:1;
+    uint8_t rep_acch_cap:1;
+    uint8_t gsm_710_cap_p:1;
+
+    //Octet 10
+    uint8_t gsm_710_cap:4;
+    uint8_t t_gsm_810_cap_p:1;
+    uint8_t ciph_md_set_cap:1;
+    uint8_t add_pos_cap:1;
+    uint8_t eutra_fdd_sup:1;
     
 }Mobile_Station_Classmark_3;
 

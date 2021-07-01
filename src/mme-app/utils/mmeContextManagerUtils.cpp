@@ -150,6 +150,24 @@ S1HandoverProcedureContext* MmeContextManagerUtils::allocateHoContext(SM::Contro
     return prcdCtxt_p;
 }
 
+SrvccProcedureContext* MmeContextManagerUtils::allocateSrvccContext(SM::ControlBlock& cb_r)
+{
+    log_msg(LOG_DEBUG, "allocateSrvccContext: Entry");
+
+    SrvccProcedureContext *prcdCtxt_p =
+            SubsDataGroupManager::Instance()->getSrvccProcedureContext();
+    if (prcdCtxt_p != NULL)
+    {
+        //mmeStats::Instance()->increment(mmeStatsCounter::MME_PROCEDURES_S1_ENB_HANDOVER_PROC);
+        prcdCtxt_p->setCtxtType(ProcedureType::srvcc_c);
+        //prcdCtxt_p->setNextState(IntraS1HoStart::Instance());
+        //prcdCtxt_p->setHoType(intraMmeS1Ho_c);
+        cb_r.addTempDataBlock(prcdCtxt_p);
+    }
+
+    return prcdCtxt_p;
+}
+
 MmeSmCreateBearerProcCtxt*
 MmeContextManagerUtils::allocateCreateBearerRequestProcedureCtxt(SM::ControlBlock& cb_r, uint8_t bearerId)
 {
@@ -297,6 +315,15 @@ bool MmeContextManagerUtils::deleteProcedureCtxt(MmeProcedureCtxt* procedure_p)
 					static_cast<S1HandoverProcedureContext*>(procedure_p);
 
 			subsDgMgr_p->deleteS1HandoverProcedureContext(s1HoProc_p);
+
+			break;
+		}
+        case srvcc_c:
+		{
+			SrvccProcedureContext* srvcc_p =
+					static_cast<SrvccProcedureContext*>(procedure_p);
+
+			subsDgMgr_p->deleteSrvccProcedureContext(srvcc_p);
 
 			break;
 		}
