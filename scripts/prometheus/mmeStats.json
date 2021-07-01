@@ -1341,6 +1341,33 @@
             ]
         },
         {
+            "name" : "srvcc_proc",
+            "help" : "number of srvcc procedure started by MME",
+            "label_0": [
+                { "procedure":"SRVCC_PROC"}
+            ],
+            "dynamic_label_0": [
+                {"enb_addr" : "enb address of s1ap connection "}
+            ]
+        },
+        {
+            "name" : "srvcc_proc_result",
+            "help" : "srvcc procedure results",
+            "label_0": [
+                { "procedure":"SRVCC_PROC"}
+            ],
+            "label_1": [
+                {"proc_result": "success"},
+                {"proc_result": "failure"}
+            ],
+            "dynamic_label_0": [
+                {"enb_addr" : "enb address of s1ap connection "}
+            ],
+            "dynamic_label_1": [
+                {"failure_reason" : "Put failure reason here.String without space  "}
+            ]
+        },
+        {
             "name" : "erab_mod_ind_proc",
             "help" : "number of erab modification indication procedure started by MME",
             "label_0": [

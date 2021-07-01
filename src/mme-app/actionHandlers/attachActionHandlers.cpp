@@ -326,6 +326,11 @@ ActStatus ActionHandlers::process_ula(SM::ControlBlock& cb)
 	
 	ue_ctxt->setPdnAddr(Paa(pdn_addr));
 	
+	//SRVCC
+	DigitRegister15 STNSRInfo;
+	STNSRInfo.convertFromBcdArray(ula_msg->STNSR);
+	ue_ctxt->setStnsr(STNSRInfo);
+
 	ProcedureStats::num_of_processed_ula ++;
 	log_msg(LOG_DEBUG, "Leaving handle_ula_v ");
 	

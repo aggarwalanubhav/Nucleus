@@ -206,6 +206,9 @@ mme_procedures_tau_proc_failure(mme_procedures_family.Add({{"procedure","TAU_PRO
 mme_procedures_s1_enb_handover_proc(mme_procedures_family.Add({{"procedure","S1_ENB_HANDOVER_PROC"}})),
 mme_procedures_s1_enb_handover_proc_success(mme_procedures_family.Add({{"procedure","S1_ENB_HANDOVER_PROC"},{"proc_result","success"}})),
 mme_procedures_s1_enb_handover_proc_failure(mme_procedures_family.Add({{"procedure","S1_ENB_HANDOVER_PROC"},{"proc_result","failure"}})),
+mme_procedures_srvcc_proc(mme_procedures_family.Add({{"procedure","SRVCC_PROC"}})),
+mme_procedures_srvcc_proc_success(mme_procedures_family.Add({{"procedure","SRVCC_PROC"},{"proc_result","success"}})),
+mme_procedures_srvcc_proc_failure(mme_procedures_family.Add({{"procedure","SRVCC_PROC"},{"proc_result","failure"}})),
 mme_procedures_erab_mod_ind_proc(mme_procedures_family.Add({{"procedure","ERAB_MOD_IND_PROC"}})),
 mme_procedures_erab_mod_ind_proc_success(mme_procedures_family.Add({{"procedure","ERAB_MOD_IND_PROC"},{"proc_result","success"}})),
 mme_procedures_erab_mod_ind_proc_failure(mme_procedures_family.Add({{"procedure","ERAB_MOD_IND_PROC"},{"proc_result","failure"}})),
@@ -5736,6 +5739,159 @@ void mmeStats::increment(mmeStatsCounter name,std::map<std::string,std::string> 
 		    obj->counter.Increment();
 		} else {
 		    mme_procedures_DynamicMetricObject3 *obj = mme_procedures_m->add_dynamic3("procedure","S1_ENB_HANDOVER_PROC","proc_result","failure",it1->first, it1->second, it2->first, it2->second, it3->first, it3->second);
+		    auto p1 = std::make_pair(s1, obj);
+		    metrics_map.insert(p1);
+		    obj->counter.Increment();
+		}
+		}
+		break;
+	}
+	case mmeStatsCounter::MME_PROCEDURES_SRVCC_PROC:
+	{
+		mme_procedures_m->mme_procedures_srvcc_proc.Increment();
+		if(labels.size() == 0) {
+		break;
+		}
+		if(labels.size() == 1) {
+		auto it = labels. begin();
+		struct Node s1 = {name, it->first, it->second};
+		auto it1 = metrics_map.find(s1);
+		if(it1 != metrics_map.end()) {
+		    mme_procedures_DynamicMetricObject1 *obj = static_cast<mme_procedures_DynamicMetricObject1 *>(it1->second);
+		    obj->counter.Increment();
+		} else {
+		    mme_procedures_DynamicMetricObject1 *obj = mme_procedures_m->add_dynamic1("procedure","SRVCC_PROC",it->first, it->second);
+		    auto p1 = std::make_pair(s1, obj);
+		    metrics_map.insert(p1);
+		    obj->counter.Increment();
+		}
+		} else if (labels.size() == 2) {
+		auto it1 = labels. begin();
+		auto it2 = it1++;
+		struct Node s1 = {name, it1->first+it2->first, it2->second+it2->second};
+		auto itf = metrics_map.find(s1);
+		if(itf != metrics_map.end()) {
+		    mme_procedures_DynamicMetricObject2 *obj = static_cast<mme_procedures_DynamicMetricObject2 *>(itf->second);
+		    obj->counter.Increment();
+		} else {
+		    mme_procedures_DynamicMetricObject2 *obj = mme_procedures_m->add_dynamic2("procedure","SRVCC_PROC",it1->first, it1->second, it2->first, it2->second);
+		    auto p1 = std::make_pair(s1, obj);
+		    metrics_map.insert(p1);
+		    obj->counter.Increment();
+		} 
+		} else if (labels.size() == 3) {
+		auto it1 = labels. begin();
+		auto it2 = it1++;
+		auto it3 = it1++;
+		struct Node s1 = {name, it1->first+it2->first+it3->first, it1->second+it2->second+it3->second};
+		auto itf = metrics_map.find(s1);
+		if(itf != metrics_map.end()) {
+		    mme_procedures_DynamicMetricObject3 *obj = static_cast<mme_procedures_DynamicMetricObject3 *>(itf->second);
+		    obj->counter.Increment();
+		} else {
+		    mme_procedures_DynamicMetricObject3 *obj = mme_procedures_m->add_dynamic3("procedure","SRVCC_PROC",it1->first, it1->second, it2->first, it2->second, it3->first, it3->second);
+		    auto p1 = std::make_pair(s1, obj);
+		    metrics_map.insert(p1);
+		    obj->counter.Increment();
+		}
+		}
+		break;
+	}
+	case mmeStatsCounter::MME_PROCEDURES_SRVCC_PROC_SUCCESS:
+	{
+		mme_procedures_m->mme_procedures_srvcc_proc_success.Increment();
+		if(labels.size() == 0) {
+		break;
+		}
+		if(labels.size() == 1) {
+		auto it = labels. begin();
+		struct Node s1 = {name, it->first, it->second};
+		auto it1 = metrics_map.find(s1);
+		if(it1 != metrics_map.end()) {
+		    mme_procedures_DynamicMetricObject1 *obj = static_cast<mme_procedures_DynamicMetricObject1 *>(it1->second);
+		    obj->counter.Increment();
+		} else {
+		    mme_procedures_DynamicMetricObject1 *obj = mme_procedures_m->add_dynamic1("procedure","SRVCC_PROC","proc_result","success",it->first, it->second);
+		    auto p1 = std::make_pair(s1, obj);
+		    metrics_map.insert(p1);
+		    obj->counter.Increment();
+		}
+		} else if (labels.size() == 2) {
+		auto it1 = labels. begin();
+		auto it2 = it1++;
+		struct Node s1 = {name, it1->first+it2->first, it2->second+it2->second};
+		auto itf = metrics_map.find(s1);
+		if(itf != metrics_map.end()) {
+		    mme_procedures_DynamicMetricObject2 *obj = static_cast<mme_procedures_DynamicMetricObject2 *>(itf->second);
+		    obj->counter.Increment();
+		} else {
+		    mme_procedures_DynamicMetricObject2 *obj = mme_procedures_m->add_dynamic2("procedure","SRVCC_PROC","proc_result","success",it1->first, it1->second, it2->first, it2->second);
+		    auto p1 = std::make_pair(s1, obj);
+		    metrics_map.insert(p1);
+		    obj->counter.Increment();
+		} 
+		} else if (labels.size() == 3) {
+		auto it1 = labels. begin();
+		auto it2 = it1++;
+		auto it3 = it1++;
+		struct Node s1 = {name, it1->first+it2->first+it3->first, it1->second+it2->second+it3->second};
+		auto itf = metrics_map.find(s1);
+		if(itf != metrics_map.end()) {
+		    mme_procedures_DynamicMetricObject3 *obj = static_cast<mme_procedures_DynamicMetricObject3 *>(itf->second);
+		    obj->counter.Increment();
+		} else {
+		    mme_procedures_DynamicMetricObject3 *obj = mme_procedures_m->add_dynamic3("procedure","SRVCC_PROC","proc_result","success",it1->first, it1->second, it2->first, it2->second, it3->first, it3->second);
+		    auto p1 = std::make_pair(s1, obj);
+		    metrics_map.insert(p1);
+		    obj->counter.Increment();
+		}
+		}
+		break;
+	}
+	case mmeStatsCounter::MME_PROCEDURES_SRVCC_PROC_FAILURE:
+	{
+		mme_procedures_m->mme_procedures_srvcc_proc_failure.Increment();
+		if(labels.size() == 0) {
+		break;
+		}
+		if(labels.size() == 1) {
+		auto it = labels. begin();
+		struct Node s1 = {name, it->first, it->second};
+		auto it1 = metrics_map.find(s1);
+		if(it1 != metrics_map.end()) {
+		    mme_procedures_DynamicMetricObject1 *obj = static_cast<mme_procedures_DynamicMetricObject1 *>(it1->second);
+		    obj->counter.Increment();
+		} else {
+		    mme_procedures_DynamicMetricObject1 *obj = mme_procedures_m->add_dynamic1("procedure","SRVCC_PROC","proc_result","failure",it->first, it->second);
+		    auto p1 = std::make_pair(s1, obj);
+		    metrics_map.insert(p1);
+		    obj->counter.Increment();
+		}
+		} else if (labels.size() == 2) {
+		auto it1 = labels. begin();
+		auto it2 = it1++;
+		struct Node s1 = {name, it1->first+it2->first, it2->second+it2->second};
+		auto itf = metrics_map.find(s1);
+		if(itf != metrics_map.end()) {
+		    mme_procedures_DynamicMetricObject2 *obj = static_cast<mme_procedures_DynamicMetricObject2 *>(itf->second);
+		    obj->counter.Increment();
+		} else {
+		    mme_procedures_DynamicMetricObject2 *obj = mme_procedures_m->add_dynamic2("procedure","SRVCC_PROC","proc_result","failure",it1->first, it1->second, it2->first, it2->second);
+		    auto p1 = std::make_pair(s1, obj);
+		    metrics_map.insert(p1);
+		    obj->counter.Increment();
+		} 
+		} else if (labels.size() == 3) {
+		auto it1 = labels. begin();
+		auto it2 = it1++;
+		auto it3 = it1++;
+		struct Node s1 = {name, it1->first+it2->first+it3->first, it1->second+it2->second+it3->second};
+		auto itf = metrics_map.find(s1);
+		if(itf != metrics_map.end()) {
+		    mme_procedures_DynamicMetricObject3 *obj = static_cast<mme_procedures_DynamicMetricObject3 *>(itf->second);
+		    obj->counter.Increment();
+		} else {
+		    mme_procedures_DynamicMetricObject3 *obj = mme_procedures_m->add_dynamic3("procedure","SRVCC_PROC","proc_result","failure",it1->first, it1->second, it2->first, it2->second, it3->first, it3->second);
 		    auto p1 = std::make_pair(s1, obj);
 		    metrics_map.insert(p1);
 		    obj->counter.Increment();
