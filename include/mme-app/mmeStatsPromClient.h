@@ -127,6 +127,9 @@ enum class mmeStatsCounter {
 	MME_PROCEDURES_S1_ENB_HANDOVER_PROC,
 	MME_PROCEDURES_S1_ENB_HANDOVER_PROC_SUCCESS,
 	MME_PROCEDURES_S1_ENB_HANDOVER_PROC_FAILURE,
+	MME_PROCEDURES_SRVCC_PROC,
+	MME_PROCEDURES_SRVCC_PROC_SUCCESS,
+	MME_PROCEDURES_SRVCC_PROC_FAILURE,
 	MME_PROCEDURES_ERAB_MOD_IND_PROC,
 	MME_PROCEDURES_ERAB_MOD_IND_PROC_SUCCESS,
 	MME_PROCEDURES_ERAB_MOD_IND_PROC_FAILURE,
@@ -630,6 +633,9 @@ class mme_procedures_counters {
 	Counter &mme_procedures_s1_enb_handover_proc;
 	Counter &mme_procedures_s1_enb_handover_proc_success;
 	Counter &mme_procedures_s1_enb_handover_proc_failure;
+	Counter &mme_procedures_srvcc_proc;
+	Counter &mme_procedures_srvcc_proc_success;
+	Counter &mme_procedures_srvcc_proc_failure;
 	Counter &mme_procedures_erab_mod_ind_proc;
 	Counter &mme_procedures_erab_mod_ind_proc_success;
 	Counter &mme_procedures_erab_mod_ind_proc_failure;

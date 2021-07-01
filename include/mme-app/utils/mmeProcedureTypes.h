@@ -33,6 +33,7 @@ namespace mme
     	serviceRequest_c,
     	tau_c,
     	s1Handover_c,
+		srvcc_c,
         erabModInd_c,
 	cbReq_c,
 	dedBrActivation_c,

@@ -146,6 +146,9 @@
 |Counter|number_of_procedures|s1_enb_handover_proc|number of s1 enb handover procedure started by MME|[{'procedure': 'S1_ENB_HANDOVER_PROC'}]|['enb_addr']|
 |Counter|number_of_procedures|s1_enb_handover_proc_result|s1 enb handover procedure results|[{'procedure': 'S1_ENB_HANDOVER_PROC'}, {'proc_result': 'success'}]|['enb_addr', 'failure_reason']|
 |Counter|number_of_procedures|s1_enb_handover_proc_result|s1 enb handover procedure results|[{'procedure': 'S1_ENB_HANDOVER_PROC'}, {'proc_result': 'failure'}]|['enb_addr', 'failure_reason']|
+|Counter|number_of_procedures|srvcc_proc|number of srvcc procedure started by MME|[{'procedure': 'SRVCC_PROC'}]|['enb_addr']|
+|Counter|number_of_procedures|srvcc_proc_result|srvcc procedure results|[{'procedure': 'SRVCC_PROC'}, {'proc_result': 'success'}]|['enb_addr', 'failure_reason']|
+|Counter|number_of_procedures|srvcc_proc_result|srvcc procedure results|[{'procedure': 'SRVCC_PROC'}, {'proc_result': 'failure'}]|['enb_addr', 'failure_reason']|
 |Counter|number_of_procedures|erab_mod_ind_proc|number of erab modification indication procedure started by MME|[{'procedure': 'ERAB_MOD_IND_PROC'}]|['enb_addr']|
 |Counter|number_of_procedures|erab_mod_ind_proc_result|erab modification indication indication procedure results|[{'procedure': 'ERAB_MOD_IND_PROC'}, {'proc_result': 'success'}]|['enb_addr', 'failure_reason']|
 |Counter|number_of_procedures|erab_mod_ind_proc_result|erab modification indication indication procedure results|[{'procedure': 'ERAB_MOD_IND_PROC'}, {'proc_result': 'failure'}]|['enb_addr', 'failure_reason']|

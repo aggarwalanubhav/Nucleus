@@ -149,6 +149,7 @@ struct ue_attach_info {
     UE_net_capab ue_net_capab;
     bool ue_add_sec_cap_present;
     ue_add_sec_capabilities ue_add_sec_capab;
+    Mobile_Station_Classmark_2 ms_classmark2;
     enum ie_RRC_est_cause rrc_cause;
     int enb_fd;
     char esm_info_tx_required;
@@ -213,6 +214,7 @@ struct handover_required_Q_msg {
 	int target_enb_context_id;
 	int src_enb_context_id;
 	enum handoverType handoverType;
+    enum srvccHoIndication hoIndication;
 	enum directFwdPathAvailability directFwdPathAvailability;
 	struct s1apCause cause;
 	struct targetId target_id;
@@ -728,12 +730,13 @@ struct PS_to_CS_REQ_msg{
     bool mmContextForEutranSrvccIePresent;   
 
 
-    ImsiIeData imsi;
+    unsigned char IMSI[BINARY_IMSI_LEN];
     IpAddressIeData mmeSgsnSvaddressForControlplane;
     TeidCIeData mmeSgsnSvTeidForControlPlane;
-    MsisdnIeData cMsisdn;
+    unsigned char MSISDN[MSISDN_STR_LEN];
     TargetRncIdIeData targetRncId;
     SvFlagsIeData svFlags;
+    unsigned char STNSR[BINARY_STNSR_LEN];
     StnSrIeData stnSr;
     MmContextForEutranSrvccIeData mmContextForEutranSrvcc;
     SourceToTargetTransparentContainerIeData sourceToTargetTransparentContainer;
@@ -1115,7 +1118,7 @@ struct ps_to_cs_res_Q_msg {
     SrvccCauseIeData srvcc_cause;
     uint32_t msc_ip;
     TeidCIeData teid_c;
-    TargetToSourceTransparentContainerIeData target_to_source_transparent_container;
+    struct src_target_transparent_container target_to_source_transparent_container;
 };
 
 struct ps_to_cs_comp_noti_Q_msg {
@@ -1247,6 +1250,7 @@ struct ula_Q_msg {
     unsigned int apn_config_profile_ctx_id;
     int all_APN_cfg_included_ind;
     char MSISDN[MSISDN_STR_LEN];
+    uint8_t STNSR[11];
     struct apn_name selected_apn;
     uint32_t static_addr;
     supported_features_list supp_features_list;
