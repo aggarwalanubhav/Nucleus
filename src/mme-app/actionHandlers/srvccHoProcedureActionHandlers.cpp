@@ -107,6 +107,8 @@ ActStatus ActionHandlers::process_ps_to_cs_comp(ControlBlock& cb)
     }
 
     struct PS_to_CS_COMP_ACK_msg ps_to_cs_ack_msg;
+    ps_to_cs_ack_msg.msg_type = ps_to_cs_complete_acknowledge;
+	ps_to_cs_ack_msg.ue_idx = ueCtxt.getContextID();
     ps_to_cs_ack_msg.cause.causeValue = 16;
 
     mmeStats::Instance()->increment(mmeStatsCounter::MME_MSG_TX_SV_PS_TO_CS_COMPLETE_ACK);
@@ -125,6 +127,52 @@ ActStatus ActionHandlers::process_ps_to_cs_comp(ControlBlock& cb)
 ***************************************/
 ActStatus ActionHandlers::send_del_bearer_command(ControlBlock& cb)
 {
+    log_msg(LOG_DEBUG, "Inside send_del_bearer_command ");
+
+    UEContext *ue_ctxt = static_cast<UEContext*>(cb.getPermDataBlock());
+    if (ue_ctxt == NULL)
+    {
+        log_msg(LOG_DEBUG,
+                "send_del_bearer_command: ue context or procedure ctxt is NULL ");
+        return ActStatus::HALT;
+    }
+
+    SrvccProcedureContext *srvcc_ctxt =
+            dynamic_cast<SrvccProcedureContext*>(cb.getTempDataBlock());
+    if (srvcc_ctxt == NULL)
+    {
+        log_msg(LOG_DEBUG, "send_del_bearer_command: procedure ctxt is NULL ");
+        return ActStatus::HALT;
+    }
+
+    auto& sessionCtxtContainer = ue_ctxt->getSessionContextContainer();
+    if(sessionCtxtContainer.size() < 1)
+    {
+	log_msg(LOG_DEBUG, "send_del_bearer_command:Session context list empty");
+	return ActStatus::HALT;
+    }
+
+    SessionContext* sessionCtxt = sessionCtxtContainer.front();
+
+    struct DELETE_BEARER_COMMAND_msg db_command_msg;
+    memset(&db_command_msg, 0, sizeof(struct DELETE_BEARER_COMMAND_msg));
+    MmeGtpMsgUtils::populateDeleteBearerCommand(
+            cb, *ue_ctxt, *sessionCtxt, *srvcc_ctxt, db_command_msg);
+
+    mmeStats::Instance()->increment(mmeStatsCounter::MME_MSG_TX_S3_FORWARD_RELOCATION_COMPLETE_ACK);
+    cmn::ipc::IpcAddress destAddr = {TipcServiceInstance::s3AppInstanceNum_c};
+    MmeIpcInterface &mmeIpcIf = static_cast<MmeIpcInterface&>(compDb.getComponent(MmeIpcInterfaceCompId));
+    mmeIpcIf.dispatchIpcMsg((char *) &fwd_rel_comp_ack_msg, sizeof(fwd_rel_comp_ack_msg), destAddr);
+
+    mmeStats::Instance()->increment(mmeStatsCounter::MME_PROCEDURES_DELETE_BEARER_PROC);
+    srvcc_ctxt->setCtxtType(ProcedureType::dedBrDeActivation_c);
+    srvcc_ctxt->setNextState(SrvccDelDedBearer::Instance());
+    srvcc_ctxt->setHoType(lteToUtran);
+    cb.addTempDataBlock(srvcc_ctxt);
+
+    ProcedureStats::num_of_fwd_rel_comp_processed++;
+    ProcedureStats::num_of_fwd_rel_comp_ack_sent++;
+    log_msg(LOG_DEBUG, "Leaving send_del_bearer_command ");
     return ActStatus::PROCEED;
 }
 
@@ -152,6 +200,8 @@ ActStatus ActionHandlers::process_fwd_rel_comp(ControlBlock& cb)
     }
 
     struct fwd_rel_comp_ack fwd_rel_comp_ack_msg;
+    fwd_rel_comp_ack_msg.msg_type = fwd_rel_comp_ack;
+	fwd_rel_comp_ack_msg.ue_idx = ueCtxt.getContextID();
     fwd_rel_comp_ack_msg.cause.causeValue = 16;
 
     mmeStats::Instance()->increment(mmeStatsCounter::MME_MSG_TX_S3_FORWARD_RELOCATION_COMPLETE_ACK);
@@ -170,5 +220,35 @@ ActStatus ActionHandlers::process_fwd_rel_comp(ControlBlock& cb)
 ***************************************/
 ActStatus ActionHandlers::send_srvcc_ho_command(ControlBlock& cb)
 {
+    log_msg(LOG_DEBUG, "Inside send_srvcc_ho_command");
+
+    UEContext *ue_ctxt = static_cast<UEContext*>(cb.getPermDataBlock());
+    if (ue_ctxt == NULL)
+    {
+        log_msg(LOG_DEBUG, "send_srvcc_ho_command: ue ctxt is NULL ");
+        return ActStatus::HALT;
+    }
+
+    SrvccProcedureContext *srvcc_ctxt =
+            dynamic_cast<SrvccProcedureContext*>(cb.getTempDataBlock());
+    if (ho_ctxt == NULL)
+    {
+        log_msg(LOG_DEBUG,
+                "send_srvcc_ho_command: procedure ctxt is NULL ");
+        return ActStatus::HALT;
+    }
+
+    struct handover_command_Q_msg ho_command;
+    memset(&ho_command, 0, sizeof(struct handover_command_Q_msg));
+
+    MmeS1MsgUtils::populateHoCommand(cb, *ue_ctxt, *srvcc_ctxt, ho_command);
+
+    mmeStats::Instance()->increment(mmeStatsCounter::MME_MSG_TX_S1AP_HANDOVER_COMMAND);
+    cmn::ipc::IpcAddress destAddr = {TipcServiceInstance::s1apAppInstanceNum_c};
+    MmeIpcInterface &mmeIpcIf = static_cast<MmeIpcInterface&>(compDb.getComponent(MmeIpcInterfaceCompId));
+    mmeIpcIf.dispatchIpcMsg((char *) &ho_command, sizeof(ho_command), destAddr);
+
+    ProcedureStats::num_of_ho_command_to_src_enb_sent++;
+    log_msg(LOG_DEBUG, "Leaving send_srvcc_ho_command");
     return ActStatus::PROCEED;
 }
