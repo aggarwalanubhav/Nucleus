@@ -286,3 +286,32 @@ bool MmeGtpMsgUtils::populateDeleteBearerResponse(SM::ControlBlock &cb,
 
     return status;
 }
+
+void MmeGtpMsgUtils::populateDeleteBearerCommand(SM::ControlBlock& cb,
+        UEContext& ueCtxt,
+        SessionContext& sessionCtxt,
+		SrvccProcedureContext& procCtxt,
+		struct DELETE_BEARER_COMMAND_msg& db_command_msg)
+{
+        db_command_msg.msg_type = delete_bearer_cmd;
+        db_command_msg.ue_idx = ueCtxt.getContextID();
+
+    BearerContext *bearerCtxt = sessionCtxt.findBearerContextByBearerId(sessionCtxt.getLinkedBearerId());
+    if (bearerCtxt == NULL)
+    {
+        log_msg(LOG_DEBUG, "send_del_bearer_command: bearer ctxt is NULL ");
+        return;
+    }
+
+    db_command_msg.bearerContexts.epsBearerId.epsBearerId = bearerCtxt->getBearerId();
+
+    db_command_msg.secondaryRatUsageDataReportIePresent = false;
+    db_command_msg.senderFTeidForControlPlaneIePresent = false;
+    db_command_msg.ueTimeZoneIePresent = false;
+    db_command_msg.uliTimestampIePresent = false;
+    db_command_msg.userLocationInformationIePresent = false;
+    db_command_msg.sgwsOverloadControlInformationIePresent = false;
+    db_command_msg.mmeS4SgsnsOverloadControlInformationIePresent = false;
+    db_command_msg.bearerContexts.bearerFlagsIePresent = false;
+    db_command_msg.bearerContexts.ranNasReleaseCauseIePresent = false;
+}
