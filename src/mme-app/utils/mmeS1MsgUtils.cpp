@@ -102,7 +102,7 @@ void MmeS1MsgUtils::populateHoCommand(SM::ControlBlock& cb,
 	hoCommand.s1ap_mme_ue_id = ueCtxt.getContextID();
 	hoCommand.s1ap_enb_ue_id = ueCtxt.getS1apEnbUeId();
 	hoCommand.src_enb_context_id = procCtxt.getSrcEnbContextId();
-	hoCommand.handoverType = IntraLTE;
+	hoCommand.handoverType = LTEtoUTRAN;
 	hoCommand.target_to_src_transparent_container =
 	        procCtxt.getTargetToSrcTransContainer();
 

@@ -67,15 +67,6 @@ ActStatus ActionHandlers::send_ps_to_cs_req_to_msc(ControlBlock& cb)
         return ActStatus::HALT;
     }
 
-    S1HandoverProcedureContext *hoProcCtxt =
-            dynamic_cast<S1HandoverProcedureContext*>(cb.getTempDataBlock());
-    if (hoProcCtxt == NULL)
-    {
-        log_msg(LOG_DEBUG,
-                "send_ps_to_cs_req_to_msc: MmeS1HandoverProcedureCtxt is NULL");
-        return ActStatus::HALT;
-    }
-
     SrvccProcedureContext *srvccProc_p =
             dynamic_cast<SrvccProcedureContext*>(cb.getTempDataBlock());
     if (srvccProc_p == NULL)
@@ -87,61 +78,17 @@ ActStatus ActionHandlers::send_ps_to_cs_req_to_msc(ControlBlock& cb)
 
     struct PS_to_CS_REQ_msg psToCsReq;
     memset(&psToCsReq, 0, sizeof(struct PS_to_CS_REQ_msg));
-    
-    psToCsReq.msg_type = ps_to_cs_request;
-    psToCsReq.ue_idx = ueCtxt->getContextID();
 
-    //IMSI
-    psToCsReq.imsiIePresent = true;
-
-    const DigitRegister15& ueImsi = ueCtxt->getImsi();
-	ueImsi.convertToBcdArray( psToCsReq.IMSI );
-
-    //MSISDN
-    psToCsReq.cMsisdnIePresent = true;
-    memset(psToCsReq.MSISDN, 0, BINARY_IMSI_LEN);
-	
-	const DigitRegister15& ueMSISDN = ueCtxt->getMsisdn();
-	ueMSISDN.convertToBcdArray(psToCsReq.MSISDN);
-
-    //SRC to Target Trans Container
-    memcpy(&(psToCsReq.sourceToTargetTransparentContainer),
-        &(hoProcCtxt->getSrcToTargetTransContainer()),
-        sizeof(struct src_target_transparent_container));
-
-    // Target RNC Id
-    psToCsReq.targetRncIdIePresent = true;
-    psToCsReq.targetRncId.RncID = (Uint8)srvccProc_p->getTargetRncId();
-
-    // sv flags
-    psToCsReq.svFlagsIePresent = false;
-
-	// STN-SR
-    psToCsReq.stnSrIePresent = true;
-
-    const DigitRegister15& uestnsr = ueCtxt->getStnsr();
-	uestnsr.convertToBcdArray( psToCsReq.STNSR );
-    
-    //mm context
-    psToCsReq.mmContextForEutranSrvccIePresent = true;
-    E_UTRAN_sec_vector *secVect = const_cast<E_UTRAN_sec_vector*>(ueCtxt->getAiaSecInfo().AiaSecInfo_mp);
-    SecUtils::create_integrity_key(ueCtxt->getUeSecInfo().getSelectIntAlg(), 
-                                   secVect->kasme.val, (unsigned char*)psToCsReq.mmContextForEutranSrvcc.CKSRVCC);
-
-    SecUtils::create_ciphering_key(ueCtxt->getUeSecInfo().getSelectSecAlg(),
-                                    secVect->kasme.val, (unsigned char*)psToCsReq.mmContextForEutranSrvcc.IKSRVCC);
-
-    memcpy(&(psToCsReq.mmContextForEutranSrvcc.mobileStationClassmark2),
-                &(ueCtxt->getMsClassmark2()),
-                sizeof(Mobile_Station_Classmark_2));
+    MmeGtpMsgUtils::populatePsToCsRequest(
+            cb, *ue_ctxt, *srvccProc_p, psToCsReq);
 
     mmeStats::Instance()->increment(mmeStatsCounter::MME_MSG_TX_SV_PS_TO_CS_REQUEST);
     cmn::ipc::IpcAddress destAddr = {TipcServiceInstance::svAppInstanceNum_c};
     MmeIpcInterface &mmeIpcIf = static_cast<MmeIpcInterface&>(compDb.getComponent(MmeIpcInterfaceCompId));
     mmeIpcIf.dispatchIpcMsg((char *) &psToCsReq, sizeof(psToCsReq), destAddr);
-    log_msg(LOG_DEBUG, "Leaving send_ps_to_cs_req_to_msc ");
-    //ProcedureStats::num_of_fwd_relocation_req_sent++;
 
+    ProcedureStats::num_of_fwd_relocation_req_sent++;
+    log_msg(LOG_DEBUG, "Leaving send_ps_to_cs_req_to_msc ");
     return ActStatus::PROCEED;
 }
 
@@ -188,7 +135,7 @@ ActStatus ActionHandlers::handle_ps_to_cs_res(ControlBlock& cb)
 
     const ps_to_cs_res_Q_msg *psToCsRes = static_cast<const ps_to_cs_res_Q_msg*>(msgBuf->getDataPointer());
     s1HoPrCtxt->setTargetToSrcTransContainer(psToCsRes->target_to_source_transparent_container);
-    //ProcedureStats::num_of_fwd_relocation_resp_received++;
+    ProcedureStats::num_of_fwd_relocation_resp_processed++;
 
     return ActStatus::PROCEED;
 }

@@ -91,6 +91,8 @@ namespace mme
                 static int num_of_ps_to_cs_comp_ack_sent;
                 static int num_of_fwd_rel_comp_processed;
                 static int num_of_fwd_rel_comp_ack_sent;
+                static int num_of_fwd_relocation_req_sent;
+                static int num_of_fwd_relocation_resp_processed;
         };
 };
 #endif

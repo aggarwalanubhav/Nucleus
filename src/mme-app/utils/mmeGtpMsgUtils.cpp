@@ -5,7 +5,7 @@
 */
 
 #include <utils/mmeGtpMsgUtils.h>
-
+#include "secUtils.h"
 #include <controlBlock.h>
 #include <contextManager/dataBlocks.h>
 #include <utils/mmeCauseUtils.h>
@@ -285,6 +285,59 @@ bool MmeGtpMsgUtils::populateDeleteBearerResponse(SM::ControlBlock &cb,
             db_resp.cause);
 
     return status;
+}
+
+void MmeGtpMsgUtils::populatePsToCsRequest(SM::ControlBlock& cb,
+        UEContext& ueCtxt,
+		SrvccProcedureContext& procCtxt,
+		struct PS_to_CS_REQ_msg& psToCsReq)
+{
+        psToCsReq.msg_type = ps_to_cs_request;
+    psToCsReq.ue_idx = ueCtxt.getContextID();
+
+    //IMSI
+    psToCsReq.imsiIePresent = true;
+
+    const DigitRegister15& ueImsi = ueCtxt.getImsi();
+	ueImsi.convertToBcdArray( psToCsReq.IMSI );
+
+    //MSISDN
+    psToCsReq.cMsisdnIePresent = true;
+    memset(psToCsReq.MSISDN, 0, BINARY_IMSI_LEN);
+	
+	const DigitRegister15& ueMSISDN = ueCtxt.getMsisdn();
+	ueMSISDN.convertToBcdArray(psToCsReq.MSISDN);
+
+    //SRC to Target Trans Container
+    memcpy(&(psToCsReq.sourceToTargetTransparentContainer),
+        &(procCtxt.getSrcToTargetTransContainer()),
+        sizeof(struct src_target_transparent_container));
+
+    // Target RNC Id
+    psToCsReq.targetRncIdIePresent = true;
+    psToCsReq.targetRncId.RncID = (Uint8)procCtxt.getTargetRncId();
+
+    // sv flags
+    psToCsReq.svFlagsIePresent = false;
+
+	// STN-SR
+    psToCsReq.stnSrIePresent = true;
+
+    const DigitRegister15& uestnsr = ueCtxt.getStnsr();
+	uestnsr.convertToBcdArray( psToCsReq.STNSR );
+    
+    //mm context
+    psToCsReq.mmContextForEutranSrvccIePresent = true;
+    E_UTRAN_sec_vector *secVect = const_cast<E_UTRAN_sec_vector*>(ueCtxt.getAiaSecInfo().AiaSecInfo_mp);
+    SecUtils::create_integrity_key(ueCtxt.getUeSecInfo().getSelectIntAlg(), 
+                                   secVect->kasme.val, (unsigned char*)psToCsReq.mmContextForEutranSrvcc.CKSRVCC);
+
+    SecUtils::create_ciphering_key(ueCtxt.getUeSecInfo().getSelectSecAlg(),
+                                    secVect->kasme.val, (unsigned char*)psToCsReq.mmContextForEutranSrvcc.IKSRVCC);
+
+    memcpy(&(psToCsReq.mmContextForEutranSrvcc.mobileStationClassmark2),
+                &(ueCtxt.getMsClassmark2()),
+                sizeof(Mobile_Station_Classmark_2));
 }
 
 void MmeGtpMsgUtils::populateDeleteBearerCommand(SM::ControlBlock& cb,
