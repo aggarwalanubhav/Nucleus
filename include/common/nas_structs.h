@@ -749,5 +749,10 @@ typedef enum nas_int_algo
     NAS_INT_ALGORITHMS_EIA7,
 }nas_int_algo_enum;
 
+typedef enum security_mode {
+EPSsecurityContext = 0,
+GSMsecurityContext,
+UMTSsecurityContext,
+}security_mode;
 
 #endif /*__S1AP_STRUCTS_H*/

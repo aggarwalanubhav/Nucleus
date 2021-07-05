@@ -23,6 +23,7 @@ namespace mme
 	class MmeSmDeleteBearerProcCtxt;
 	class UEContext;
 	class SessionContext;
+	class SrvccProcedureContext;
 	class MmeGtpMsgUtils
 	{
 	public:
@@ -38,15 +39,21 @@ namespace mme
         static bool populateDeleteBearerResponse(SM::ControlBlock& cb,
                 MmeSmDeleteBearerProcCtxt& procCtxt, struct DB_RESP_Q_msg& db_resp);
 
-		static void MmeGtpMsgUtils::populateDeleteBearerCommand(SM::ControlBlock& cb,
+		static void populateDeleteBearerCommand(SM::ControlBlock& cb,
 				UEContext& ueCtxt, SessionContext& sessionCtxt,
 				SrvccProcedureContext& procCtxt,
 				struct DELETE_BEARER_COMMAND_msg& db_command_msg);
 
 		static void populatePsToCsRequest(SM::ControlBlock& cb,
-        UEContext& ueCtxt,
-		SrvccProcedureContext& procCtxt,
-		struct PS_to_CS_REQ_msg& psToCsReq);
+				UEContext& ueCtxt,
+				SrvccProcedureContext& procCtxt,
+				struct PS_to_CS_REQ_msg& psToCsReq);
+
+		static void populateForwardRelocationRequest(SM::ControlBlock& cb,
+				UEContext& ueCtxt,
+				SessionContext& sessionCtxt,
+				SrvccProcedureContext& procCtxt,
+				struct FORWARD_REL_REQ_msg& fwd_rel_req);
 		
 	private:
 		MmeGtpMsgUtils();

@@ -56,6 +56,21 @@ void S3MsgHandler::handleS3Message_v(IpcEMsgUnqPtr eMsg)
 
 	switch (msgData_p->msg_type)
 	{
+		case msg_type_t::forward_relocation_response:
+		{
+			mmeStats::Instance()->increment(mmeStatsCounter::MME_MSG_RX_S3_FORWARD_RELOCATION_RESPONSE);
+			const struct forward_rel_response_msg* fwd_rel_resp_info= (const struct forward_rel_response_msg*) (msgBuf->getDataPointer());
+			handleForwardRelocationResponse_v(std::move(eMsg), fwd_rel_resp_info->s3_mme_cp_teid);
+		}
+		break;
+		case msg_type_t::forward_relocation_complete_noti:
+		{
+			mmeStats::Instance()->increment(mmeStatsCounter::MME_MSG_RX_S3_FORWARD_RELOCATION_COMPLETE);
+			const struct fwd_rel_comp_not* fwd_rel_comp_info= (const struct fwd_rel_comp_not*) (msgBuf->getDataPointer());
+			handleForwardRelocationCompleteNoti_v(std::move(eMsg), fwd_rel_comp_info->s3_mme_cp_teid);
+		}
+		break;
+/*		
 		case msg_type_t::forward_access_context_acknowledge:
 		{
 			mmeStats::Instance()->increment(mmeStatsCounter::MME_MSG_RX_S11_CREATE_SESSION_RESPONSE);
@@ -63,14 +78,6 @@ void S3MsgHandler::handleS3Message_v(IpcEMsgUnqPtr eMsg)
 			handleForwardAccessContextAcknowledge_v(std::move(eMsg), fwd_acc_context_ack_info->s11_mme_cp_teid);
 		}
 		break;
-		case msg_type_t::forward_relocation_response:
-		{
-			mmeStats::Instance()->increment(mmeStatsCounter::MME_MSG_RX_S11_CREATE_SESSION_RESPONSE);
-			const struct forward_rel_response_msg* fwd_rel_resp_info= (const struct forward_rel_response_msg*) (msgBuf->getDataPointer());
-			handleForwardRelocationResponse_v(std::move(eMsg), fwd_rel_resp_info->s11_mme_cp_teid);
-		}
-		break;
-
 		case msg_type_t::relocation_cancel_response:
 		{
 			mmeStats::Instance()->increment(mmeStatsCounter::MME_MSG_RX_S11_DELETE_SESSION_RESPONSE);
@@ -94,15 +101,14 @@ void S3MsgHandler::handleS3Message_v(IpcEMsgUnqPtr eMsg)
 			handleContextReq_v(std::move(eMsg), contextreq_info->s11_mme_cp_teid);
 		}
 		break;
-		
-		
-
+*/		
 		default:
 			log_msg(LOG_INFO, "Unhandled Gtp Message %d ", msgData_p->msg_type);
 	}
 
 }
 
+/*
 void S3MsgHandler::handleForwardAccessContextAcknowledge_v(IpcEMsgUnqPtr eMsg, uint32_t ueIdx)
 {
 	log_msg(LOG_INFO, "handleForwardAccessContextAcknowledge_v");
@@ -119,7 +125,7 @@ void S3MsgHandler::handleForwardAccessContextAcknowledge_v(IpcEMsgUnqPtr eMsg, u
 	// Fire CS resp from SGW event, insert cb to procedure queue
 	SM::Event evt(CS_RESP_FROM_SGW, cmn::IpcEMsgShPtr(std::move(eMsg)));
 	controlBlk_p->addEventToProcQ(evt);
-}
+}*/
 
 void S3MsgHandler::handleForwardRelocationResponse_v(IpcEMsgUnqPtr eMsg, uint32_t ueIdx)
 {
@@ -134,12 +140,28 @@ void S3MsgHandler::handleForwardRelocationResponse_v(IpcEMsgUnqPtr eMsg, uint32_
 		return;
 	}
 
-	// Fire CS resp from SGW event, insert cb to procedure queue
-	SM::Event evt(CS_RESP_FROM_SGW, cmn::IpcEMsgShPtr(std::move(eMsg)));
+	SM::Event evt(FWD_REL_RES, cmn::IpcEMsgShPtr(std::move(eMsg)));
 	controlBlk_p->addEventToProcQ(evt);
 }
 
+void S3MsgHandler::handleForwardRelocationCompleteNoti_v(IpcEMsgUnqPtr eMsg, uint32_t ueIdx)
+{
+	log_msg(LOG_INFO, "handleForwardRelocationCompleteNoti_v");
 
+	SM::ControlBlock* controlBlk_p = SubsDataGroupManager::Instance()->findControlBlock(ueIdx);
+	if(controlBlk_p == NULL)
+	{
+		log_msg(LOG_ERROR, "handleForwardRelocationCompleteNoti_v: "
+							"Failed to find UE context using idx %d",
+							ueIdx);
+		return;
+	}
+
+	SM::Event evt(FWD_REL_COMP_RECVD, cmn::IpcEMsgShPtr(std::move(eMsg)));
+	controlBlk_p->addEventToProcQ(evt);
+}
+
+/*
 void S3MsgHandler::handleRelocationCancelResponse_v(IpcEMsgUnqPtr eMsg, uint32_t ueIdx)
 {
 	log_msg(LOG_INFO, "handleRelocationCancelResponse_v");
@@ -191,4 +213,5 @@ void S3MsgHandler::handleContextReq_v(IpcEMsgUnqPtr eMsg, uint32_t ueIdx)
 	// Fire rel bearer response from sgw event, insert cb to procedure queue
 	SM::Event evt(REL_AB_RESP_FROM_SGW, cmn::IpcEMsgShPtr(std::move(eMsg)));
 	controlBlk_p->addEventToProcQ(evt);
-}
+}*/
+

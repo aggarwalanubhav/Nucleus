@@ -120,6 +120,8 @@ typedef enum msg_type_t {
     ps_to_cs_cancel_notification,
     ps_to_cs_complete_acknowledge,
     delete_bearer_cmd,
+    forward_relocation_complete_noti,
+    forward_relocation_complete_ack,
     max_msg_type
 } msg_type_t;
 
@@ -794,7 +796,6 @@ struct FORWARD_REL_REQ_msg{
     bool mmeSgsnUeScefPdnConnectionsIePresent;   
     bool mmeSgsnAmfUeEpsPdnConnectionsIePresent;   
 
-
     unsigned char IMSI[BINARY_IMSI_LEN];
     FTeidIeData senderFTeidForControlPlane;
     FTeidIeData sgwS11S4IpAddressAndTeidForControlPlane;
@@ -820,7 +821,6 @@ struct FORWARD_REL_REQ_msg{
     CsgIdIeData csgId;
     CmiIeData csgMembershipIndication;
     IntegerNumberIeData ueUsageType;
-    MmeSgsnUeScefPdnConnectionsInForwardRelocationRequestData mmeSgsnUeScefPdnConnections;
     MmeSgsnAmfUeEpsPdnConnectionsInForwardRelocationRequestData mmeSgsnAmfUeEpsPdnConnections;
 };
 #define S3_FWDRELREQ_BUF_SIZE sizeof(struct FORWARD_REL_REQ_msg)
@@ -930,7 +930,7 @@ struct DELETE_BEARER_COMMAND_msg{
     bool secondaryRatUsageDataReportIePresent;   
 
 
-    BearerContextsInDeleteBearerCommandData bearerContexts;
+    BearerContextsInDeleteBearerCommandData bearerContext;
     UliIeData userLocationInformation;
     UliTimestampIeData uliTimestamp;
     UeTimeZoneIeData ueTimeZone;
@@ -1115,8 +1115,8 @@ struct CONTEXT_REQ_msg{
 };
 struct ps_to_cs_res_Q_msg {
     gtp_incoming_msg_data_t header;
-    int s11_mme_cp_teid;
     int sv_mme_cp_teid;
+
     SrvccCauseIeData srvcc_cause;
     uint32_t msc_ip;
     TeidCIeData teid_c;
@@ -1125,16 +1125,16 @@ struct ps_to_cs_res_Q_msg {
 
 struct ps_to_cs_comp_noti_Q_msg {
     gtp_incoming_msg_data_t header;
-    int s11_mme_cp_teid;
     int sv_mme_cp_teid;
+
     unsigned char IMSI[BINARY_IMSI_LEN];
     SrvccCauseIeData srvcc_cause; 
 };
 
 struct ps_to_cs_cancel_ack_Q_msg {
     gtp_incoming_msg_data_t header;
-    int s11_mme_cp_teid;
     int sv_mme_cp_teid;
+
     uint8_t cause;
     
     bool svFlagsIePresent;
@@ -1143,7 +1143,8 @@ struct ps_to_cs_cancel_ack_Q_msg {
 struct forward_rel_response_msg
 {
     gtp_incoming_msg_data_t header;
-    int s11_mme_cp_teid;
+    int s3_mme_cp_teid;
+
     bool senderFTeidForControlPlaneIePresent;   
     bool indicationFlagsIePresent;   
     bool s1ApCauseIePresent;   
@@ -1183,11 +1184,9 @@ struct forward_rel_response_msg
 struct fwd_rel_comp_not
 {
     gtp_incoming_msg_data_t header;
-    int s11_mme_cp_teid;
+    int s3_mme_cp_teid;
     
     bool indicationFlagsIePresent;   
-
-
     FTeidIeData indicationFlags;
 
 };
