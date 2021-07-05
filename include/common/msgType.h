@@ -17,6 +17,8 @@ extern "C"{
 #include "s11_structs.h"
 #include "s1ap_structs.h"
 #include "s1ap_ie.h"
+#include "srvcc_structs.h"
+
 #include "../../src/gtpV2Codec/msgClasses/gtpV2MsgDataTypes.h"
 
 #include "../../src/gtpV2Codec/msgClasses/gtpV2MsgDataTypes.h"
@@ -117,7 +119,7 @@ typedef enum msg_type_t {
     ps_to_cs_complete_notification,
     ps_to_cs_cancel_notification,
     ps_to_cs_complete_acknowledge,
-    
+    delete_bearer_cmd,
     max_msg_type
 } msg_type_t;
 
@@ -790,7 +792,7 @@ struct FORWARD_REL_REQ_msg{
     bool mmeSgsnAmfUeEpsPdnConnectionsIePresent;   
 
 
-    ImsiIeData imsi;
+    unsigned char IMSI[BINARY_IMSI_LEN];
     FTeidIeData senderFTeidForControlPlane;
     FTeidIeData sgwS11S4IpAddressAndTeidForControlPlane;
     FqdnIeData sgwNodeName;
@@ -800,13 +802,13 @@ struct FORWARD_REL_REQ_msg{
     IndicationIeData indicationFlags;
     TargetIdentificationIeData targetIdentification;
     SourceIdentificationIeData sourceIdentification;
-    PlmnIdIeData selectedPlmnId;
+    struct PLMN selectedPlmnId;
     FContainerIeData eUtranTransparentContainer;
     FContainerIeData utranTransparentContainer;
     FCauseIeData s1ApCause;
     FCauseIeData ranapCause;
-    ServingNetworkIeData servingNetwork;
-    AdditionalMmContextForSrvccIeData additionalMmContextForSrvcc;
+    struct PLMN servingNetwork;
+    AdditionalMmContextForSrvcc additionalMmContextForSrvcc;
     AdditionalFlagsForSrvccIeData additionalFlagsForSrvcc;
     MsisdnIeData msisdn;
     MsisdnIeData cMsisdn;
