@@ -393,7 +393,97 @@ ActStatus ActionHandlers::delete_bearer_proc_complete(ControlBlock &cb)
 ***************************************/
 ActStatus ActionHandlers::srvcc_init_ded_bearer_deactivation(ControlBlock& cb)
 {
-    return ActStatus::PROCEED;
+    log_msg(LOG_DEBUG, "srvcc_init_ded_bearer_deactivation : Entry");
+
+    UEContext *ue_ctxt = static_cast<UEContext*>(cb.getPermDataBlock());
+    VERIFY_UE(cb, ue_ctxt, "Invalid UE");
+
+    MmeSmDeleteBearerProcCtxt *dbReqProc_p =
+            dynamic_cast<MmeSmDeleteBearerProcCtxt*>(cb.getTempDataBlock());
+    VERIFY(dbReqProc_p, return ActStatus::ABORT,
+            " Delete Bearer Procedure Context is NULL ");
+
+    const cmn::IpcEventMessage *eMsg =
+            dynamic_cast<const cmn::IpcEventMessage*>(dbReqProc_p->getDeleteBearerReqEMsgRaw());
+    cmn::IpcEventMessage *ipcMsg = const_cast<cmn::IpcEventMessage*>(eMsg);
+    VERIFY(ipcMsg, return ActStatus::ABORT,
+            "Invalid IPC Event Message in DBReq Procedure Context ");
+
+    MsgBuffer *msgBuf = static_cast<MsgBuffer*>(ipcMsg->getMsgBuffer());
+    VERIFY(msgBuf, return ActStatus::ABORT, "Invalid message buffer ");
+
+    const db_req_Q_msg *db_req =
+            static_cast<const db_req_Q_msg*>(msgBuf->getDataPointer());
+    VERIFY(db_req, return ActStatus::ABORT, "Invalid data buffer ");
+
+    uint8_t bearerDeAllocCount = 0;
+    for (int i = 0; i < db_req->eps_bearer_ids_count; i++)
+    {
+    	BearerCtxtDBResp brCtxtDbResp;
+
+    	brCtxtDbResp.eps_bearer_id = db_req->eps_bearer_ids[i];
+    	brCtxtDbResp.cause.cause = GTPV2C_NO_CAUSE;
+
+        BearerContext *bearerCtxt_p = MmeContextManagerUtils::findBearerContext(
+                db_req->eps_bearer_ids[i], ue_ctxt);
+
+        if (bearerCtxt_p)
+        {
+            // allocate dedicated bearer activation procedure context
+            SmDedDeActProcCtxt *dedBrDeActProc_p =
+                    MmeContextManagerUtils::allocateDedBrDeActivationProcedureCtxt(
+                            cb, bearerCtxt_p->getBearerId());
+
+            if (dedBrDeActProc_p)
+            {
+            	dedBrDeActProc_p->setLinkedBearerId(dbReqProc_p->getBearerId());
+                dedBrDeActProc_p->setTriggerProc(dbReq_c);
+
+                bearerDeAllocCount++;
+
+            }
+            else
+            {
+                /*
+                 * Failed to allocate the Procedure Context, yet
+                 * we are deleting the bearers, since it is a
+                 * PGW Init message. So, set cause to REQUEST_ACCEPTED.
+                 */
+            	brCtxtDbResp.cause.cause = GTPV2C_CAUSE_REQUEST_ACCEPTED;
+		
+		SessionContext *sessionCtxt_p = ue_ctxt->findSessionContextByLinkedBearerId(
+                                        dbReqProc_p->getBearerId());
+		if(sessionCtxt_p)
+		{
+                    MmeContextManagerUtils::deallocateBearerContext(cb,
+                        bearerCtxt_p, sessionCtxt_p, ue_ctxt);
+		}
+            }
+        }
+        else
+        {
+            log_msg(LOG_ERROR,
+                    "Failed to find Bearer Context with bearer id: %d ",
+                    db_req->eps_bearer_ids[i]);
+
+            brCtxtDbResp.cause.cause = GTPV2C_CAUSE_CONTEXT_NOT_FOUND;
+        }
+        dbReqProc_p->addBearerStatus(brCtxtDbResp);
+    }
+
+    ActStatus actStatus = PROCEED;
+    if (bearerDeAllocCount > 0)
+    {
+        SM::Event evt(DED_BEARER_DEACT_START, NULL);
+        cb.qInternalEvent(evt);
+    }
+    else
+    {
+        actStatus = ABORT;
+    }
+
+    log_msg(LOG_DEBUG, "srvcc_init_ded_bearer_deactivation : Exit");
+    return actStatus;
 }
 
 /***************************************
@@ -401,7 +491,46 @@ ActStatus ActionHandlers::srvcc_init_ded_bearer_deactivation(ControlBlock& cb)
 ***************************************/
 ActStatus ActionHandlers::srvcc_handle_ded_deact_cmp_ind(ControlBlock& cb)
 {
-    return ActStatus::PROCEED;
+    log_msg(LOG_DEBUG, "srvcc_handle_ded_deact_cmp_ind : Entry");
+
+    MmeSmDeleteBearerProcCtxt *dbReqProc_p =
+            dynamic_cast<MmeSmDeleteBearerProcCtxt*>(cb.getTempDataBlock());
+    VERIFY(dbReqProc_p, return ActStatus::ABORT,
+            "Delete Bearer Procedure Context is NULL ");
+
+    ActStatus actStatus = ActStatus::PROCEED;
+
+    BearerStatusEMsgShPtr eMsg = std::dynamic_pointer_cast<BearerStatusEMsg>(
+            cb.getEventMessage());
+
+    if (eMsg)
+    {
+        auto &bearerStatusContainer = dbReqProc_p->getBearerStatusContainer();
+        uint8_t completedDeActs = 0;
+        for (auto &entry : bearerStatusContainer)
+        {
+            if (entry.eps_bearer_id
+                    == eMsg->getBearerId())
+            {
+                entry.cause.cause = eMsg->getCause();
+            }
+
+            if (entry.cause.cause != GTPV2C_NO_CAUSE)
+            {
+                completedDeActs++;
+            }
+        }
+
+        // We haven't received completion indication for all bearers.
+        // Wait for some time.
+        if (completedDeActs < bearerStatusContainer.size())
+        {
+            actStatus = ActStatus::BREAK;
+        }
+    }
+
+    log_msg(LOG_DEBUG, "srvcc_handle_ded_deact_cmp_ind : Exit");
+    return actStatus;
 }
 
 /***************************************
@@ -409,6 +538,32 @@ ActStatus ActionHandlers::srvcc_handle_ded_deact_cmp_ind(ControlBlock& cb)
 ***************************************/
 ActStatus ActionHandlers::srvcc_send_delete_bearer_response(ControlBlock& cb)
 {
+    log_msg(LOG_DEBUG, "srvcc_send_delete_bearer_response : Entry");
+
+    MmeSmDeleteBearerProcCtxt *dbReqProc_p =
+            dynamic_cast<MmeSmDeleteBearerProcCtxt*>(cb.getTempDataBlock());
+
+    if (dbReqProc_p != NULL)
+    {
+        struct DB_RESP_Q_msg db_resp;
+        memset(&db_resp, 0, sizeof(db_resp));
+
+        bool rc = MmeGtpMsgUtils::populateDeleteBearerResponse(cb, *dbReqProc_p,
+                db_resp);
+        if (rc)
+        {
+            cmn::ipc::IpcAddress destAddr =
+            { TipcServiceInstance::s11AppInstanceNum_c };
+
+            mmeStats::Instance()->increment(
+                    mmeStatsCounter::MME_MSG_TX_S11_DELETE_BEARER_RESPONSE);
+
+            FIND_COMPONENT(MmeIpcInterface,MmeIpcInterfaceCompId).dispatchIpcMsg(
+                    (char*) &db_resp, sizeof(db_resp), destAddr);
+        }
+    }
+
+    log_msg(LOG_DEBUG, "srvcc_send_delete_bearer_response : Exit");
     return ActStatus::PROCEED;
 }
 
@@ -417,6 +572,32 @@ ActStatus ActionHandlers::srvcc_send_delete_bearer_response(ControlBlock& cb)
 ***************************************/
 ActStatus ActionHandlers::srvcc_delete_bearer_proc_complete(ControlBlock& cb)
 {
+    log_msg(LOG_DEBUG, "srvcc_delete_bearer_proc_complete : Entry");
+
+    UEContext *ueCtxt_p = static_cast<UEContext*>(cb.getPermDataBlock());
+    if(ueCtxt_p != NULL)
+    {
+        MmeSmDeleteBearerProcCtxt *dbReqProc_p =
+                dynamic_cast<MmeSmDeleteBearerProcCtxt*>(cb.getTempDataBlock());
+        if (dbReqProc_p)
+        {
+            SessionContext *sessionCtxt_p = ueCtxt_p->findSessionContextByLinkedBearerId(
+                    dbReqProc_p->getBearerId());
+
+            if(dbReqProc_p->getLbiPresent())
+            {
+                MmeContextManagerUtils::deallocateSessionContext(cb,
+                            sessionCtxt_p, ueCtxt_p);
+            }
+
+            MmeContextManagerUtils::deallocateProcedureCtxt(cb, dbReqProc_p);
+
+            mmeStats::Instance()->increment(
+                    mmeStatsCounter::MME_PROCEDURES_DELETE_BEARER_PROC_SUCCESS);
+        }
+    }
+
+    log_msg(LOG_DEBUG, "srvcc_delete_bearer_proc_complete : Exit");
     return ActStatus::PROCEED;
 }
 

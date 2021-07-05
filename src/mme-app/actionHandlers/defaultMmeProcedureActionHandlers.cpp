@@ -43,6 +43,7 @@
 #include <utils/mmeContextManagerUtils.h>
 #include "contextManager/dataBlocks.h"
 #include "mmeStatsPromClient.h"
+#include "contextManager/srvccProcedureContextManager.h"
 
 using namespace mme;
 using namespace SM;
@@ -141,7 +142,9 @@ ActStatus ActionHandlers::default_attach_req_handler(ControlBlock& cb)
 	ueCtxt_p->setUeNetCapab(Ue_net_capab(ue_info->ue_net_capab));
 	ueCtxt_p->setMsNetCapab(Ms_net_capab(ue_info->ms_net_capab));
 	ueCtxt_p->setUeAddSecCapabPres(ue_info->ue_add_sec_cap_present);
-    	ueCtxt_p->setUeAddSecCapab(ue_info->ue_add_sec_capab);
+    ueCtxt_p->setUeAddSecCapab(ue_info->ue_add_sec_capab);
+    // SRVCC
+    ueCtxt_p->setMsClassmark2(ue_info->ms_classmark2);
 	prcdCtxt_p->setPti(ue_info->pti);
 	prcdCtxt_p->setPcoOptions(ue_info->pco_options, ue_info->pco_length);
 	prcdCtxt_p->setEsmInfoTxRequired(ue_info->esm_info_tx_required);
@@ -638,6 +641,27 @@ ActStatus ActionHandlers::default_s1_ho_handler(ControlBlock& cb)
 	hoReqProc_p->setTargetTai(hoReq->target_id.selected_tai);
 	hoReqProc_p->setSrcS1apEnbUeId(hoReq->header.s1ap_enb_ue_id);
 	hoReqProc_p->setSrcEnbContextId(hoReq->src_enb_context_id);
+    //hoReqProc_p->setHoType(hoReq->handoverType);
+
+    if(hoReq->handoverType == LTEtoUTRAN)
+    {
+        SrvccProcedureContext* srvccProc_p = MmeContextManagerUtils::allocateSrvccContext(cb);
+        if (srvccProc_p == NULL)
+        {
+            log_msg(LOG_ERROR, "Failed to allocate procedure context"
+				" for srvcc procedure cbIndex %d", cb.getCBIndex());
+            return ActStatus::HALT;
+        }
+
+        if(hoReq->hoIndication == PSandCS)
+        {
+            srvccProc_p->setSrvccHoIndication(psAndCs);
+        }
+        //srvccProc_p->setSrvccHoIndication(hoReq->hoIndication);
+        srvccProc_p->setTargetLai(hoReq->target_id.selected_lai);
+        srvccProc_p->setTargetRncId(hoReq->target_id.rnc_id);
+
+    }
 
 	ProcedureStats::num_of_ho_required_received++;
 

@@ -37,6 +37,17 @@ namespace mme
 
         static bool populateDeleteBearerResponse(SM::ControlBlock& cb,
                 MmeSmDeleteBearerProcCtxt& procCtxt, struct DB_RESP_Q_msg& db_resp);
+
+		static void MmeGtpMsgUtils::populateDeleteBearerCommand(SM::ControlBlock& cb,
+				UEContext& ueCtxt, SessionContext& sessionCtxt,
+				SrvccProcedureContext& procCtxt,
+				struct DELETE_BEARER_COMMAND_msg& db_command_msg);
+
+		static void populatePsToCsRequest(SM::ControlBlock& cb,
+        UEContext& ueCtxt,
+		SrvccProcedureContext& procCtxt,
+		struct PS_to_CS_REQ_msg& psToCsReq);
+		
 	private:
 		MmeGtpMsgUtils();
 		~MmeGtpMsgUtils();

@@ -38,6 +38,9 @@ public:
     static S1HandoverProcedureContext*
     allocateHoContext(SM::ControlBlock& cb_r);
 
+    static SrvccProcedureContext*
+    allocateSrvccContext(SM::ControlBlock& cb_r);
+
     static MmeSmCreateBearerProcCtxt*
 	allocateCreateBearerRequestProcedureCtxt(SM::ControlBlock& cb_r, uint8_t bearerId);
 

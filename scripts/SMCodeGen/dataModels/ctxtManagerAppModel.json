@@ -525,6 +525,12 @@
 							{	"Name": "rac",
 								"Type": "uint8_t"
 							},
+							{	"Name": "voiceBearer",
+								"Type": "BearerContext"
+							},
+							{	"Name": "psBearers",
+								"Type": "std::list<BearerContext*>"
+							},
 							{
 								"Name": "srvccHoIndication",
 								"Type": "enum srvcc_ho_indication",

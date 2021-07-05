@@ -750,7 +750,7 @@ typedef struct
 
 typedef struct
 {
-    Uint8 NANPI;    
+    Uint8 NANPI;   
     Uint8 Digit2;    
     Uint8 Digit1;    
 

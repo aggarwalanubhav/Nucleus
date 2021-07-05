@@ -1956,6 +1956,8 @@ namespace mme
             targetLai_m(),
             targetRncId_m(0),
             rac_m(0),
+            voiceBearer_m(),
+            psBearers_m(),
             srvccHoIndication_m(invalidho_c)
 	{	
 	}
@@ -2017,6 +2019,56 @@ namespace mme
                 return rac_m;
         }
 
+	
+	/******************************************************************************
+	* sets voiceBearer
+	******************************************************************************/
+	void SrvccProcedureContext::setVoiceBearer( const BearerContext& voiceBearer_i )
+	{
+		voiceBearer_m = voiceBearer_i;
+	}
+	
+	/******************************************************************************
+	* returns voiceBearer
+	******************************************************************************/	
+        const BearerContext& SrvccProcedureContext::getVoiceBearer() const
+        {
+                return voiceBearer_m;
+        }
+
+
+	/******************************************************************************
+	* add psBearers
+	******************************************************************************/
+	void SrvccProcedureContext::addPsBearers(BearerContext* psBearers_i)
+	{
+    		psBearers_m.push_back(psBearers_i);
+	}
+	
+	/******************************************************************************
+	* remove psBearers
+	******************************************************************************/
+	void SrvccProcedureContext::removePsBearers(BearerContext* psBearers_i)
+	{
+    	    	psBearers_m.remove(psBearers_i);
+	}
+		
+	/******************************************************************************
+	* returns psBearersList
+	******************************************************************************/
+	std::list<BearerContext*>& SrvccProcedureContext::getPsBearersContainer()
+	{
+		return psBearers_m;
+	}
+
+	/******************************************************************************
+	* find psBearers
+	******************************************************************************/
+	std::list<BearerContext*>::iterator SrvccProcedureContext::findPsBearers(BearerContext* psBearers_i)
+	{
+	    return std::find(std::begin(psBearers_m), std::end(psBearers_m), psBearers_i);
+	}
+	
 	
 	/******************************************************************************
 	* sets srvccHoIndication
