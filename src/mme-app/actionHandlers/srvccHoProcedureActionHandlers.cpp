@@ -48,6 +48,56 @@ using namespace SM;
 ***************************************/
 ActStatus ActionHandlers::split_bearer(ControlBlock& cb)
 {
+    log_msg(LOG_DEBUG, "Inside split_bearer");
+
+    UEContext *ueCtxt = static_cast<UEContext*>(cb.getPermDataBlock());
+
+    if (ueCtxt == NULL)
+    {
+        log_msg(LOG_DEBUG,
+                "split_bearer: ue context is NULL");
+        return ActStatus::HALT;
+    }
+
+    SrvccProcedureContext *srvccProc_p =
+            dynamic_cast<SrvccProcedureContext*>(cb.getTempDataBlock());
+    if (srvccProc_p == NULL)
+    {
+        log_msg(LOG_DEBUG,
+                "split_bearer: SrvccProcedureContext is NULL");
+        return ActStatus::HALT;
+    }
+
+    auto& sessionCtxtContainer = ue_ctxt->getSessionContextContainer();
+    if(sessionCtxtContainer.size() < 1)
+    {
+	log_msg(LOG_DEBUG, "split_bearer:Session context list empty");
+	return ActStatus::HALT;
+    }
+
+    SessionContext* sessionCtxt = sessionCtxtContainer.front();
+    if (sessionCtxt) {
+        auto &bearerCtxtContainer = sessionCtxt->getBearerContextContainer();
+        if (bearerCtxtContainer.size() < 1)
+        {
+            log_msg(LOG_ERROR, "Bearer context list is empty for UE IDX %d",
+                    cb.getCBIndex());
+            return;
+        }
+
+        auto it = bearerCtxtContainer.begin();
+        BearerContext *bearer_p = NULL;
+        while (it != bearerCtxtContainer.end())
+        {
+            bearer_p = *it;
+            it++;
+            if (bearer_p->getBearerQos().qci == 1)
+                srvccProc_p->setVoiceBearer(bearer_p);
+            else
+                srvccProc_p->addPsBearers(bearer_p);
+        }
+    }
+
     return ActStatus::PROCEED;
 }
 
