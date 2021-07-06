@@ -331,10 +331,10 @@ void MmeGtpMsgUtils::populatePsToCsRequest(SM::ControlBlock& cb,
     psToCsReq.mmContextForEutranSrvccIePresent = true;
     E_UTRAN_sec_vector *secVect = const_cast<E_UTRAN_sec_vector*>(ueCtxt.getAiaSecInfo().AiaSecInfo_mp);
     SecUtils::create_integrity_key(ueCtxt.getUeSecInfo().getSelectIntAlg(), 
-                                   secVect->kasme.val, (unsigned char*)psToCsReq.mmContextForEutranSrvcc.CKSRVCC);
+                                   secVect->kasme.val, psToCsReq.mmContextForEutranSrvcc.CKSRVCC);
 
     SecUtils::create_ciphering_key(ueCtxt.getUeSecInfo().getSelectSecAlg(),
-                                    secVect->kasme.val, (unsigned char*)psToCsReq.mmContextForEutranSrvcc.IKSRVCC);
+                                    secVect->kasme.val, psToCsReq.mmContextForEutranSrvcc.IKSRVCC);
 
     memcpy(&(psToCsReq.mmContextForEutranSrvcc.mobileStationClassmark2),
                 &(ueCtxt.getMsClassmark2()),
@@ -371,10 +371,8 @@ void MmeGtpMsgUtils::populateForwardRelocationRequest(SM::ControlBlock& cb,
     fwd_rel_req.msg_type = forward_relocation_request;
     fwd_rel_req.ue_idx = ueCtxt.getContextID();
 
-    fwd_rel_req.sgwS11S4IpAddressAndTeidForControlPlane.ipV4Address.ipValue = sessionCtxt.getS11SgwCtrlFteid().fteid_m.ip.ipv4;
-    fwd_rel_req.sgwS11S4IpAddressAndTeidForControlPlane.ipV6Address.ipValue.count = INET6_ADDRSTRLEN;
-    memcpy(fwd_rel_req.sgwS11S4IpAddressAndTeidForControlPlane.ipV6Address.ipValue.values,sessionCtxt.getS11SgwCtrlFteid().fteid_m.ip.ipv6.__in6_u.__u6_addr16,
-        sizeof(fwd_rel_req.sgwS11S4IpAddressAndTeidForControlPlane.ipV6Address.ipValue.values));
+    memcpy(&(fwd_rel_req.sgwS11S4IpAddressAndTeidForControlPlane), &(sessionCtxt.getS11SgwCtrlFteid().fteid_m),
+		sizeof(struct fteid));
     
     const DigitRegister15& ueImsi = ueCtxt.getImsi();
     ueImsi.convertToBcdArray( fwd_rel_req.IMSI );
@@ -392,7 +390,7 @@ void MmeGtpMsgUtils::populateForwardRelocationRequest(SM::ControlBlock& cb,
     fwd_rel_req.mmeSgsnAmfUeMmContext.usedNasIntegrity = ueCtxt.getUeSecInfo().getSelectSecAlg();
     fwd_rel_req.mmeSgsnAmfUeMmContext.usedNasCipher = ueCtxt.getUeSecInfo().getSelectIntAlg();
 
-    fwd_rel_req.mmeSgsnAmfUeMmContext.kAsme = secInfo.kasme.val;
+    memcpy(&(fwd_rel_req.mmeSgsnAmfUeMmContext.kAsme), &(secInfo.kasme), sizeof(struct KASME));
     fwd_rel_req.mmeSgsnAmfUeMmContext.drxParameter = PAGINX_DRX256;
     
     memcpy(fwd_rel_req.mmeSgsnAmfUeMmContext.authenticationQuadruplet.values, secVect,sizeof(AuthenticationQuadruplet));
@@ -407,13 +405,13 @@ void MmeGtpMsgUtils::populateForwardRelocationRequest(SM::ControlBlock& cb,
     memcpy(fwd_rel_req.mmeSgsnAmfUeMmContext.nh, nh, KENB_SIZE);
     fwd_rel_req.mmeSgsnAmfUeMmContext.ncc = ueCtxt.getUeSecInfo().secinfo_m.next_hop_chaining_count;
 
-    fwd_rel_req.mmeSgsnAmfUeMmContext.lengthOfUeNetworkCapability = ueCtxt.getUeNetCapab().ue_net_capab_m.len;
-    fwd_rel_req.mmeSgsnAmfUeMmContext.ueNetworkCapability = ueCtxt.getUeNetCapab().ue_net_capab_m.u;
+    memcpy(&(fwd_rel_req.mmeSgsnAmfUeMmContext.ueNwCap),
+        &(ueCtxt.getUeNetCapab().ue_net_capab_m), sizeof(struct UE_net_capab));
     //need clarification in ms network capability
     fwd_rel_req.mmeSgsnAmfUeMmContext.lengthOfMsNetworkCapability = ueCtxt.getUeNetCapab().ue_net_capab_m.len;
     fwd_rel_req.mmeSgsnAmfUeMmContext.msNetworkCapability = ueCtxt.getMsNetCapab().ms_net_capab_m.len;
-    fwd_rel_req.mmeSgsnAmfUeMmContext.voiceDomainPreferenceAndUesUsageSetting = ueCtxt.getVoiceDomainPref().voiceDomainPref_m.voice_dom_pref;
-    fwd_rel_req.mmeSgsnAmfUeMmContext.lengthOfVoiceDomainPreferenceAndUesUsageSetting = sizeof(Voice_Domain_Preference);
+    fwd_rel_req.mmeSgsnAmfUeMmContext.voiceDomainPreferenceAndUesUsageSetting = ueCtxt.getVoiceDomainPref();
+    fwd_rel_req.mmeSgsnAmfUeMmContext.lengthOfVoiceDomainPreferenceAndUesUsageSetting = 1;
 
     memcpy(&(fwd_rel_req.selectedPlmnId), &(ueCtxt.getTai().tai_m.plmn_id), 3);
 
@@ -436,10 +434,10 @@ void MmeGtpMsgUtils::populateForwardRelocationRequest(SM::ControlBlock& cb,
 
 	const DigitRegister15& ueMSISDN = ueCtxt.getMsisdn();
 
-    memset(&(fwd_rel_req.msisdn), 0, BINARY_IMSI_LEN);
-	ueMSISDN.convertToBcdArray(fwd_rel_req.msisdn);
+    memset(&(fwd_rel_req.MSISDN), 0, BINARY_IMSI_LEN);
+	ueMSISDN.convertToBcdArray(fwd_rel_req.MSISDN);
 
-    memset(&(fwd_rel_req.cMsisdn), 0, BINARY_IMSI_LEN);
-	ueMSISDN.convertToBcdArray(fwd_rel_req.cMsisdn);
+    memset(&(fwd_rel_req.cMSISDN), 0, BINARY_IMSI_LEN);
+	ueMSISDN.convertToBcdArray(fwd_rel_req.cMSISDN);
         
 }

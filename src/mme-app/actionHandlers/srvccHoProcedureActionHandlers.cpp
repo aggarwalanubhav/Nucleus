@@ -41,6 +41,7 @@
 #include "mmeStatsPromClient.h"
 #include "gtpCauseTypes.h"
 #include "nas_structs.h"
+#include "mmeStates/dedBearerDeactProcedureStates.h"
 
 using namespace cmn;
 using namespace cmn::utils;
@@ -72,7 +73,7 @@ ActStatus ActionHandlers::split_bearer(ControlBlock& cb)
         return ActStatus::HALT;
     }
 
-    auto& sessionCtxtContainer = ue_ctxt->getSessionContextContainer();
+    auto& sessionCtxtContainer = ueCtxt->getSessionContextContainer();
     if(sessionCtxtContainer.size() < 1)
     {
 	log_msg(LOG_DEBUG, "split_bearer:Session context list empty");
@@ -86,7 +87,7 @@ ActStatus ActionHandlers::split_bearer(ControlBlock& cb)
         {
             log_msg(LOG_ERROR, "Bearer context list is empty for UE IDX %d",
                     cb.getCBIndex());
-            return;
+            return ActStatus::HALT;
         }
 
         auto it = bearerCtxtContainer.begin();
@@ -96,7 +97,7 @@ ActStatus ActionHandlers::split_bearer(ControlBlock& cb)
             bearer_p = *it;
             it++;
             if (bearer_p->getBearerQos().qci == 1)
-                srvccProc_p->setVoiceBearer(bearer_p);
+                srvccProc_p->setVoiceBearer(*bearer_p);
             else
                 srvccProc_p->addPsBearers(bearer_p);
         }
@@ -134,7 +135,7 @@ ActStatus ActionHandlers::send_ps_to_cs_req_to_msc(ControlBlock& cb)
     memset(&psToCsReq, 0, sizeof(struct PS_to_CS_REQ_msg));
 
     MmeGtpMsgUtils::populatePsToCsRequest(
-            cb, *ue_ctxt, *srvccProc_p, psToCsReq);
+            cb, *ueCtxt, *srvccProc_p, psToCsReq);
 
     mmeStats::Instance()->increment(mmeStatsCounter::MME_MSG_TX_SV_PS_TO_CS_REQUEST);
     cmn::ipc::IpcAddress destAddr = {TipcServiceInstance::svAppInstanceNum_c};
@@ -222,13 +223,6 @@ ActStatus ActionHandlers::handle_fwd_rel_res_from_sgsn(ControlBlock& cb)
         log_msg(LOG_DEBUG, "forward_relocation_reponse: SRVCC procedure ctxt is NULL ");
         return ActStatus::HALT;
     }
-    S1HandoverProcedureContext* s1HoPrCtxt = dynamic_cast<S1HandoverProcedureContext*>(cb.getTempDataBlock());
-    if(s1HoPrCtxt==NULL)
-    {  
-        log_msg(LOG_DEBUG,"forward_relocation_reponse: S1HandoverProcedureContext is NULL");
-        return ActStatus::HALT;
-
-    }
 
     MmeProcedureCtxt *procCtxt = dynamic_cast<MmeProcedureCtxt*>(cb.getTempDataBlock());
     if(procCtxt==NULL)
@@ -237,7 +231,9 @@ ActStatus ActionHandlers::handle_fwd_rel_res_from_sgsn(ControlBlock& cb)
         return ActStatus::HALT;
 
     }
-	SessionContext* sessionCtxt = sessionCtxtContainer.front();
+    SessionContext* sessionCtxt = 
+		dynamic_cast<SessionContext*>(cb.getTempDataBlock());
+
     if(sessionCtxt==NULL)
     {  
         log_msg(LOG_DEBUG,"forward_relocation_reponse: SessionContext is NULL");
@@ -245,20 +241,16 @@ ActStatus ActionHandlers::handle_fwd_rel_res_from_sgsn(ControlBlock& cb)
 
     }
     
-    MmeProcedureCtxt *MmeSvcReqProcedureCtxt = dynamic_cast<MmeProcedureCtxt*>(cb.getMmeSvcReqProcedureCtxt());
-    if(MmeSvcReqProcedureCtxt==NULL)
-    {  
-        log_msg(LOG_DEBUG,"forward_relocation_reponse: MmeSvcReqProcedureCtxt is NULL");
-        return ActStatus::HALT;
-
-    }
-
-    const forward_rel_response_msg *forward_rel_response_msg = static_cast<const forward_rel_response_msg*>(msgBuf->getDataPointer());
+    const forward_rel_response_msg *forward_rel_res_msg = static_cast<const forward_rel_response_msg*>(msgBuf->getDataPointer());
     
-    sessionCtxt->setS11SgwCtrlFteid(forward_rel_response_msg->senderFTeidForControlPlane);
-    procCtxt->setMmeErrorCause(forward_rel_response_msg->cause.causeValue);
-    MmeSvcReqProcedureCtxt->setEpsBearerId(forward_rel_response_msg->listOfSetUpBearers[0].epsBearerId);
-    s1HoPrCtxt->setTargetToSrcTransContainer(forward_rel_response_msg->utranTranparentContainer);
+    if (forward_rel_res_msg->cause.causeValue != GTPV2C_CAUSE_REQUEST_ACCEPTED)
+    {
+        log_msg(LOG_ERROR,"forward_relocation_reponse: forward_relocation_request not accepted");
+        return ActStatus::HALT;
+    }
+    sessionCtxt->setS11SgwCtrlFteid(forward_rel_res_msg->senderFTeidForControlPlane);
+    //MmeSvcReqProcedureCtxt->setEpsBearerId(forward_rel_response_msg->listOfSetUpBearers[0].epsBearerId);
+    srvcc_ctxt->setTargetToSrcTransContainer(forward_rel_res_msg->utranTranparentContainer);
 
     ProcedureStats::num_of_fwd_relocation_resp_processed++;
     return ActStatus::PROCEED;
@@ -321,7 +313,7 @@ ActStatus ActionHandlers::process_ps_to_cs_comp(ControlBlock& cb)
 
     struct PS_to_CS_COMP_ACK_msg ps_to_cs_ack_msg;
     ps_to_cs_ack_msg.msg_type = ps_to_cs_complete_acknowledge;
-	ps_to_cs_ack_msg.ue_idx = ueCtxt.getContextID();
+	ps_to_cs_ack_msg.ue_idx = ue_ctxt->getContextID();
     ps_to_cs_ack_msg.cause.causeValue = 16;
 
     mmeStats::Instance()->increment(mmeStatsCounter::MME_MSG_TX_SV_PS_TO_CS_COMPLETE_ACK);
@@ -375,7 +367,7 @@ ActStatus ActionHandlers::send_del_bearer_command(ControlBlock& cb)
     mmeStats::Instance()->increment(mmeStatsCounter::MME_MSG_TX_S3_FORWARD_RELOCATION_COMPLETE_ACK);
     cmn::ipc::IpcAddress destAddr = {TipcServiceInstance::s3AppInstanceNum_c};
     MmeIpcInterface &mmeIpcIf = static_cast<MmeIpcInterface&>(compDb.getComponent(MmeIpcInterfaceCompId));
-    mmeIpcIf.dispatchIpcMsg((char *) &fwd_rel_comp_ack_msg, sizeof(fwd_rel_comp_ack_msg), destAddr);
+    mmeIpcIf.dispatchIpcMsg((char *) &db_command_msg, sizeof(DELETE_BEARER_COMMAND_msg), destAddr);
 
     mmeStats::Instance()->increment(mmeStatsCounter::MME_PROCEDURES_DELETE_BEARER_PROC);
     srvcc_ctxt->setCtxtType(ProcedureType::dedBrDeActivation_c);
@@ -414,7 +406,7 @@ ActStatus ActionHandlers::process_fwd_rel_comp(ControlBlock& cb)
 
     struct fwd_rel_comp_ack fwd_rel_comp_ack_msg;
     fwd_rel_comp_ack_msg.msg_type = forward_relocation_complete_ack;
-	fwd_rel_comp_ack_msg.ue_idx = ueCtxt.getContextID();
+	fwd_rel_comp_ack_msg.ue_idx = ue_ctxt->getContextID();
     fwd_rel_comp_ack_msg.cause.causeValue = 16;
 
     mmeStats::Instance()->increment(mmeStatsCounter::MME_MSG_TX_S3_FORWARD_RELOCATION_COMPLETE_ACK);
@@ -444,10 +436,10 @@ ActStatus ActionHandlers::send_srvcc_ho_command(ControlBlock& cb)
 
     SrvccProcedureContext *srvcc_ctxt =
             dynamic_cast<SrvccProcedureContext*>(cb.getTempDataBlock());
-    if (ho_ctxt == NULL)
+    if (srvcc_ctxt == NULL)
     {
         log_msg(LOG_DEBUG,
-                "send_srvcc_ho_command: procedure ctxt is NULL ");
+                "send_srvcc_ho_command: srvcc procedure ctxt is NULL ");
         return ActStatus::HALT;
     }
 

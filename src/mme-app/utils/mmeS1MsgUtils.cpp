@@ -94,7 +94,7 @@ void MmeS1MsgUtils::populateHoRequest(SM::ControlBlock& cb,
 
 void MmeS1MsgUtils::populateHoCommand(SM::ControlBlock& cb,
         UEContext& ueCtxt,
-		SrvccProcedureContext& procCtxt,
+		S1HandoverProcedureContext& procCtxt,
 		struct handover_command_Q_msg& hoCommand)
 {
 	hoCommand.msg_type = handover_command;

@@ -111,13 +111,13 @@ void GtpMsgHandler::handleGtpMessage_v(IpcEMsgUnqPtr eMsg)
 	}
 	break;
 
-	case msg_type_t::delete_bearer_cmd:
+	/*case msg_type_t::delete_bearer_cmd:
 	{
 		mmeStats::Instance()->increment(mmeStatsCounter::MME_MSG_RX_S11_CREATE_BEARER_REQUEST);
 		const struct DELETE_BEARER_COMMAND_msg *delbearcmd = (const struct DELETE_BEARER_COMMAND_msg *)(msgBuf->getDataPointer());
 		handleDeleteBearerCommandMsg_v(std::move(eMsg), delbearcmd->s11_mme_cp_teid);
 	}
-	break;
+	break;*/
 
 	default:
 		log_msg(LOG_INFO, "Unhandled Gtp Message %d ", msgData_p->msg_type);
@@ -253,7 +253,7 @@ void GtpMsgHandler::handleDeleteBearerRequestMsg_v(IpcEMsgUnqPtr eMsg, uint32_t 
 	controlBlk_p->addEventToProcQ(evt);
 }
 
-void GtpMsgHandler::handleDeleteBearerCommandMsg_v(IpcEMsgUnqPtr eMsg, uint32_t ueIdx)
+/*void GtpMsgHandler::handleDeleteBearerCommandMsg_v(IpcEMsgUnqPtr eMsg, uint32_t ueIdx)
 {
 	log_msg(LOG_INFO, "Inside handleDeleteBearerCommandMsg_v");
 
@@ -270,4 +270,4 @@ void GtpMsgHandler::handleDeleteBearerCommandMsg_v(IpcEMsgUnqPtr eMsg, uint32_t 
 	// Fire DB Req from gw event, insert cb to procedure queue
 	SM::Event evt(DELETE_BEARER_REQ_FROM_GW, cmn::IpcEMsgShPtr(std::move(eMsg)));
 	controlBlk_p->addEventToProcQ(evt);
-}
+}*/

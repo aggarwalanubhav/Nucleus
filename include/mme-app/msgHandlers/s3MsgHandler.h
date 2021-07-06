@@ -25,6 +25,7 @@ private:
 	void handleRelocationCancelResponse_v(cmn::IpcEMsgUnqPtr eMsg, uint32_t ueIdx);
 	void handleIdentificationReq_v(cmn::IpcEMsgUnqPtr eMsg, uint32_t ueIdx);
 	void handleContextReq_v(cmn::IpcEMsgUnqPtr eMsg, uint32_t ueIdx);
+	void handleForwardRelocationCompleteNoti_v(cmn::IpcEMsgUnqPtr eMsg, uint32_t ueIdx);
 
 };
 

@@ -21,9 +21,6 @@ extern "C"{
 
 #include "../../src/gtpV2Codec/msgClasses/gtpV2MsgDataTypes.h"
 
-#include "../../src/gtpV2Codec/msgClasses/gtpV2MsgDataTypes.h"
-
-
 #define REQ_ARGS 0x0000
 
 typedef enum msg_type_t {
@@ -154,6 +151,7 @@ struct ue_attach_info {
     bool ue_add_sec_cap_present;
     ue_add_sec_capabilities ue_add_sec_capab;
     Mobile_Station_Classmark_2 ms_classmark2;
+    Voice_Domain_Preference vdp;
     enum ie_RRC_est_cause rrc_cause;
     int enb_fd;
     char esm_info_tx_required;
@@ -742,7 +740,7 @@ struct PS_to_CS_REQ_msg{
     SvFlagsIeData svFlags;
     unsigned char STNSR[BINARY_STNSR_LEN];
     StnSrIeData stnSr;
-    MmContextForEutranSrvccIeData mmContextForEutranSrvcc;
+    MmContextForEutranSrvcc mmContextForEutranSrvcc;
     SourceToTargetTransparentContainerIeData sourceToTargetTransparentContainer;
 };
 #define SV_PSTOCSREQ_BUF_SIZE sizeof(struct PS_to_CS_REQ_msg)
@@ -798,11 +796,11 @@ struct FORWARD_REL_REQ_msg{
 
     unsigned char IMSI[BINARY_IMSI_LEN];
     FTeidIeData senderFTeidForControlPlane;
-    FTeidIeData sgwS11S4IpAddressAndTeidForControlPlane;
+    struct fteid sgwS11S4IpAddressAndTeidForControlPlane;
     FqdnIeData sgwNodeName;
     FqdnIeData sgsnNodeName;
     FqdnIeData mmeNodeName;
-    MmContextIeData mmeSgsnAmfUeMmContext;
+    MmContext_t mmeSgsnAmfUeMmContext;
     IndicationIeData indicationFlags;
     TargetIdentificationIeData targetIdentification;
     SourceIdentificationIeData sourceIdentification;
@@ -814,8 +812,8 @@ struct FORWARD_REL_REQ_msg{
     struct PLMN servingNetwork;
     AdditionalMmContextForSrvcc additionalMmContextForSrvcc;
     AdditionalFlagsForSrvccIeData additionalFlagsForSrvcc;
-    MsisdnIeData msisdn;
-    MsisdnIeData cMsisdn;
+    unsigned char MSISDN[MSISDN_STR_LEN];
+    unsigned char cMSISDN[MSISDN_STR_LEN];
     PortNumberIeData sourceUdpPortNumber;
     TraceInformationIeData traceInformation;
     CsgIdIeData csgId;
@@ -1161,7 +1159,7 @@ struct forward_rel_response_msg
 
 
     CauseIeData cause;
-    FTeidIeData senderFTeidForControlPlane;
+    fteid_t senderFTeidForControlPlane;
     IndicationIeData indicationFlags;
 
     Uint16 listOfSetUpBearersCount;
@@ -1173,7 +1171,7 @@ struct forward_rel_response_msg
     FCauseIeData ranapCause;
     FqdnIeData sgwNodeName;
     FContainerIeData eUtranTranparentContainer;
-    FContainerIeData utranTranparentContainer;
+    struct src_target_transparent_container utranTranparentContainer;
     LocalDistinguishedNameIeData mmeS4SgsnLdn;
     FqdnIeData sgsnNodeName;
     FqdnIeData mmeNodeName;

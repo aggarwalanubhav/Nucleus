@@ -33,6 +33,7 @@
 #include <utils/mmeContextManagerUtils.h>
 #include <utils/mmeS1MsgUtils.h>
 #include "mmeStatsPromClient.h"
+#include "mmeStates/deleteBearerProcedureStates.h"
 
 using namespace mme;
 using namespace SM;
