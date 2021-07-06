@@ -456,13 +456,27 @@ void MmeNasUtils::decode_attach_req(unsigned char *msg, int &nas_msg_len,
             break;
         }
         case NAS_IE_TYPE_VOICE_DOMAIN_PREF_UE_USAGE_SETTING:
+        {
+            log_msg(LOG_DEBUG, "Voice Domain Preference : Handling.");
+            index++;
+            nas->elements[index].msgType = NAS_IE_TYPE_VOICE_DOMAIN_PREF_UE_USAGE_SETTING;
+            nas->elements[index].pduElement.voice_domain_pref.pres = true;
+            nas->elements[index].pduElement.voice_domain_pref.element_id = msg[0];
+            msg++;
+            nas->elements[index].pduElement.voice_domain_pref.len = msg[0];
+            msg++;
+            memcpy(&(nas->elements[index].pduElement.voice_domain_pref.vdp), msg,
+                    nas->elements[index].pduElement.voice_domain_pref.len);
+            msg += nas->elements[index].pduElement.voice_domain_pref.len;
+            break;
+        }
         case NAS_IE_TYPE_EXTENDED_DRX_PARAMETERS:
         case NAS_IE_TYPE_T3412_EXTENDED_VALUE:
         case NAS_IE_TYPE_T3324_VALUE:
         case NAS_IE_TYPE_UE_STATUS:
         case NAS_IE_TYPE_DRX_PARAM:
         {
-            msg += 3; //Skipping the IE
+            msg += 2; //Skipping the IE
             break;
         }
         case NAS_IE_TYPE_TMSI_BASED_NRI_CONTAINER:
@@ -473,7 +487,17 @@ void MmeNasUtils::decode_attach_req(unsigned char *msg, int &nas_msg_len,
         }
         case NAS_IE_TYPE_MS_CLASSMARK_2:
         {
-            msg += 5; //Skipping the IE
+            log_msg(LOG_DEBUG, "MS Classmark 2 : Handling.");
+            index++;
+            nas->elements[index].msgType = NAS_IE_TYPE_MS_CLASSMARK_2;
+            nas->elements[index].pduElement.ms_classmark_2.pres = true;
+            nas->elements[index].pduElement.ms_classmark_2.element_id = msg[0];
+            msg++;
+            nas->elements[index].pduElement.ms_classmark_2.len = msg[0];
+            msg++;
+            memcpy(&(nas->elements[index].pduElement.ms_classmark_2.bits), msg,
+                    nas->elements[index].pduElement.ms_classmark_2.len);
+            msg += nas->elements[index].pduElement.ms_classmark_2.len;
             break;
         }
         case NAS_IE_TYPE_TAI:

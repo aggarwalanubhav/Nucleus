@@ -19,6 +19,7 @@
 #include <mmeStates/serviceRequestStates.h>
 #include <mmeStates/tauStates.h>
 #include <mmeStates/erabModIndicationStates.h>
+#include <mmeStates/srvccHoProcedureStates.h>
 #include <utils/mmeContextManagerUtils.h>
 #include <utils/mmeCommonUtils.h>
 #include <utils/mmeTimerUtils.h>
@@ -158,9 +159,9 @@ SrvccProcedureContext* MmeContextManagerUtils::allocateSrvccContext(SM::ControlB
             SubsDataGroupManager::Instance()->getSrvccProcedureContext();
     if (prcdCtxt_p != NULL)
     {
-        //mmeStats::Instance()->increment(mmeStatsCounter::MME_PROCEDURES_S1_ENB_HANDOVER_PROC);
+        mmeStats::Instance()->increment(mmeStatsCounter::MME_PROCEDURES_SRVCC_PROC);
         prcdCtxt_p->setCtxtType(ProcedureType::srvcc_c);
-        //prcdCtxt_p->setNextState(IntraS1HoStart::Instance());
+        prcdCtxt_p->setNextState(SrvccHoStart::Instance());
         //prcdCtxt_p->setHoType(intraMmeS1Ho_c);
         cb_r.addTempDataBlock(prcdCtxt_p);
     }

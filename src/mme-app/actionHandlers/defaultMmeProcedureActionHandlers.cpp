@@ -662,12 +662,14 @@ ActStatus ActionHandlers::default_s1_ho_handler(ControlBlock& cb)
         srvccProc_p->setTargetLai(hoReq->target_id.selected_lai);
         srvccProc_p->setTargetRncId(hoReq->target_id.rnc_id);
 
+        SM::Event evt(SRVCC_HO_START, NULL);
+	    cb.qInternalEvent(evt);
+    } else {
+        SM::Event evt(INTRA_S1HO_START, NULL);
+	    cb.qInternalEvent(evt);
     }
 
 	ProcedureStats::num_of_ho_required_received++;
-
-	SM::Event evt(INTRA_S1HO_START, NULL);
-	cb.qInternalEvent(evt);
     return ActStatus::PROCEED;
 }
 

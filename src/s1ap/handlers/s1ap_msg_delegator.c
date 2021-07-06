@@ -1032,6 +1032,32 @@ int convertUehoReqToProtoIe(InitiatingMessage_t *msg,
                                 targeteNB_ID->global_ENB_ID.eNB_ID.choice.macroENB_ID.size);
                     }
 
+                } else if (targetID_p->present == TargetID_PR_targetRNC_ID) {
+                    struct TargetRNC_ID *targetRnc_ID = targetID_p->choice.targetRNC_ID;
+                    if (targetRnc_ID == NULL)
+                    {
+                        log_msg(LOG_ERROR, "Decoding of IE targetRnc_ID failed");
+                        return -1;
+                    }
+
+                    struct LAI *s1apLAI_p = &(targetRnc_ID->lAI);
+                    if (s1apLAI_p == NULL)
+                    {
+                        log_msg (LOG_ERROR, "Decoding of IE LAI failed");
+                        return -1;
+                    }
+
+                /*    memcpy(&proto_ies->data[i].val.target_id.selected_tai.tac,
+                            s1apTAI_p->tAC.buf, s1apTAI_p->tAC.size);
+                    memcpy(proto_ies->data[i].val.target_id.selected_tai.plmn_id.idx,
+                            s1apTAI_p->pLMNidentity.buf, s1apTAI_p->pLMNidentity.size);
+
+                    if (targeteNB_ID->global_ENB_ID.eNB_ID.present == ENB_ID_PR_macroENB_ID)
+                    {
+                        memcpy(proto_ies->data[i].val.target_id.global_enb_id.macro_enb_id,
+                                targeteNB_ID->global_ENB_ID.eNB_ID.choice.macroENB_ID.buf,
+                                targeteNB_ID->global_ENB_ID.eNB_ID.choice.macroENB_ID.size);
+                    }*/
                 }
 
                 targetID_p = NULL;

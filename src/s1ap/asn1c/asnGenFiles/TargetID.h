@@ -13,6 +13,7 @@
 
 /* Including external dependencies */
 #include <constr_CHOICE.h>
+#include "TargetRNC-ID.h"
 
 #ifdef __cplusplus
 extern "C" {

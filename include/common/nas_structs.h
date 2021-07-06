@@ -402,11 +402,13 @@ typedef struct MS_classmark_2_bitmap {
 }MS_classmark_2_bitmap;
 
 typedef struct Mobile_Station_Classmark_2 {
-        uint8_t len;
-        //union MS_classmark_2 {
-            MS_classmark_2_bitmap bits;
-            uint8_t octets[3];
-        //} u;
+
+        bool          pres;
+        unsigned char element_id;
+        unsigned char len;
+
+        //MS_classmark_2 OCTETS
+        MS_classmark_2_bitmap bits;
 } Mobile_Station_Classmark_2;
 
 /*Mobile Station Classmark 3*/
@@ -495,6 +497,14 @@ typedef struct Voice_Domain_Preference {
     uint8_t ue_usg_setting:1;
     uint8_t voice_dom_pref:2;
 }Voice_Domain_Preference;
+
+typedef struct voice_domain_preference {
+    bool          pres;
+	unsigned char element_id;
+	unsigned char len;
+
+    Voice_Domain_Preference vdp;
+}voice_domain_preference;
 
 /*24.008 - 10.5.6.1
 APN name can be in range of min 3 octets to max 102 octets
@@ -673,6 +683,8 @@ typedef union nas_pdu_elements_union {
 	unsigned char eps_update_result;
 	unsigned char tau_timer;
 	eps_network_feature_support eps_nw_feature_supp;
+    voice_domain_preference voice_domain_pref;
+    Mobile_Station_Classmark_2 ms_classmark_2;
 }nas_pdu_elements_union;
 
 typedef struct nas_pdu_elements {
