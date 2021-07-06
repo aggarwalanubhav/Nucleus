@@ -145,6 +145,7 @@ ActStatus ActionHandlers::default_attach_req_handler(ControlBlock& cb)
     ueCtxt_p->setUeAddSecCapab(ue_info->ue_add_sec_capab);
     // SRVCC
     ueCtxt_p->setMsClassmark2(ue_info->ms_classmark2);
+    ueCtxt_p->setVoiceDomainPref(ue_info->vdp);
 	prcdCtxt_p->setPti(ue_info->pti);
 	prcdCtxt_p->setPcoOptions(ue_info->pco_options, ue_info->pco_length);
 	prcdCtxt_p->setEsmInfoTxRequired(ue_info->esm_info_tx_required);

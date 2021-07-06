@@ -1718,6 +1718,42 @@ namespace mme
 			uint8_t getRac()const;			
 			
 			/****************************************
+			* setVoiceBearer
+			*    set voiceBearer to SrvccProcedureContext
+			****************************************/
+			void setVoiceBearer(const BearerContext& voiceBearer_i);
+			
+			/****************************************
+			* getVoiceBearer
+			*    get voiceBearer from SrvccProcedureContext
+			****************************************/
+			const BearerContext& getVoiceBearer()const;			
+
+			/****************************************
+			* addPsBearers
+			*    add psBearers to SrvccProcedureContext
+			****************************************/
+	        	void addPsBearers(BearerContext* psBearers_i);
+			
+			/****************************************
+			* removePsBearers
+			*    remove psBearers from SrvccProcedureContext
+			****************************************/
+			void removePsBearers(BearerContext* psBearers_i);
+			
+			/****************************************
+			* findPsBearers
+			*    find psBearers
+			****************************************/
+			std::list<BearerContext*>::iterator findPsBearers(BearerContext* psBearers_i);
+			
+			/****************************************
+			* getPsBearersContainer
+			*    get psBearersContainer to SrvccProcedureContext
+			****************************************/
+			std::list<BearerContext*>& getPsBearersContainer();
+			
+			/****************************************
 			* setSrvccHoIndication
 			*    set srvccHoIndication to SrvccProcedureContext
 			****************************************/
@@ -1740,6 +1776,12 @@ namespace mme
 			
 			// DataName
 			uint8_t rac_m;
+			
+			// DataName
+			BearerContext voiceBearer_m;
+			
+			// DataName
+			std::list<BearerContext*> psBearers_m;
 			
 			// DataName
 			srvcc_ho_indication srvccHoIndication_m;

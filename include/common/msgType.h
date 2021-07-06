@@ -17,10 +17,9 @@ extern "C"{
 #include "s11_structs.h"
 #include "s1ap_structs.h"
 #include "s1ap_ie.h"
-#include "../../src/gtpV2Codec/msgClasses/gtpV2MsgDataTypes.h"
+#include "srvcc_structs.h"
 
 #include "../../src/gtpV2Codec/msgClasses/gtpV2MsgDataTypes.h"
-
 
 #define REQ_ARGS 0x0000
 
@@ -117,7 +116,9 @@ typedef enum msg_type_t {
     ps_to_cs_complete_notification,
     ps_to_cs_cancel_notification,
     ps_to_cs_complete_acknowledge,
-    
+    delete_bearer_cmd,
+    forward_relocation_complete_noti,
+    forward_relocation_complete_ack,
     max_msg_type
 } msg_type_t;
 
@@ -150,6 +151,7 @@ struct ue_attach_info {
     bool ue_add_sec_cap_present;
     ue_add_sec_capabilities ue_add_sec_capab;
     Mobile_Station_Classmark_2 ms_classmark2;
+    Voice_Domain_Preference vdp;
     enum ie_RRC_est_cause rrc_cause;
     int enb_fd;
     char esm_info_tx_required;
@@ -738,7 +740,7 @@ struct PS_to_CS_REQ_msg{
     SvFlagsIeData svFlags;
     unsigned char STNSR[BINARY_STNSR_LEN];
     StnSrIeData stnSr;
-    MmContextForEutranSrvccIeData mmContextForEutranSrvcc;
+    MmContextForEutranSrvcc mmContextForEutranSrvcc;
     SourceToTargetTransparentContainerIeData sourceToTargetTransparentContainer;
 };
 #define SV_PSTOCSREQ_BUF_SIZE sizeof(struct PS_to_CS_REQ_msg)
@@ -792,33 +794,31 @@ struct FORWARD_REL_REQ_msg{
     bool mmeSgsnUeScefPdnConnectionsIePresent;   
     bool mmeSgsnAmfUeEpsPdnConnectionsIePresent;   
 
-
-    ImsiIeData imsi;
+    unsigned char IMSI[BINARY_IMSI_LEN];
     FTeidIeData senderFTeidForControlPlane;
-    FTeidIeData sgwS11S4IpAddressAndTeidForControlPlane;
+    struct fteid sgwS11S4IpAddressAndTeidForControlPlane;
     FqdnIeData sgwNodeName;
     FqdnIeData sgsnNodeName;
     FqdnIeData mmeNodeName;
-    MmContextIeData mmeSgsnAmfUeMmContext;
+    MmContext_t mmeSgsnAmfUeMmContext;
     IndicationIeData indicationFlags;
     TargetIdentificationIeData targetIdentification;
     SourceIdentificationIeData sourceIdentification;
-    PlmnIdIeData selectedPlmnId;
+    struct PLMN selectedPlmnId;
     FContainerIeData eUtranTransparentContainer;
     FContainerIeData utranTransparentContainer;
     FCauseIeData s1ApCause;
     FCauseIeData ranapCause;
-    ServingNetworkIeData servingNetwork;
-    AdditionalMmContextForSrvccIeData additionalMmContextForSrvcc;
+    struct PLMN servingNetwork;
+    AdditionalMmContextForSrvcc additionalMmContextForSrvcc;
     AdditionalFlagsForSrvccIeData additionalFlagsForSrvcc;
-    MsisdnIeData msisdn;
-    MsisdnIeData cMsisdn;
+    unsigned char MSISDN[MSISDN_STR_LEN];
+    unsigned char cMSISDN[MSISDN_STR_LEN];
     PortNumberIeData sourceUdpPortNumber;
     TraceInformationIeData traceInformation;
     CsgIdIeData csgId;
     CmiIeData csgMembershipIndication;
     IntegerNumberIeData ueUsageType;
-    MmeSgsnUeScefPdnConnectionsInForwardRelocationRequestData mmeSgsnUeScefPdnConnections;
     MmeSgsnAmfUeEpsPdnConnectionsInForwardRelocationRequestData mmeSgsnAmfUeEpsPdnConnections;
 };
 #define S3_FWDRELREQ_BUF_SIZE sizeof(struct FORWARD_REL_REQ_msg)
@@ -928,7 +928,7 @@ struct DELETE_BEARER_COMMAND_msg{
     bool secondaryRatUsageDataReportIePresent;   
 
 
-    BearerContextsInDeleteBearerCommandData bearerContexts;
+    BearerContextsInDeleteBearerCommandData bearerContext;
     UliIeData userLocationInformation;
     UliTimestampIeData uliTimestamp;
     UeTimeZoneIeData ueTimeZone;
@@ -1113,8 +1113,8 @@ struct CONTEXT_REQ_msg{
 };
 struct ps_to_cs_res_Q_msg {
     gtp_incoming_msg_data_t header;
-    int s11_mme_cp_teid;
     int sv_mme_cp_teid;
+
     SrvccCauseIeData srvcc_cause;
     uint32_t msc_ip;
     TeidCIeData teid_c;
@@ -1123,16 +1123,16 @@ struct ps_to_cs_res_Q_msg {
 
 struct ps_to_cs_comp_noti_Q_msg {
     gtp_incoming_msg_data_t header;
-    int s11_mme_cp_teid;
     int sv_mme_cp_teid;
+
     unsigned char IMSI[BINARY_IMSI_LEN];
     SrvccCauseIeData srvcc_cause; 
 };
 
 struct ps_to_cs_cancel_ack_Q_msg {
     gtp_incoming_msg_data_t header;
-    int s11_mme_cp_teid;
     int sv_mme_cp_teid;
+
     uint8_t cause;
     
     bool svFlagsIePresent;
@@ -1141,7 +1141,8 @@ struct ps_to_cs_cancel_ack_Q_msg {
 struct forward_rel_response_msg
 {
     gtp_incoming_msg_data_t header;
-    int s11_mme_cp_teid;
+    int s3_mme_cp_teid;
+
     bool senderFTeidForControlPlaneIePresent;   
     bool indicationFlagsIePresent;   
     bool s1ApCauseIePresent;   
@@ -1158,7 +1159,7 @@ struct forward_rel_response_msg
 
 
     CauseIeData cause;
-    FTeidIeData senderFTeidForControlPlane;
+    fteid_t senderFTeidForControlPlane;
     IndicationIeData indicationFlags;
 
     Uint16 listOfSetUpBearersCount;
@@ -1170,7 +1171,7 @@ struct forward_rel_response_msg
     FCauseIeData ranapCause;
     FqdnIeData sgwNodeName;
     FContainerIeData eUtranTranparentContainer;
-    FContainerIeData utranTranparentContainer;
+    struct src_target_transparent_container utranTranparentContainer;
     LocalDistinguishedNameIeData mmeS4SgsnLdn;
     FqdnIeData sgsnNodeName;
     FqdnIeData mmeNodeName;
@@ -1181,11 +1182,9 @@ struct forward_rel_response_msg
 struct fwd_rel_comp_not
 {
     gtp_incoming_msg_data_t header;
-    int s11_mme_cp_teid;
+    int s3_mme_cp_teid;
     
     bool indicationFlagsIePresent;   
-
-
     FTeidIeData indicationFlags;
 
 };

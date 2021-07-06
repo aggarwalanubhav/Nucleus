@@ -373,7 +373,7 @@ typedef struct eps_network_feature_support {
 
 /*Mobile Station Classmark 2*/
 /*Refer spec 24.008 v 15.6.0 sec:10.5.1.6*/
-typedef struct Mobile_Station_Classmark_2 {
+typedef struct MS_classmark_2_bitmap {
     //Octet 3
     uint8_t spare1:1;
     uint8_t rev_lvl:2;
@@ -399,7 +399,15 @@ typedef struct Mobile_Station_Classmark_2 {
     uint8_t cmsp:1;
     uint8_t a5_3_alg_sup:1;
     uint8_t a5_2_alg_sup:1;
-}Mobile_Station_Classmark_2;
+}MS_classmark_2_bitmap;
+
+typedef struct Mobile_Station_Classmark_2 {
+        uint8_t len;
+        //union MS_classmark_2 {
+            MS_classmark_2_bitmap bits;
+            uint8_t octets[3];
+        //} u;
+} Mobile_Station_Classmark_2;
 
 /*Mobile Station Classmark 3*/
 /*Refer spec 24.008 v 10.6.1 sec:10.5.1.7*/
@@ -749,5 +757,10 @@ typedef enum nas_int_algo
     NAS_INT_ALGORITHMS_EIA7,
 }nas_int_algo_enum;
 
+typedef enum security_mode {
+EPSsecurityContext = 0,
+GSMsecurityContext,
+UMTSsecurityContext,
+}security_mode;
 
 #endif /*__S1AP_STRUCTS_H*/

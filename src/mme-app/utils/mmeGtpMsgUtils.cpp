@@ -5,7 +5,8 @@
 */
 
 #include <utils/mmeGtpMsgUtils.h>
-
+#include "msgType.h"
+#include "secUtils.h"
 #include <controlBlock.h>
 #include <contextManager/dataBlocks.h>
 #include <utils/mmeCauseUtils.h>
@@ -287,6 +288,59 @@ bool MmeGtpMsgUtils::populateDeleteBearerResponse(SM::ControlBlock &cb,
     return status;
 }
 
+void MmeGtpMsgUtils::populatePsToCsRequest(SM::ControlBlock& cb,
+        UEContext& ueCtxt,
+		SrvccProcedureContext& procCtxt,
+		struct PS_to_CS_REQ_msg& psToCsReq)
+{
+        psToCsReq.msg_type = ps_to_cs_request;
+    psToCsReq.ue_idx = ueCtxt.getContextID();
+
+    //IMSI
+    psToCsReq.imsiIePresent = true;
+
+    const DigitRegister15& ueImsi = ueCtxt.getImsi();
+	ueImsi.convertToBcdArray( psToCsReq.IMSI );
+
+    //MSISDN
+    psToCsReq.cMsisdnIePresent = true;
+    memset(psToCsReq.MSISDN, 0, BINARY_IMSI_LEN);
+	
+	const DigitRegister15& ueMSISDN = ueCtxt.getMsisdn();
+	ueMSISDN.convertToBcdArray(psToCsReq.MSISDN);
+
+    //SRC to Target Trans Container
+    memcpy(&(psToCsReq.sourceToTargetTransparentContainer),
+        &(procCtxt.getSrcToTargetTransContainer()),
+        sizeof(struct src_target_transparent_container));
+
+    // Target RNC Id
+    psToCsReq.targetRncIdIePresent = true;
+    psToCsReq.targetRncId.RncID = (Uint8)procCtxt.getTargetRncId();
+
+    // sv flags
+    psToCsReq.svFlagsIePresent = false;
+
+	// STN-SR
+    psToCsReq.stnSrIePresent = true;
+
+    const DigitRegister15& uestnsr = ueCtxt.getStnsr();
+	uestnsr.convertToBcdArray( psToCsReq.STNSR );
+    
+    //mm context
+    psToCsReq.mmContextForEutranSrvccIePresent = true;
+    E_UTRAN_sec_vector *secVect = const_cast<E_UTRAN_sec_vector*>(ueCtxt.getAiaSecInfo().AiaSecInfo_mp);
+    SecUtils::create_integrity_key(ueCtxt.getUeSecInfo().getSelectIntAlg(), 
+                                   secVect->kasme.val, psToCsReq.mmContextForEutranSrvcc.CKSRVCC);
+
+    SecUtils::create_ciphering_key(ueCtxt.getUeSecInfo().getSelectSecAlg(),
+                                    secVect->kasme.val, psToCsReq.mmContextForEutranSrvcc.IKSRVCC);
+
+    memcpy(&(psToCsReq.mmContextForEutranSrvcc.mobileStationClassmark2),
+                &(ueCtxt.getMsClassmark2()),
+                sizeof(Mobile_Station_Classmark_2));
+}
+
 void MmeGtpMsgUtils::populateDeleteBearerCommand(SM::ControlBlock& cb,
         UEContext& ueCtxt,
         SessionContext& sessionCtxt,
@@ -296,14 +350,7 @@ void MmeGtpMsgUtils::populateDeleteBearerCommand(SM::ControlBlock& cb,
         db_command_msg.msg_type = delete_bearer_cmd;
         db_command_msg.ue_idx = ueCtxt.getContextID();
 
-    BearerContext *bearerCtxt = sessionCtxt.findBearerContextByBearerId(sessionCtxt.getLinkedBearerId());
-    if (bearerCtxt == NULL)
-    {
-        log_msg(LOG_DEBUG, "send_del_bearer_command: bearer ctxt is NULL ");
-        return;
-    }
-
-    db_command_msg.bearerContexts.epsBearerId.epsBearerId = bearerCtxt->getBearerId();
+    db_command_msg.bearerContext.epsBearerId.epsBearerId = procCtxt.getVoiceBearer().getBearerId();
 
     db_command_msg.secondaryRatUsageDataReportIePresent = false;
     db_command_msg.senderFTeidForControlPlaneIePresent = false;
@@ -312,6 +359,85 @@ void MmeGtpMsgUtils::populateDeleteBearerCommand(SM::ControlBlock& cb,
     db_command_msg.userLocationInformationIePresent = false;
     db_command_msg.sgwsOverloadControlInformationIePresent = false;
     db_command_msg.mmeS4SgsnsOverloadControlInformationIePresent = false;
-    db_command_msg.bearerContexts.bearerFlagsIePresent = false;
-    db_command_msg.bearerContexts.ranNasReleaseCauseIePresent = false;
+    db_command_msg.bearerContext.bearerFlagsIePresent = false;
+    db_command_msg.bearerContext.ranNasReleaseCauseIePresent = false;
+}
+
+void MmeGtpMsgUtils::populateForwardRelocationRequest(SM::ControlBlock& cb,
+        UEContext& ueCtxt,
+        SessionContext& sessionCtxt,
+		SrvccProcedureContext& procCtxt,
+		struct FORWARD_REL_REQ_msg& fwd_rel_req) {
+    fwd_rel_req.msg_type = forward_relocation_request;
+    fwd_rel_req.ue_idx = ueCtxt.getContextID();
+
+    memcpy(&(fwd_rel_req.sgwS11S4IpAddressAndTeidForControlPlane), &(sessionCtxt.getS11SgwCtrlFteid().fteid_m),
+		sizeof(struct fteid));
+    
+    const DigitRegister15& ueImsi = ueCtxt.getImsi();
+    ueImsi.convertToBcdArray( fwd_rel_req.IMSI );
+
+    fwd_rel_req.mmeSgsnAmfUeMmContext.securityMode = EPSsecurityContext;
+    fwd_rel_req.mmeSgsnAmfUeMmContext.nhiPresent = 1;
+    
+    E_UTRAN_sec_vector* secVect =
+            const_cast<E_UTRAN_sec_vector*>(ueCtxt.getAiaSecInfo().AiaSecInfo_mp);
+    secinfo& secInfo = const_cast<secinfo&>(ueCtxt.getUeSecInfo().secinfo_m);
+
+    fwd_rel_req.mmeSgsnAmfUeMmContext.nasDownlinkCount = ueCtxt.getUeSecInfo().getDownlinkCount();
+    fwd_rel_req.mmeSgsnAmfUeMmContext.nasUplinkCount = ueCtxt.getUeSecInfo().getUplinkCount();
+    fwd_rel_req.mmeSgsnAmfUeMmContext.uambriPresent = true;
+    fwd_rel_req.mmeSgsnAmfUeMmContext.usedNasIntegrity = ueCtxt.getUeSecInfo().getSelectSecAlg();
+    fwd_rel_req.mmeSgsnAmfUeMmContext.usedNasCipher = ueCtxt.getUeSecInfo().getSelectIntAlg();
+
+    memcpy(&(fwd_rel_req.mmeSgsnAmfUeMmContext.kAsme), &(secInfo.kasme), sizeof(struct KASME));
+    fwd_rel_req.mmeSgsnAmfUeMmContext.drxParameter = PAGINX_DRX256;
+    
+    memcpy(fwd_rel_req.mmeSgsnAmfUeMmContext.authenticationQuadruplet.values, secVect,sizeof(AuthenticationQuadruplet));
+    memcpy(fwd_rel_req.mmeSgsnAmfUeMmContext.authenticationQuintuplet.values, secVect,sizeof(AuthenticationQuintuplet));
+    
+    /// Next hop count and next chaining count need to check
+    unsigned char nh[SECURITY_KEY_SIZE] = { 0 };
+    secInfo.next_hop_chaining_count = 1;
+    SecUtils::create_nh_key(secVect->kasme.val, nh, secInfo.kenb_key);
+    memcpy(secInfo.next_hop_nh , nh, KENB_SIZE);
+    
+    memcpy(fwd_rel_req.mmeSgsnAmfUeMmContext.nh, nh, KENB_SIZE);
+    fwd_rel_req.mmeSgsnAmfUeMmContext.ncc = ueCtxt.getUeSecInfo().secinfo_m.next_hop_chaining_count;
+
+    memcpy(&(fwd_rel_req.mmeSgsnAmfUeMmContext.ueNwCap),
+        &(ueCtxt.getUeNetCapab().ue_net_capab_m), sizeof(struct UE_net_capab));
+    //need clarification in ms network capability
+    fwd_rel_req.mmeSgsnAmfUeMmContext.lengthOfMsNetworkCapability = ueCtxt.getUeNetCapab().ue_net_capab_m.len;
+    fwd_rel_req.mmeSgsnAmfUeMmContext.msNetworkCapability = ueCtxt.getMsNetCapab().ms_net_capab_m.len;
+    fwd_rel_req.mmeSgsnAmfUeMmContext.voiceDomainPreferenceAndUesUsageSetting = ueCtxt.getVoiceDomainPref();
+    fwd_rel_req.mmeSgsnAmfUeMmContext.lengthOfVoiceDomainPreferenceAndUesUsageSetting = 1;
+
+    memcpy(&(fwd_rel_req.selectedPlmnId), &(ueCtxt.getTai().tai_m.plmn_id), 3);
+
+    memcpy(&(fwd_rel_req.eUtranTransparentContainer),
+            &(procCtxt.getSrcToTargetTransContainer()),
+            sizeof(struct src_target_transparent_container));
+
+    memcpy(&(fwd_rel_req.utranTransparentContainer),
+            &(procCtxt.getSrcToTargetTransContainer()),
+            sizeof(struct src_target_transparent_container));
+
+    fwd_rel_req.s1ApCause.fCauseField = procCtxt.getS1HoCause().s1apCause_m.choice.protocol;
+    fwd_rel_req.ranapCause.fCauseField = procCtxt.getS1HoCause().s1apCause_m.choice.radioNetwork;
+    memcpy(&(fwd_rel_req.servingNetwork), &(ueCtxt.getTai().tai_m.plmn_id), 3);
+
+
+    memcpy(&(fwd_rel_req.additionalMmContextForSrvcc.msclassmark2),
+                &(ueCtxt.getMsClassmark2()),
+                sizeof(Mobile_Station_Classmark_2));
+
+	const DigitRegister15& ueMSISDN = ueCtxt.getMsisdn();
+
+    memset(&(fwd_rel_req.MSISDN), 0, BINARY_IMSI_LEN);
+	ueMSISDN.convertToBcdArray(fwd_rel_req.MSISDN);
+
+    memset(&(fwd_rel_req.cMSISDN), 0, BINARY_IMSI_LEN);
+	ueMSISDN.convertToBcdArray(fwd_rel_req.cMSISDN);
+        
 }

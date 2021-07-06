@@ -58,27 +58,27 @@ void SvMsgHandler::handleSvMessage_v(IpcEMsgUnqPtr eMsg)
 	{
 		case msg_type_t::ps_to_cs_response:
 		{
-			mmeStats::Instance()->increment(mmeStatsCounter::MME_MSG_RX_S11_CREATE_SESSION_RESPONSE);
-			const struct ps_to_cs_res_Q_msg* pstocsres_info= (const struct ps_to_cs_res_Q_msg*) (msgBuf->getDataPointer());
-			handlePstoCsResponse_v(std::move(eMsg), pstocsres_info->s11_mme_cp_teid);
+			mmeStats::Instance()->increment(mmeStatsCounter::MME_MSG_RX_SV_PS_TO_CS_RESPONSE);
+			const struct ps_to_cs_res_Q_msg* ps_to_cs_res_info= (const struct ps_to_cs_res_Q_msg*) (msgBuf->getDataPointer());
+			handlePstoCsResponse_v(std::move(eMsg), ps_to_cs_res_info->sv_mme_cp_teid);
+			break;
 		}
-		break;
 
-		case msg_type_t::ps_to_cs_cancel_acknowledge:
+/*		case msg_type_t::ps_to_cs_cancel_acknowledge:
 		{
-			mmeStats::Instance()->increment(mmeStatsCounter::MME_MSG_RX_S11_MODIFY_BEARER_RESPONSE);
+			mmeStats::Instance()->increment(mmeStatsCounter::MME_MSG_RX_SV_PS_TO_CS_CANCEL_ACK);
 			const struct ps_to_cs_cancel_ack_Q_msg* pstocscanack_info= (const struct ps_to_cs_cancel_ack_Q_msg*) (msgBuf->getDataPointer());
 			handlePstoCsCancelAcknowlege_v(std::move(eMsg), pstocscanack_info->s11_mme_cp_teid);
+			break;
 		}
-		break;
-
+*/
 		case msg_type_t::ps_to_cs_complete_notification:
 		{
-			mmeStats::Instance()->increment(mmeStatsCounter::MME_MSG_RX_S11_DELETE_SESSION_RESPONSE);
-			const struct ps_to_cs_comp_noti_Q_msg* pstocscmpnot_info= (const struct ps_to_cs_comp_noti_Q_msg*) (msgBuf->getDataPointer());
-			handlePstoCsCompleteNotification_v(std::move(eMsg), pstocscmpnot_info->s11_mme_cp_teid);
+			mmeStats::Instance()->increment(mmeStatsCounter::MME_MSG_RX_SV_PS_TO_CS_COMPLETE);
+			const struct ps_to_cs_comp_noti_Q_msg* ps_to_cs_cmp_not_info= (const struct ps_to_cs_comp_noti_Q_msg*) (msgBuf->getDataPointer());
+			handlePstoCsCompleteNotification_v(std::move(eMsg), ps_to_cs_cmp_not_info->sv_mme_cp_teid);
+			break;
 		}
-		break;
 
 		default:
 			log_msg(LOG_INFO, "Unhandled Gtp Message %d ", msgData_p->msg_type);
@@ -99,11 +99,12 @@ void SvMsgHandler::handlePstoCsResponse_v(IpcEMsgUnqPtr eMsg, uint32_t ueIdx)
 		return;
 	}
 
-	// Fire CS resp from SGW event, insert cb to procedure queue
-	SM::Event evt(CS_RESP_FROM_SGW, cmn::IpcEMsgShPtr(std::move(eMsg)));
+	// Fire PS to CS resp event, insert cb to procedure queue
+	SM::Event evt(PS_TO_CS_RES, cmn::IpcEMsgShPtr(std::move(eMsg)));
 	controlBlk_p->addEventToProcQ(evt);
 }
 
+// Feature not yet implemented completely.
 void SvMsgHandler::handlePstoCsCancelAcknowlege_v(IpcEMsgUnqPtr eMsg, uint32_t ueIdx)
 {
 	log_msg(LOG_INFO, "handlePstoCsCancelAcknowlege_v");
@@ -135,7 +136,7 @@ void SvMsgHandler::handlePstoCsCompleteNotification_v(IpcEMsgUnqPtr eMsg, uint32
 		return;
 	}
 
-	SM::Event evt(DEL_SESSION_RESP_FROM_SGW, cmn::IpcEMsgShPtr(std::move(eMsg)));
+	SM::Event evt(PS_TO_CS_COMP_RCVD, cmn::IpcEMsgShPtr(std::move(eMsg)));
 	controlBlk_p->addEventToProcQ(evt);
 }
 

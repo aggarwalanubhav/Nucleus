@@ -27,6 +27,7 @@ private:
 	void handleDdnMsg_v(cmn::IpcEMsgUnqPtr eMsg, uint32_t ueIdx);
 	void handleCreateBearerRequestMsg_v(cmn::IpcEMsgUnqPtr eMsg, uint32_t ueIdx);
 	void handleDeleteBearerRequestMsg_v(cmn::IpcEMsgUnqPtr eMsg, uint32_t ueIdx);
+	//void handleDeleteBearerCommandMsg_v(cmn::IpcEMsgUnqPtr eMsg, uint32_t ueIdx);
 };
 
 #endif /* INCLUDE_MME_APP_MSGHANDLERS_GTPMSGHANDLER_H_ */

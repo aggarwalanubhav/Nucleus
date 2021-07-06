@@ -33,6 +33,7 @@
 #include <utils/mmeContextManagerUtils.h>
 #include <utils/mmeS1MsgUtils.h>
 #include "mmeStatsPromClient.h"
+#include "mmeStates/deleteBearerProcedureStates.h"
 
 using namespace mme;
 using namespace SM;
@@ -333,6 +334,29 @@ ActStatus ActionHandlers::send_erab_rel_cmd_and_deact_eps_br_ctxt_req(ControlBlo
 ***************************************/
 ActStatus ActionHandlers::process_delete_bearer_request(ControlBlock& cb)
 {
+        log_msg(LOG_DEBUG, "Inside process_delete_bearer_request ");
+
+    UEContext *ue_ctxt = static_cast<UEContext*>(cb.getPermDataBlock());
+    if (ue_ctxt == NULL)
+    {
+        log_msg(LOG_DEBUG,
+                "process_delete_bearer_request: ue context or procedure ctxt is NULL ");
+        return ActStatus::HALT;
+    }
+
+    SrvccProcedureContext *srvcc_ctxt =
+            dynamic_cast<SrvccProcedureContext*>(cb.getTempDataBlock());
+    if (srvcc_ctxt == NULL)
+    {
+        log_msg(LOG_DEBUG, "process_delete_bearer_request: procedure ctxt is NULL ");
+        return ActStatus::HALT;
+    }
+
+    mmeStats::Instance()->increment(mmeStatsCounter::MME_PROCEDURES_DELETE_BEARER_PROC);
+    srvcc_ctxt->setCtxtType(ProcedureType::dbReq_c);
+    srvcc_ctxt->setNextState(SrvccDeleteBearerStart::Instance());
+    cb.addTempDataBlock(srvcc_ctxt);
+
     return ActStatus::PROCEED;
 }
 
